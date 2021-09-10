@@ -49,7 +49,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: '../build_fuzzers.Dockerfile'
+  image: 'gcr.io/oss-fuzz-base/cifuzz-build-fuzzers'
   env:
     OSS_FUZZ_PROJECT_NAME: ${{ inputs.oss-fuzz-project-name }}
     LANGUAGE: ${{ inputs.language }}
