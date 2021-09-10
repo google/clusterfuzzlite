@@ -51,7 +51,7 @@ inputs:
     default: false
 runs:
   using: 'docker'
-  image: 'gcr.io/oss-fuzz-base/cifuzz-run-fuzzers'
+  image: 'docker://gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:latest'
   env:
     OSS_FUZZ_PROJECT_NAME: ${{ inputs.oss-fuzz-project-name }}
     LANGUAGE: ${{ inputs.language }}
