@@ -41,10 +41,12 @@ inputs:
       The branch of the git repo to use for storing certain artifacts from
       fuzzing.
     required: false
+    default: main
   storage-repo-branch-coverage:
     description: |
       The branch of the git repo to use for storing coverage reports.
     required: false
+    default: gh-pages
   report-unreproducible-crashes:
     description: 'If True, then unreproducible crashes will be reported by CIFuzz.'
     required: false
