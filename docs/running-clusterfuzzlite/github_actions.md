@@ -19,17 +19,18 @@ batch fuzzing.
 
 We recommend having two workflow files:
 
-- `.github/workflows/cflite_continuous.yaml` (for building and batch fuzzing)
-- `.github/workflows/cflite_pr.yaml` (for PR fuzzing)
+- `.github/workflows/cflite_continuous.yml` (for building and batch fuzzing)
+- `.github/workflows/cflite_pr.yml` (for PR fuzzing)
 
 TODO: Host a clean, complete example somewhere.
+TODO: multiple sanitizers
 
 ## Continuous builds (required)
 
 Continuous builds are used whenever a crash is found during PR or batch fuzzing
 to determine if this crash was newly introduced.
 
-Add the following to `cflite_continuous.yaml`:
+Add the following to `cflite_continuous.yml`:
 
 {% raw %}
 ```yaml
@@ -37,7 +38,7 @@ name: CIFuzz continuous
 on:
   push:
     branches:
-      - main
+      - main  # Use your actual default branch here.
 jobs:
   Build:
    runs-on: ubuntu-latest
@@ -51,12 +52,12 @@ jobs:
 {% endraw %}
 
 This causes a build to be triggered and uploaded as a GitHub Actions artifact
-whenever a new push is done to main. 
+whenever a new push is done to main/default branch.
 
 ## PR fuzzing
 
 To add a fuzzing workflow that runs on all pull requests to your project, add
-the following to `cflite_pr.yaml`:
+the following to `cflite_pr.yml`:
 
 {% raw %}
 ```yaml
@@ -72,6 +73,10 @@ jobs:
     - name: Build Fuzzers
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+      # Optional: used to only run fuzzers that are affected by the PR. See
+      # later section on "Git repo for storage"
+      # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
+      # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
@@ -85,7 +90,7 @@ jobs:
 ## Batch fuzzing
 
 To enable batch fuzzing, add the following to
-`cflite_continuous.yaml`:
+`cflite_continuous.yml`:
 
 {% raw %}
 ```yaml
@@ -130,9 +135,14 @@ This can be added to the "Run fuzzers" step of all your jobs:
 {% endraw %}
 
 You'll need to set up a [personal access token] with write permissions to the
-storage repo and add it as an [environment secret] called `PERSONAL_ACCESS_TOKEN`. This
-is because the default GitHub auth token is not able to write to other
-repositories.
+storage repo and add it as an [environment secret] called
+`PERSONAL_ACCESS_TOKEN`. This is because the default GitHub auth token is not
+able to write to other repositories.
+
+If you would like PR fuzzing to only run fuzzers affected by the current
+change, you'll need to add these same options to the ["Build Fuzzers" step
+above](#pr-fuzzing). The way "affected fuzzers" are determined is by using
+coverage reports.
 
 If this isn't specified, corpora and coverage reports will be uploaded as
 GitHub artifacts instead.
@@ -143,7 +153,7 @@ GitHub artifacts instead.
 ### Coverage reports
 
 Periodic coverage reports can also be generated using the latest corpus. To
-enable this, add the following to `cflite_continuous.yaml`:
+enable this, add the following to `cflite_continuous.yml`:
 
 {% raw %}
 ```yaml
@@ -154,15 +164,18 @@ jobs:
     - name: Build Fuzzers
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+      with:
+        sanitizer: coverage
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        sanitizer: coverage
         fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-fuzzers-mode: 'coverage'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
+        storage-repo-branch: main   # Optional. Defaults to "main"
+        storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
 ```
 {% endraw %}
 
@@ -173,7 +186,7 @@ default), then coverage reports can be viewed at
 ### Corpus pruning
 
 Corpus pruning minimizes a corpus by removing redundant items while keeping the
-same code coverage. To enable this, add the following to `cflite_continuous.yaml`:
+same code coverage. To enable this, add the following to `cflite_continuous.yml`:
 
 {% raw %}
 ```
@@ -192,5 +205,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-fuzzers-mode: 'prune'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
+        storage-repo-branch: main   # Optional. Defaults to "main"
+        storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
 ```
 {% endraw %}
