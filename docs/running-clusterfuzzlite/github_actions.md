@@ -13,9 +13,6 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-ClusterFuzzLite can be configured in a number of ways to enable both PR and
-batch fuzzing.
-
 We recommend having separate workflow files for each part of ClusterFuzz Lite:
 
 - `.github/workflows/cflite_build.yml` (for building/continuous fuzzing)
