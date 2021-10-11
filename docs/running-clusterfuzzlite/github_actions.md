@@ -36,7 +36,7 @@ Add the following to `.github/workflows/cflite_build.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzz Lite Continuous builds
+name: ClusterFuzz Lite continuous builds
 on:
   push:
     branches:
@@ -106,7 +106,7 @@ on:
   schedule:
     - cron: '0 0/6 * * *'  # Every 6th hour. Change this to whatever is suitable.
 jobs:
-  Batch:
+  BatchFuzzing:
     runs-on: ubuntu-latest
     steps:
     - name: Build Fuzzers
@@ -137,7 +137,7 @@ This can be added to the "Run fuzzers" step of all your jobs:
 {% raw %}
 ```yaml
 jobs:
-  Batch:
+  BatchFuzzing:
     runs-on: ubuntu-latest
     steps:
     - name: Build Fuzzers
@@ -180,7 +180,7 @@ enable this, add the following to `.github/workflows/cflite_cron.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzz lite cron
+name: ClusterFuzz Lite regular tasks
 on:
   schedule:
     - cron: '0 0 * * *'  # Once a day at midnight.
