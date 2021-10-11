@@ -13,7 +13,6 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-
 ClusterFuzzLite can be configured in a number of ways to enable both PR and
 batch fuzzing.
 
@@ -117,7 +116,7 @@ jobs:
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        fuzz-seconds: 600
+        fuzz-seconds: 3600
         run-fuzzers-mode: 'batch'
         # Optional but recommended: For storing certain artifacts from fuzzing.
         # See later section on "Git repo for storage"
