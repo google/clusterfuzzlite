@@ -20,8 +20,7 @@ We recommend having separate workflow files for each part of ClusterFuzz Lite:
 - `.github/workflows/cflite_pr.yml` (for PR fuzzing)
 - `.github/workflows/cflite_regular.yml` (for other regular tasks)
 
-TODO: Host a clean, complete example somewhere.
-TODO: multiple sanitizers
+TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
 
 ## Continuous builds (required)
 
@@ -169,7 +168,7 @@ GitHub artifacts instead.
 [personal access token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [environment secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
 
-### Coverage reports
+## Coverage reports
 
 Periodic coverage reports can also be generated using the latest corpus. To
 enable this, add the following to `.github/workflows/cflite_cron.yml`:
@@ -206,7 +205,7 @@ If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
 default), then coverage reports can be viewed at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
 
-### Corpus pruning
+## Corpus pruning
 
 Corpus pruning minimizes a corpus by removing redundant items while keeping the
 same code coverage. To enable this, add the following to `.github/workflows/cflite_cron.yml`:
@@ -230,5 +229,20 @@ jobs:
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
         storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
+```
+{% endraw %}
+
+## Private repos
+
+In order for ClusterFuzzLite to clone private repos, the GitHub token needs to be passed to the build steps as well:
+
+{% raw %}
+```yaml
+    steps:
+    - name: Build Fuzzers
+      id: build
+      uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 {% endraw %}
