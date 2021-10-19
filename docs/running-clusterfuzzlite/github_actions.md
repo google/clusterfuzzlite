@@ -13,28 +13,25 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
+We recommend having separate workflow files for each part of ClusterFuzz Lite:
 
-ClusterFuzzLite can be configured in a number of ways to enable both PR and
-batch fuzzing.
-
-We recommend having two workflow files:
-
-- `.github/workflows/cflite_continuous.yml` (for building and batch fuzzing)
+- `.github/workflows/cflite_build.yml` (for building/continuous fuzzing)
+- `.github/workflows/cflite_batch.yml` (for batch fuzzing)
 - `.github/workflows/cflite_pr.yml` (for PR fuzzing)
+- `.github/workflows/cflite_regular.yml` (for other regular tasks)
 
-TODO: Host a clean, complete example somewhere.
-TODO: multiple sanitizers
+TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
 
 ## Continuous builds (required)
 
 Continuous builds are used whenever a crash is found during PR or batch fuzzing
 to determine if this crash was newly introduced.
 
-Add the following to `cflite_continuous.yml`:
+Add the following to `.github/workflows/cflite_build.yml`:
 
 {% raw %}
 ```yaml
-name: CIFuzz continuous
+name: ClusterFuzzLite continuous builds
 on:
   push:
     branches:
@@ -57,11 +54,11 @@ whenever a new push is done to main/default branch.
 ## PR fuzzing
 
 To add a fuzzing workflow that runs on all pull requests to your project, add
-the following to `cflite_pr.yml`:
+the following to `.github/workflows/cflite_pr.yml`:
 
 {% raw %}
 ```yaml
-name: CIFuzz PR fuzzing
+name: ClusterFuzzLite PR fuzzing
 on:
   pull_request:
     paths:
@@ -73,16 +70,16 @@ jobs:
     - name: Build Fuzzers
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-      # Optional: used to only run fuzzers that are affected by the PR. See
-      # later section on "Git repo for storage"
+      # Optional but recommended: used to only run fuzzers that are affected by
+      # the PR. See later section on "Git repo for storage"
       # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
       # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        fuzz-seconds: 600
         run-fuzzers-mode: 'ci'
 ```
 {% endraw %}
@@ -90,12 +87,21 @@ jobs:
 ## Batch fuzzing
 
 To enable batch fuzzing, add the following to
-`cflite_continuous.yml`:
+`.github/workflows/cflite_batch.yml`:
+
+This can be run on either pushes to your default branch, or on a cron schedule (or both).
 
 {% raw %}
 ```yaml
+name: ClusterFuzzLite batch fuzzing
+on:
+  push:
+    branches:
+      - main  # Use your actual default branch here.
+  schedule:
+    - cron: '0 0/6 * * *'  # Every 6th hour. Change this to whatever is suitable.
 jobs:
-  Batch:
+  BatchFuzzing:
     runs-on: ubuntu-latest
     steps:
     - name: Build Fuzzers
@@ -105,9 +111,14 @@ jobs:
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        fuzz-seconds: 3600
         run-fuzzers-mode: 'batch'
+        # Optional but recommended: For storing certain artifacts from fuzzing.
+        # See later section on "Git repo for storage"
+        # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
+        # storage-repo-branch: main   # Optional. Defaults to "main"
+        # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
 ```
 {% endraw %}
 
@@ -120,12 +131,19 @@ This can be added to the "Run fuzzers" step of all your jobs:
 
 {% raw %}
 ```yaml
+jobs:
+  BatchFuzzing:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build Fuzzers
+      id: build
+      uses: google/clusterfuzzlite/actions/build_fuzzers@v1
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        fuzz-seconds: 600
         run-fuzzers-mode: 'batch'
         # Git storage repo options.
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
@@ -150,13 +168,17 @@ GitHub artifacts instead.
 [personal access token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [environment secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
 
-### Coverage reports
+## Coverage reports
 
 Periodic coverage reports can also be generated using the latest corpus. To
-enable this, add the following to `cflite_continuous.yml`:
+enable this, add the following to `.github/workflows/cflite_cron.yml`:
 
 {% raw %}
 ```yaml
+name: ClusterFuzzLite regular tasks
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Once a day at midnight.
 jobs:
   Coverage:
     runs-on: ubuntu-latest
@@ -170,8 +192,8 @@ jobs:
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        fuzz-seconds: 600
         run-fuzzers-mode: 'coverage'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
@@ -183,13 +205,13 @@ If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
 default), then coverage reports can be viewed at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
 
-### Corpus pruning
+## Corpus pruning
 
 Corpus pruning minimizes a corpus by removing redundant items while keeping the
-same code coverage. To enable this, add the following to `cflite_continuous.yml`:
+same code coverage. To enable this, add the following to `.github/workflows/cflite_cron.yml`:
 
 {% raw %}
-```
+```yaml
 jobs:
   Pruning:
     runs-on: ubuntu-latest
@@ -201,11 +223,26 @@ jobs:
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
-        fuzz-seconds: 600
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        fuzz-seconds: 600
         run-fuzzers-mode: 'prune'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
         storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
+```
+{% endraw %}
+
+## Private repos
+
+In order for ClusterFuzzLite to clone private repos, the GitHub token needs to be passed to the build steps as well:
+
+{% raw %}
+```yaml
+    steps:
+    - name: Build Fuzzers
+      id: build
+      uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 {% endraw %}

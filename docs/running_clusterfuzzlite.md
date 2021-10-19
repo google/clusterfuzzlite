@@ -14,62 +14,59 @@ permalink: /running-clusterfuzzlite/
 ---
 
 ## Overview
-TODO: add a diagram.
+![overview]({{ site.baseurl }}/assets/overview.png)
 
-Once your project's fuzzers can be built and run by the helper script, it is
-ready to be fuzzed by ClusterFuzzLite.
+Once your project's fuzzers can be built and run by the OSS-Fuzz helper script,
+it is ready to be fuzzed by ClusterFuzzLite.
+
 The exact method for doing this will depend on the how you are running
 ClusterFuzzLite. For guides on how to run ClusterFuzzLite in your particular
 environment (e.g. GitHub Actions) see the subguides.
-The rest of this page will explain concepts configuration options and that are
+The rest of this page will explain concepts and configuration options that are
 agnostic to how ClusterFuzzLite is being run.
 
 ## ClusterFuzzLite Tasks
 
-ClusterFuzzLite has the concept of tasks which instruct ClusterFuzzLite what to
-do when running.
+ClusterFuzzLite is broken up into several tasks, which run as workflows on your CI.
 
 ### Code Review Fuzzing
 
-TODO(metzman): Work on a generic name for CIFuzz/PR fuzzing.
+One of the core ways for ClusterFuzzLite to be used is for fuzzing code changes
+which were introduced in a pull request.
 
-One of the core ways for ClusterFuzzLite to be used is for fuzzing code that is
-in review that was just commited.
-This use-case is important because it allows ClusterFuzzLite to find bugs before
-they are commited into your code and while they are easiest to fix.
-To use Code Review Fuzzing, set the configuration option `clusterfuzzlite-task`
-to `code-review`.
-If you are familiar with OSS-Fuzz's CIFuzz, this task is similar to CIFuzz.
-Running other ClusterFuzzLite tasks enhances ClusterFuzzLite's ability to do
-Code Review Fuzzing.
+This allows ClusterFuzzLite to find bugs before they are commited into your
+code and while they are easiest to fix.
 
 If [Batch Fuzzing] is enabled, Code Review Fuzzing will report only newly
 introduced bugs and use the corpus developed during batch fuzzing.
-If [Code Coverage Reporting] is enabled, Code Review Fuzzing will try to only
-run the fuzzers affected by the code change.
+If [Code Coverage report generation] is enabled, Code Review Fuzzing will try
+to only run the fuzzers affected by the code change.
 
 ### Batch Fuzzing
 
 ClusterFuzzLite can also run in a batch fuzzing mode where all fuzzers are run
-for a long amount of time. Unlike Code Review Fuzzing, this task is not meant to
-be interactive, it is meant to be long-lasting and generally is more similar to
-fuzzing in ClusterFuzz than Code Review Fuzzing. Batch Fuzzing allows
-ClusterFuzzLite to build up a corpus for each of your fuzz targets. This corpus
-will be used in Code Coverage Reporting as well as Code Review Fuzzing.
+for a long amount of time. This allows ClusterFuzzLite to build up a [corpus]
+for each of your fuzz targets, leading to more code coverage and better bug
+discovery. This corpus will be used in [Code Coverage report generation] as
+well as Code Review Fuzzing.
 
-### Corpus Prune
+[corpus]: https://github.com/google/fuzzing/blob/master/docs/glossary.md#corpus
 
-If multiple Batch Fuzzing tasks are run concurrently then we strongly recommend
-running a pruning task as well. This task is run according to some set schedule
-(once a day is probably sufficient) to prune the corpus of redundant testcases,
-which can happen if multiple Batch Fuzzing jobs are done concurrently.
+### Corpus Pruning
 
-### Code Coverage Report
+Corpus pruning minimizes a corpus by removing redundant items while keeping the
+same code coverage. 
 
-The last task ClusterFuzzLite offers is Code Coverage Reports. This task will
-run your fuzzers on the corpus developed during Batch Fuzzing and will generate
-an HTML report that shows you which part of your code is covered by batch
-fuzzing.
+Over time redundant testcases may get introduced into your corpus during
+fuzzing. Running the corpus pruning task once a day will prevent buildup of
+these redundant testcases and keep fuzzing efficient.
+
+### Code Coverage report generation
+
+ClusterFuzzLite also provides code coverage report generation. This task will
+run your fuzzers on the corpus developed during [Batch Fuzzing] and will
+generate an HTML report that shows you which part of your code is covered by
+batch fuzzing.
 
 ## Configuration Options
 
@@ -98,4 +95,9 @@ value is `false`. When set to `true`, ClusterFuzzLite will never report a
 failure even if it finds a crash in your project. This requires the user to
 manually check the logs for detected bugs.
 
-TODO(metzman): We probably want a TOC on this page for subguides.
+## Supported Continous Integration systems
+
+- [GitHub Actions]({{ site.baseurl }}/running-clusterfuzzlite/github-actions/)
+
+[Batch Fuzzing]: #batch-fuzzing
+[Code Coverage report generation]: #code-coverage-report-generation

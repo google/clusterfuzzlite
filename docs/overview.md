@@ -16,7 +16,7 @@ ClusterFuzzLite makes fuzzing more valuable by:
 * Managing your corpus, pruning it daily or a specified-interval.
 
 ClusterFuzzLite supports [libFuzzer], [AddressSanitizer], and
-[UndefinedBehavior].
+[UndefinedBehaviorSanitizer].
 ClusterFuzzLite is modular, so you can decide which features you want to use.
 Using ClusterFuzzLite entails two major steps:
 1. [Integrating with ClusterFuzzLite's build system] so ClusterFuzzLite can
