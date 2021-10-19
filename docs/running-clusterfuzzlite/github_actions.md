@@ -31,7 +31,7 @@ Add the following to `.github/workflows/cflite_build.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzz Lite continuous builds
+name: ClusterFuzzLite continuous builds
 on:
   push:
     branches:
@@ -58,7 +58,7 @@ the following to `.github/workflows/cflite_pr.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzz Lite PR fuzzing
+name: ClusterFuzzLite PR fuzzing
 on:
   pull_request:
     paths:
@@ -93,7 +93,7 @@ This can be run on either pushes to your default branch, or on a cron schedule (
 
 {% raw %}
 ```yaml
-name: ClusterFuzz Lite batch fuzzing
+name: ClusterFuzzLite batch fuzzing
 on:
   push:
     branches:
@@ -175,7 +175,7 @@ enable this, add the following to `.github/workflows/cflite_cron.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzz Lite regular tasks
+name: ClusterFuzzLite regular tasks
 on:
   schedule:
     - cron: '0 0 * * *'  # Once a day at midnight.
