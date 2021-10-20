@@ -16,14 +16,14 @@ inputs:
   sanitizer:
     description: 'The sanitizer to run the fuzzers with.'
     default: 'address'
-  run-fuzzers-mode:
+  mode:
     description: |
       The mode to run the fuzzers with ("ci" or "batch").
-      "ci" is for fuzzing a pull request or commit.
+      "code-change" is for fuzzing a pull request or commit.
       "batch" is for non-interactive fuzzing of an entire project.
       "batch" is in alpha and should not be used in production.
     required: false
-    default: 'ci'
+    default: 'code-change'
   github-token:
     description: |
       Token for GitHub API. WARNING: THIS SHOULD NOT BE USED IN PRODUCTION YET
