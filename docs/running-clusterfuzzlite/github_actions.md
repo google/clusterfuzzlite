@@ -80,7 +80,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
-        run-fuzzers-mode: 'ci'
+        mode: 'code-change'
 ```
 {% endraw %}
 
@@ -113,7 +113,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 3600
-        run-fuzzers-mode: 'batch'
+        mode: 'batch'
         # Optional but recommended: For storing certain artifacts from fuzzing.
         # See later section on "Git repo for storage"
         # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
@@ -144,7 +144,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
-        run-fuzzers-mode: 'batch'
+        mode: 'batch'
         # Git storage repo options.
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
@@ -194,7 +194,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
-        run-fuzzers-mode: 'coverage'
+        mode: 'coverage'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
         storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
@@ -225,7 +225,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
-        run-fuzzers-mode: 'prune'
+        mode: 'prune'
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
         storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
