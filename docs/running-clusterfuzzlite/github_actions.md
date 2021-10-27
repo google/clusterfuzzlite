@@ -13,7 +13,7 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-We recommend having separate workflow files for each part of ClusterFuzz Lite:
+We recommend having separate workflow files for each part of ClusterFuzzLite:
 
 - `.github/workflows/cflite_build.yml` (for building/continuous fuzzing)
 - `.github/workflows/cflite_batch.yml` (for batch fuzzing)
@@ -21,6 +21,7 @@ We recommend having separate workflow files for each part of ClusterFuzz Lite:
 - `.github/workflows/cflite_regular.yml` (for other regular tasks)
 
 TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
+TODO: Link to actions docs.
 
 ## Continuous builds (required)
 
@@ -125,7 +126,7 @@ jobs:
 ### Git repo for storage
 
 It's optional but recommended that you set up a separate git repo for storing
-corpora and coverage reports. 
+corpora and coverage reports.
 
 This can be added to the "Run fuzzers" step of all your jobs:
 
