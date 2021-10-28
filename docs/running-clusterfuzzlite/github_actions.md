@@ -18,7 +18,7 @@ We recommend having separate workflow files for each part of ClusterFuzzLite:
 - `.github/workflows/cflite_build.yml` (for building/continuous fuzzing)
 - `.github/workflows/cflite_batch.yml` (for batch fuzzing)
 - `.github/workflows/cflite_pr.yml` (for PR fuzzing)
-- `.github/workflows/cflite_regular.yml` (for other regular tasks)
+- `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule)
 
 TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
 TODO: Link to actions docs.
@@ -176,7 +176,7 @@ enable this, add the following to `.github/workflows/cflite_cron.yml`:
 
 {% raw %}
 ```yaml
-name: ClusterFuzzLite regular tasks
+name: ClusterFuzzLite cron tasks
 on:
   schedule:
     - cron: '0 0 * * *'  # Once a day at midnight.
