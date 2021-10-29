@@ -20,7 +20,7 @@ We recommend having separate workflow files for each part of ClusterFuzzLite:
 - `.github/workflows/cflite_pr.yml` (for PR fuzzing)
 - `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule)
 
-TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
+TODO: Host a clean, complete example somewhere.
 TODO: Link to actions docs.
 
 ## Continuous builds (required)
@@ -37,6 +37,7 @@ on:
   push:
     branches:
       - main  # Use your actual default branch here.
+permissions: read-all
 jobs:
   Build:
    runs-on: ubuntu-latest
@@ -64,24 +65,32 @@ on:
   pull_request:
     paths:
       - '**'
+permissions: read-all
 jobs:
   PR:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [address, undefined, memory]
     steps:
-    - name: Build Fuzzers
+    - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-      # Optional but recommended: used to only run fuzzers that are affected by
-      # the PR. See later section on "Git repo for storage"
-      # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
-      # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
-    - name: Run Fuzzers
+      with:
+        sanitizer: ${{ matrix.sanitizer }}
+        # Optional but recommended: used to only run fuzzers that are affected by
+        # the PR. See later section on "Git repo for storage"
+        # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
+        # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
+    - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
         mode: 'code-change'
+        sanitizer: ${{ matrix.sanitizer }}
 ```
 {% endraw %}
 
@@ -101,20 +110,28 @@ on:
       - main  # Use your actual default branch here.
   schedule:
     - cron: '0 0/6 * * *'  # Every 6th hour. Change this to whatever is suitable.
+permissions: read-all
 jobs:
   BatchFuzzing:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [address, undefined, memory]
     steps:
-    - name: Build Fuzzers
+    - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-    - name: Run Fuzzers
+      with:
+        sanitizer: ${{ matrix.sanitizer }}
+    - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 3600
         mode: 'batch'
+        sanitizer: ${{ matrix.sanitizer }}
         # Optional but recommended: For storing certain artifacts from fuzzing.
         # See later section on "Git repo for storage"
         # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
@@ -135,17 +152,24 @@ This can be added to the "Run fuzzers" step of all your jobs:
 jobs:
   BatchFuzzing:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: [address, undefined, memory]
     steps:
-    - name: Build Fuzzers
+    - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-    - name: Run Fuzzers
+      with:
+        sanitizer: ${{ matrix.sanitizer }}
+    - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
         mode: 'batch'
+        sanitizer: ${{ matrix.sanitizer }}
         # Git storage repo options.
         storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         storage-repo-branch: main   # Optional. Defaults to "main"
@@ -180,6 +204,7 @@ name: ClusterFuzzLite cron tasks
 on:
   schedule:
     - cron: '0 0 * * *'  # Once a day at midnight.
+permissions: read-all
 jobs:
   Coverage:
     runs-on: ubuntu-latest
