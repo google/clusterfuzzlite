@@ -40,8 +40,8 @@ document.
 Note that this must be the same as the directory in `/src` where your project's
 code is located.
 Also note that the configuration examples set the environment variables
-`WORKSPACE`, `FILESTORE`, and `PROJECT_SRC_PATH`, these values are general for
-all GCB users. Do not change them.
+`CI_SYSTEM` and `FILESTORE` these values are general for all GCB users. Do not
+change them.
 
 TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
 
@@ -63,8 +63,7 @@ steps:
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
       - 'UPLOAD_BUILD=True'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
@@ -89,8 +88,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -98,8 +96,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
@@ -125,8 +122,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -134,8 +130,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
       - 'MODE=batch
       - 'FUZZ_SECONDS=3600'  # You can change this to a value you prefer.
@@ -165,8 +160,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -174,8 +168,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
       - 'MODE=prune'
 ```
@@ -196,8 +189,7 @@ steps:
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
       - 'SANITIZER=coverage'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -207,8 +199,7 @@ steps:
       - 'LANGUAGE=c++'
       - 'MODE=coverage
       - 'SANITIZER=coverage'
-      - 'WORKSPACE=/builder/home'
-      - 'PROJECT_SRC_PATH=/workspace'
+      - 'CI_SYSTEM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
