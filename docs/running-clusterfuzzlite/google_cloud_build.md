@@ -57,7 +57,7 @@ Add the following to `.clusterfuzzlite/cflite_build.yml`:
 {% raw %}
 ```yaml
 steps:
-  - name: gcr.io/oss-fuzz-base/cifuzz-build-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -84,7 +84,7 @@ the following to `.clusterfuzzlite/cflite_pr.yml`:
 {% raw %}
 ```yaml
 steps:
-  - name: gcr.io/oss-fuzz-base/cifuzz-build-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -93,7 +93,7 @@ steps:
       - 'PROJECT_SRC_PATH=/workspace'
       - 'FILESTORE=gsutil'
 
-  - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -120,7 +120,7 @@ running it on a cron schedule.
 {% raw %}
 ```yaml
 steps:
-  - name: gcr.io/oss-fuzz-base/cifuzz-build-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -129,7 +129,7 @@ steps:
       - 'PROJECT_SRC_PATH=/workspace'
       - 'FILESTORE=gsutil'
 
-  - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -160,7 +160,7 @@ same code coverage. To enable this, add the following to `.clusterfuzzlite/cflit
 ```yaml
 jobs:
 steps:
-  - name: gcr.io/oss-fuzz-base/cifuzz-build-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -169,7 +169,7 @@ steps:
       - 'PROJECT_SRC_PATH=/workspace'
       - 'FILESTORE=gsutil'
 
-  - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -190,7 +190,7 @@ enable this, add the following to `.clusterfuzzlite/cflite_coverage.yml`:
 {% raw %}
 ```yaml
 steps:
-  - name: gcr.io/oss-fuzz-base/cifuzz-build-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
@@ -200,7 +200,7 @@ steps:
       - 'PROJECT_SRC_PATH=/workspace'
       - 'FILESTORE=gsutil'
 
-  - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
+  - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
