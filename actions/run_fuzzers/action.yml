@@ -56,7 +56,7 @@ runs:
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1'
   env:
     FUZZ_SECONDS: ${{ inputs.fuzz-seconds }}
-    RUN_FUZZERS_MODE: ${{ inputs.mode }}
+    MODE: ${{ inputs.mode }}
     LANGUAGE: ${{ inputs.language }}
     DRY_RUN: ${{ inputs.dry-run}}
     SANITIZER: ${{ inputs.sanitizer }}
