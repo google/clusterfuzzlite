@@ -40,7 +40,7 @@ document.
 Note that this must be the same as the directory in `/src` where your project's
 code is located.
 Also note that the configuration examples set the environment variables
-`CI_SYSTEM` and `FILESTORE` these values are general for all GCB users. Do not
+`CFL_PLATFORM` and `FILESTORE` these values are general for all GCB users. Do not
 change them.
 
 TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
@@ -63,7 +63,7 @@ steps:
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
       - 'UPLOAD_BUILD=True'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
@@ -88,7 +88,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -96,7 +96,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
@@ -122,7 +122,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -130,7 +130,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
       - 'MODE=batch
       - 'FUZZ_SECONDS=3600'  # You can change this to a value you prefer.
@@ -160,7 +160,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -168,7 +168,7 @@ steps:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
       - 'MODE=prune'
 ```
@@ -189,7 +189,7 @@ steps:
       - 'REPOSITORY=<your-repo-name>'
       - 'LANGUAGE=c++'
       - 'SANITIZER=coverage'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/cifuzz-run-fuzzers:v1
@@ -199,7 +199,7 @@ steps:
       - 'LANGUAGE=c++'
       - 'MODE=coverage
       - 'SANITIZER=coverage'
-      - 'CI_SYSTEM=gcb'
+      - 'CFL_PLATFORM=gcb'
       - 'FILESTORE=gsutil'
 ```
 {% endraw %}
