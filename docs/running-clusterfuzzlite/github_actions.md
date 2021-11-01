@@ -154,9 +154,12 @@ jobs:
 {% endraw %}
 
 You'll need to set up a [personal access token] with write permissions to the
-storage repo and add it as an [environment secret] called
+storage repo and add it as a [repository secret] called
 `PERSONAL_ACCESS_TOKEN`. This is because the default GitHub auth token is not
 able to write to other repositories.
+Note that if you run into [issues with the storage repo], you may have
+accidentally set the secret as an *environment secret* instead of a
+*repository secret*.
 
 If you would like PR fuzzing to only run fuzzers affected by the current
 change, you'll need to add these same options to the ["Build Fuzzers" step
@@ -167,7 +170,8 @@ If this isn't specified, corpora and coverage reports will be uploaded as
 GitHub artifacts instead.
 
 [personal access token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-[environment secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
+[repository secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
+[issues with the storage repo]: https://github.com/google/oss-fuzz/issues/6668
 
 ## Coverage reports
 
