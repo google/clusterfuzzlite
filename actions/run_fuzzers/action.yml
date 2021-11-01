@@ -1,6 +1,6 @@
 # action.yml
 name: 'run-fuzzers'
-description: 'Runs fuzz target binaries for a specified length of time.'
+description: 'Runs fuzz target binaries.'
 inputs:
   language:
     description: 'Programming language project is written in.'
@@ -26,7 +26,7 @@ inputs:
     default: 'code-change'
   github-token:
     description: |
-      Token for GitHub API. WARNING: THIS SHOULD NOT BE USED IN PRODUCTION YET
+      Token for GitHub API.
       You should use "secrets.GITHUB_TOKEN" in your workflow file, do not
       hardcode the token.
       TODO(https://github.com/google/oss-fuzz/pull/5841#discussion_r639393361):
@@ -55,12 +55,11 @@ runs:
   using: 'docker'
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1'
   env:
-    OSS_FUZZ_PROJECT_NAME: ${{ inputs.oss-fuzz-project-name }}
-    LANGUAGE: ${{ inputs.language }}
     FUZZ_SECONDS: ${{ inputs.fuzz-seconds }}
+    RUN_FUZZERS_MODE: ${{ inputs.mode }}
+    LANGUAGE: ${{ inputs.language }}
     DRY_RUN: ${{ inputs.dry-run}}
     SANITIZER: ${{ inputs.sanitizer }}
-    RUN_FUZZERS_MODE: ${{ inputs.mode }}
     GITHUB_TOKEN: ${{ inputs.github-token }}
     LOW_DISK_SPACE: 'True'
     GIT_STORE_REPO: ${{ inputs.storage-repo }}
