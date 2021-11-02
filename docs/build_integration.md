@@ -27,8 +27,9 @@ copies in the source code directly during `docker build`.
 Before you can start setting up your new project for fuzzing, you must do the following:
 - [Integrate]({{ site.baseurl }}/advanced-topics/ideal-integration/) one or more [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
   with the project you want to fuzz. For examples, see TODO.
-- [Install Docker](https://docs.docker.com/engine/installation)
-  [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker)
+- [Install Docker](https://docs.docker.com/engine/installation).
+
+  [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker) TODO: link broken
 
   If you want to run `docker` without `sudo`, you can
   [create a docker group](https://docs.docker.com/engine/installation/linux/ubuntulinux/#/create-a-docker-group).
@@ -41,15 +42,13 @@ Before you can start setting up your new project for fuzzing, you must do the fo
 
 ## Generating an empty build integration
 
-Build integrations consist of three configuration files:
-* [./clusterfuzzlite/project.yaml](#projectyaml) - provides metadata about the project.
-* [./clusterfuzzlite/Dockerfile](#dockerfile) - defines the container environment with information
-on dependencies needed to build the project and its [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target).
-* [./clusterfuzzlite/build.sh](#buildsh) - defines the build script that executes inside the Docker container and
+Build integrations consist of three configuration files that must live in the
+`.clusterfuzzlite` directory in the root of your project's repository:
+* [.clusterfuzzlite/project.yaml](#projectyaml) - provides metadata about the project.
+* [.clusterfuzzlite/Dockerfile](#dockerfile) - defines the container environment with information
+on dependencies needed to build the project and its [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target). TODO broken link.
+* [.clusterfuzzlite/build.sh](#buildsh) - defines the build script that executes inside the Docker container and
 generates the project build.
-
-These must live in the `.clusterfuzzlite` directory in the root of your
-project's source code checkout.
 
 You can generate empty versions of these files with the following command:
 
@@ -64,8 +63,9 @@ project.
 
 ## project.yaml {#projectyaml}
 
-This configuration file stores project metadata. The following attributes are
-supported:
+This configuration file stores project metadata. Currently it is only used by
+`helper.py` to build your project.
+The only field you must fill out in this file is:
 
 - [language](#language)
 
@@ -78,7 +78,9 @@ Programming language the project is written in. Values you can specify include:
 * [`go`]({{ site.baseurl }}//getting-started/new-project-guide/go-lang/)
 * [`rust`]({{ site.baseurl }}//getting-started/new-project-guide/rust-lang/)
 * [`python`]({{ site.baseurl }}//getting-started/new-project-guide/python-lang/)
-* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//getting-started/new-project-guide/jvm-lang/)
+* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//getting-started/new-project-guide/jvm-lang/) TODO: link broken
+
+TODO: include example.
 
 ## Dockerfile {#dockerfile}
 
@@ -91,7 +93,7 @@ FROM gcr.io/oss-fuzz-base/base-builder          # base image with clang toolchai
 RUN apt-get update && apt-get install -y ...    # install required packages to build your project
 COPY . $SRC/<project_name>                      # checkout all sources needed to build your project
 WORKDIR $SRC/<project_name>                     # current directory for the build script
-COPY ./clusterfuzzlite/build.sh fuzzer.cc $SRC/ # copy build script into src dir
+COPY ./clusterfuzzlite/build.sh $SRC/           # copy build script into src dir
 ```
 TODO: Provide examples.
 
