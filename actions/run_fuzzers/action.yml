@@ -18,10 +18,11 @@ inputs:
     default: 'address'
   mode:
     description: |
-      The mode to run the fuzzers with ("ci" or "batch").
+      The mode to run the fuzzers with ("code-change", "batch", "coverage", or "prune").
       "code-change" is for fuzzing a pull request or commit.
       "batch" is for non-interactive fuzzing of an entire project.
-      "batch" is in alpha and should not be used in production.
+      "coverage" is for coverage generation.
+      "prune" is for corpus pruning.
     required: false
     default: 'code-change'
   github-token:
@@ -40,13 +41,13 @@ inputs:
     description: |
       The branch of the git repo to use for storing certain artifacts from
       fuzzing.
-    required: false
     default: main
+    required: false
   storage-repo-branch-coverage:
     description: |
       The branch of the git repo to use for storing coverage reports.
-    required: false
     default: gh-pages
+    required: false
   report-unreproducible-crashes:
     description: 'If True, then unreproducible crashes will be reported by ClusterFuzzLite.'
     required: false

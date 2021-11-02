@@ -1,6 +1,6 @@
 # action.yml
 name: 'build-fuzzers'
-description: "Builds a ClusterFuzzLite user's fuzzers."
+description: "Builds project's fuzzers."
 inputs:
   language:
     description: 'Programming language project is written in.'
