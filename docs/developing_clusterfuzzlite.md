@@ -18,6 +18,7 @@ TODO
 Explain external
 Explain multiple images
 Explain environment variables
+Explain filestore
 
 ## Code location
 
