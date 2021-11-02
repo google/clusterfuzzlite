@@ -39,7 +39,7 @@ with you in mind and assumes no knowledge of OSS-Fuzz.
 
 Before you can start setting up your new project for fuzzing, you must do the
 following to use the ClusterFuzzLite toolchain:
-- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) (broken link) with your codebase.
+- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) with your codebase. For examples see TODO.
 - [Install Docker](https://docs.docker.com/engine/installation)
 
   [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker)
@@ -56,15 +56,13 @@ following to use the ClusterFuzzLite toolchain:
 ## Generating an empty build integration
 
 Next you need to configure your project to build fuzzers on ClusterFuzzLite.
-To do this, you need three configuration files:
-* [./clusterfuzzlite/project.yaml](#projectyaml) - provides metadata about the project.
-* [./clusterfuzzlite/Dockerfile](#dockerfile) - defines the container environment with information
-on dependencies needed to build the project and its [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target).
-* [./clusterfuzzlite/build.sh](#buildsh) - defines the build script that executes inside the Docker container and
+To do this, your project needs three configuration files in the
+`.clusterfuzzlite` directory in your project's root:
+* [.clusterfuzzlite/project.yaml](#projectyaml) - provides metadata about the project.
+* [.clusterfuzzlite/Dockerfile](#dockerfile) - defines the container environment with information
+on dependencies needed to build the project and its [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target). TODO broken link.
+* [.clusterfuzzlite/build.sh](#buildsh) - defines the build script that executes inside the Docker container and
 generates the project build.
-
-These must be located in the `.clusterfuzzlite` directory in the root of your
-project's source code repository.
 
 You can generate empty versions of these files with the following command:
 
@@ -80,8 +78,9 @@ project.
 
 ## project.yaml {#projectyaml}
 
-This configuration file stores project metadata. The following attributes are
-supported:
+This configuration file stores project metadata. Currently it is only used by
+`helper.py` to build your project.
+The only field you must fill out in this file is:
 
 - [language](#language)
 
@@ -94,7 +93,9 @@ Programming language the project is written in. Values you can specify include:
 * [`go`]({{ site.baseurl }}//getting-started/new-project-guide/go-lang/)
 * [`rust`]({{ site.baseurl }}//getting-started/new-project-guide/rust-lang/)
 * [`python`]({{ site.baseurl }}//getting-started/new-project-guide/python-lang/)
-* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//getting-started/new-project-guide/jvm-lang/)
+* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//getting-started/new-project-guide/jvm-lang/) TODO: link broken
+
+TODO: include example.
 
 ## Dockerfile {#dockerfile}
 
