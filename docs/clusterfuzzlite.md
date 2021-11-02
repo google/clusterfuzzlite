@@ -2,7 +2,7 @@
 layout: default
 title: ClusterFuzzLite
 has_children: true
-nav_order: 8
+nav_order: 1
 permalink: /
 ---
 
@@ -11,23 +11,38 @@ permalink: /
 ClusterFuzzLite makes [fuzzing] part of [Continuous Integration (CI)].
 ClusterFuzzLite is based on [ClusterFuzz].
 
-By fuzzing your code, ClusterFuzzLite can make it more secure as fuzzing is
-highly effective technique for finding bugs in software.
-
-ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build].
+Fuzzing is a highly effective technique for finding bugs in software.
+ClusterFuzzLite makes your code more secure by fuzzing changes before they even
+enter the codebase.
+ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build], so getting
+the benefits of continuous fuzzing is simple if you can use these CI systems.
 Suppport for more CI systems is in-progress and
 [extending support to other CI systems] is easy.
 
-ClusterFuzzLite offers features that will make fuzzing an important part of your
-software development lifecycle, including:
-1. Quickly fuzzing code changes (pull requests) before they land and allowing
-   users to download the crashing testcases.
-1. Asynchronous, long running fuzzing (batch fuzzing) that finds deeper bugs
-   missed during code change fuzzing.
-1. Coverage reports, so users can see which parts of their code is fuzzed.
+ClusterFuzzLite offers many useful features, including:
+- Quickly fuzzing code changes (pull requests) before they land and allowing
+   you to download the crashing testcases.
+- Continuous longer running fuzzing (batch fuzzing) that asynchronously find
+   deeper bugs missed during code change fuzzing and build a minimal corpus for
+   use in code change fuzzing.
+- Coverage reports, so users can see which parts of their code is fuzzed.
 
-See [Overview] for a more detailed description of how ClusterFuzzLite works and
-how you can use it.
+ClusterFuzzLite is modular, so you can decide which features you want to use.
+
+ClusterFuzzLite uses [libFuzzer] and important sanitizers for finding bugs in
+C/C++ code:
+- [AddressSanitizer], for finding memory safety issues.
+- [MemorySanitizer], for finding use of uninitialized memory.
+- [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
+  overflows).
+
+ClusterFuzzLite also supports other programming languages and runtimes
+including: Java (and other JVM-based languages), Go, Python, Rust, and Swift.
+
+Using ClusterFuzzLite is simple and requires two major steps:
+1. [Writing fuzzers and integrating with ClusterFuzzLite's build system]
+1. [Configuring ClusterFuzzLite to run in your CI]
+
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
 [fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
@@ -36,3 +51,10 @@ how you can use it.
 [Overview]: {{ site.baseurl }}/overview/
 [Google Cloud Build]: {{ site.baseurl }}/running-clusterfuzzlite/google-cloud-build/
 [extending support to other CI systems]:{{ site.baseurl }}/developing-clusterfuzzlite/new-platform/
+[libFuzzer]: https://libfuzzer.info
+[AddressSanitizer]: https://clang.llvm.org/docs/AddressSanitizer.html
+[UndefinedBehaviorSanitizer]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+[Writing fuzzers and integrating with ClusterFuzzLite's build system]: {{ site.baseurl }}/build-integration/
+[Running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
+[Configuring ClusterFuzzLite to run in your CI]: {{ site.baseurl }}/running-clusterfuzzlite/
+[MemorySanitizer]: https://clang.llvm.org/docs/MemorySanitizer.html
