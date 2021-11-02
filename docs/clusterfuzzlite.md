@@ -18,7 +18,8 @@ ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build].
 Suppport for more CI systems is in-progress and
 [extending support to other CI systems] is easy.
 
-ClusterFuzzLite offers features that will make fuzzing an important part of your software development lifecycle, including:
+ClusterFuzzLite offers features that will make fuzzing an important part of your
+software development lifecycle, including:
 1. Quickly fuzzing code changes (pull requests) before they land and allowing
    users to download the crashing testcases.
 1. Asynchronous, long running fuzzing (batch fuzzing) that finds deeper bugs
