@@ -93,7 +93,7 @@ FROM gcr.io/oss-fuzz-base/base-builder          # base image with clang toolchai
 RUN apt-get update && apt-get install -y ...    # install required packages to build your project
 COPY . $SRC/<project_name>                      # checkout all sources needed to build your project
 WORKDIR $SRC/<project_name>                     # current directory for the build script
-COPY ./clusterfuzzlite/build.sh $SRC/ # copy build script into src dir
+COPY ./clusterfuzzlite/build.sh $SRC/           # copy build script into src dir
 ```
 TODO: Provide examples.
 
