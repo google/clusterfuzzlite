@@ -239,7 +239,7 @@ your fuzz targets get to the code you expect. This would use the corpus
 generated from the previous `run_fuzzer` step in your local corpus directory.
 
     ```bash
-    $ python infra/helper.py build_fuzzers --sanitizer coverage $PATH_TO_PROJECT
+    $ python infra/helper.py build_fuzzers --sanitizer coverage $PATH_TO_PROJECT --external
     $ python infra/helper.py coverage $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir> --external
     ```
 
@@ -269,4 +269,8 @@ lists ways to debug your build scripts and
 To improve your fuzz target ability to find bugs faster, please read
 [this section](https://google.github.io/oss-fuzz/getting-started/new-project-guide/#efficient-fuzzing).
 
-TODO(metzman): We probably want a TOC for lang-specific guides (which we still need to add).
+## Other languages
+
+For details on how to build fuzzers for other languages (Go, Swift, Rust, Python, Java),
+please see the relevant subguide in the
+[OSS-Fuzz documentation](https://google.github.io/oss-fuzz/getting-started/new-project-guide/).
