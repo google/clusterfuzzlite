@@ -13,16 +13,16 @@ permalink: /build-integration/
 {:toc}
 ---
 
-This page explains how to integrate your code with ClusterFuzzLite's build
-system so that ClusterFuzzLite can build your code's fuzz targets with
+This page explains how to integrate your project with ClusterFuzzLite's build
+system so that ClusterFuzzLite can build your project's fuzz targets with
 sanitizers.
 ClusterFuzzLite is intimately tied to sanitizers and libFuzzer. By integrating
 with our build system, ClusterFuzzLite will be able to use the most recent
 versions of these tools to secure your code.
 
 By the end of the document you will be able to build and run your fuzz targets
-with libFuzzer and a variety of sanitizers. More importantly, your code will be
-ready to be fuzzed by ClusterFuzzLite.
+with libFuzzer and a variety of sanitizers. More importantly, your project will
+be ready to be fuzzed by ClusterFuzzLite.
 
 ## Prerequisites
 ClusterFuzzLite supports statically linked [libFuzzer targets] built with Clang
@@ -100,9 +100,9 @@ TODO: include example.
 ## Dockerfile {#dockerfile}
 
 This integration file defines the Docker image for building your project.
-Your [build.sh](#buildsh) script will be executed inside the image this
-files defines.
-For most projects, the image is simple:
+Your [build.sh](#buildsh) script will be executed inside the image this file
+defines.
+For most projects, the Dockerfile is simple:
 ```docker
 FROM gcr.io/oss-fuzz-base/base-builder          # Base image with clang toolchain
 RUN apt-get update && apt-get install -y ...    # Install required packages to build your project.
@@ -120,7 +120,7 @@ The script is executed within the image built from your [Dockerfile](#Dockerfile
 In general, this script should do the following:
 
 - Build the project using your build system with ClusterFuzzLite's compiler.
-- Provide OSS-Fuzz's compiler flags (defined as [environment variables](#Requirements)) to the build system.
+- Provide ClusterFuzzLite's compiler flags (defined as [environment variables](#Requirements)) to the build system.
 - Build your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
   and link your project's build with `$LIB_FUZZING_ENGINE` (libFuzzer).
 
@@ -150,9 +150,9 @@ If your project is written in Go, check out the [Integrating a Go project]({{ si
 
 **Note:**
 1. Make sure that the binary names for your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) contain only
-alphanumeric characters, underscore(_) or dash(-). Otherwise, they won't run.
+alphanumeric characters, underscore (`_`) or dash (`-`). Otherwise, they won't run.
+They should not contain periods (`.`) or file extensions.
 1. Don't remove source code files. They are needed for code coverage.
-
 
 ### Temporarily disabling code instrumentation during builds
 
@@ -173,7 +173,6 @@ export CFLAGS="${CFLAGS_SAVE}"
 export CXXFLAGS="${CXXFLAGS_SAVE}"
 unset AFL_NOOPT
 ```
-TODO: Figure out if we should include this AFL code.
 
 ### build.sh script environment
 
@@ -185,17 +184,12 @@ When your build.sh script is executed, the following locations are available wit
 | `/src/` | `$SRC`         | Directory to checkout source files. |
 | `/work/`| `$WORK`        | Directory to store intermediate files. |
 
-Although the files layout is fixed within a container, environment variables are
-provided so you can write retargetable scripts.
-
 In case your fuzz target uses the [FuzzedDataProvider] class, make sure it is
 included via `#include <fuzzer/FuzzedDataProvider.h>` directive.
 
 [FuzzedDataProvider]: https://github.com/google/fuzzing/blob/master/docs/split-inputs.md#fuzzed-data-provider
 
 ### build.sh requirements {#Requirements}
-
-Only binaries without an extension are accepted as targets. Extensions are reserved for other artifacts, like .dict.
 
 You *must* use the special compiler flags needed to build your project and fuzz targets.
 These flags are provided in the following environment variables:
@@ -206,7 +200,7 @@ These flags are provided in the following environment variables:
 | `$CFLAGS`, `$CXXFLAGS` | C and C++ compiler flags.
 | `$LIB_FUZZING_ENGINE`  | C++ compiler argument to link fuzz target against the prebuilt engine library (e.g. libFuzzer).
 
-You *must* use `$CXX` as a linker, even if your project is written in pure C.
+Even if your project is written in pure C you *must* use `$CXX` as a linker.
 
 Most well-crafted build scripts will automatically use these variables. If not,
 pass them manually to the build tool.
@@ -221,28 +215,26 @@ your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) run in, 
 
 ## Testing locally
 
-You can build your docker image and fuzz targets locally, so you can test them
-before running ClusterFuzzLite.
+When you have completed writing the build.sh and Dockerfile, you can test that
+they work.
 1. Run the same helper script you used to create your directory structure, this time using it to build your docker image and [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target):
 
     ```bash
-    $ cd /path/to/oss-fuzz
-    $ python infra/helper.py build_image $PATH_TO_PROJECT --external
-    $ python infra/helper.py build_fuzzers $PATH_TO_PROJECT --sanitizer <address/undefined/coverage> --external
+    $ python infra/helper.py build_image --external $PATH_TO_PROJECT
+    $ python infra/helper.py build_fuzzers --external $PATH_TO_PROJECT --sanitizer <address/undefined/coverage>
     ```
-
     The built binaries appear in the `/path/to/oss-fuzz/build/out/$PROJECT_NAME`
     directory on your machine (and `$OUT` in the container). Note that
     `$PROJECT_NAME` is the name of the directory of your project (e.g. if
-    `$PATH_TO_PROJECT` is `/path/to/systemd`, `$PROJECT_NAME` is systemd.
+    `$PATH_TO_PROJECT` is `/path/to/systemd`, `$PROJECT_NAME` is `systemd`).
 
-    **Note:** You *must* run your fuzz target binaries inside the base-runner docker
-    container to make sure that they work properly.
+    **Note:** We *strongly recommmend* running your fuzz targets locally make
+    sure that they work properly.
 
-2. Find failures to fix by running the `check_build` command:
+2. Find common build issues to fix by running the `check_build` command:
 
     ```bash
-    $ python infra/helper.py check_build $PATH_TO_PROJECT --external
+    $ python infra/helper.py check_build --external $PATH_TO_PROJECT
     ```
 
 3. If you want to test changes against a particular fuzz target, run the following command:
@@ -256,19 +248,18 @@ your fuzz targets get to the code you expect. This would use the corpus
 generated from the previous `run_fuzzer` step in your local corpus directory.
 
     ```bash
-    $ python infra/helper.py build_fuzzers --sanitizer coverage $PATH_TO_PROJECT --external
+    $ python infra/helper.py build_fuzzers --external --sanitizer coverage $PATH_TO_PROJECT
     $ python infra/helper.py coverage $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir> --external
     ```
+TODO: This seems excessive.
 
 You may need to run `python infra/helper.py pull_images` to use the latest
 coverage tools. Please refer to
 [code coverage]({{ site.baseurl }}/advanced-topics/code-coverage/) for detailed
 information on code coverage generation.
 
-**Note:** Currently, ClusterFuzzLite only supports AddressSanitizer (address)
-and UndefinedBehaviorSanitizer (undefined) configurations.
 <b>Make sure to test each
-of the supported build configurations with the above commands (build_fuzzers -> run_fuzzer -> coverage).</b>
+of the supported build configurations with the above commands (`build_fuzzers` and `run_fuzzer` as well as `coverage`).</b>
 
 If everything works locally, it should also work on ClusterFuzzLite. If you
 check in your files and experience failures, review your
@@ -292,6 +283,13 @@ For details on how to build fuzzers for other languages (Go, Swift, Rust, Python
 please see the relevant subguide in the
 [OSS-Fuzz documentation](https://google.github.io/oss-fuzz/getting-started/new-project-guide/).
 
+
+### Running ClusterFuzzLite
+
+Once everything is complete, you are ready to set up ClusterFuzzLite to run on
+your CI. Check out the [documents on Running ClusterFuzzLite] to do this.
+
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
 [OSS-Fuzz]: https://github.com/google/oss-fuzz
 [`Dockerfile`]: #dockerfile
+[documents on Running ClusterFuzzLite]: {{ site.baseurl}}/running-clusterfuzzlite/
