@@ -39,7 +39,7 @@ with you in mind and assumes no knowledge of OSS-Fuzz.
 
 Before you can start setting up your new project for fuzzing, you must do the
 following to use the ClusterFuzzLite toolchain:
-- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) with your codebase. For examples see TODO.
+- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) with your codebase. For examples, see TODO.
 - [Install Docker](https://docs.docker.com/engine/installation)
 
   [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker)
@@ -104,7 +104,7 @@ Your [build.sh](#buildsh) script will be executed inside the image this file
 defines.
 For most projects, the Dockerfile is simple:
 ```docker
-FROM gcr.io/oss-fuzz-base/base-builder          # Base image with clang toolchain
+FROM gcr.io/oss-fuzz-base/base-builder:v1          # Base image with clang toolchain
 RUN apt-get update && apt-get install -y ...    # Install required packages to build your project.
 COPY . $SRC/<project_name>                      # Copy your project's source code.
 WORKDIR $SRC/<project_name>                     # Working directory for the build script.
@@ -215,8 +215,8 @@ your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) run in, 
 
 ## Testing locally
 
-When you have completed writing the build.sh and Dockerfile, you can test that
-they work.
+When you have completed writing the build.sh and Dockerfile, you should test
+that they work.
 1. Run the same helper script you used to create your directory structure, this time using it to build your docker image and [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target):
 
     ```bash
@@ -249,7 +249,7 @@ generated from the previous `run_fuzzer` step in your local corpus directory.
 
     ```bash
     $ python infra/helper.py build_fuzzers --external --sanitizer coverage $PATH_TO_PROJECT
-    $ python infra/helper.py coverage $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir> --external
+    $ python infra/helper.py coverage --external $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir>
     ```
 TODO: This seems excessive.
 
@@ -283,8 +283,7 @@ For details on how to build fuzzers for other languages (Go, Swift, Rust, Python
 please see the relevant subguide in the
 [OSS-Fuzz documentation](https://google.github.io/oss-fuzz/getting-started/new-project-guide/).
 
-
-### Running ClusterFuzzLite
+## Running ClusterFuzzLite
 
 Once everything is complete, you are ready to set up ClusterFuzzLite to run on
 your CI. Check out the [documents on Running ClusterFuzzLite] to do this.
