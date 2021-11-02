@@ -20,8 +20,9 @@ We recommend having separate workflow files for each part of ClusterFuzzLite:
 - `.github/workflows/cflite_pr.yml` (for PR fuzzing)
 - `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule)
 
-TODO: Host a clean, complete example somewhere.
-TODO: Link to actions docs.
+For a complete example on a real project, see
+<https://github.com/oliverchang/curl>. GitHub Actions documentation can be
+found [here](https://docs.github.com/en/actions).
 
 ## Continuous builds (required)
 
