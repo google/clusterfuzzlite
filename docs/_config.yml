@@ -23,7 +23,7 @@ markdown: kramdown
 remote_theme: pmarsceill/just-the-docs
 search_enabled: true
 
-ga_tracking: UA-88024544-5
+ga_tracking: G-6MB01M3WWT
 
 aux_links:
   "ClusterFuzzLite on GitHub":
