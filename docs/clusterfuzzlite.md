@@ -14,29 +14,29 @@ ClusterFuzzLite is based on [ClusterFuzz].
 Fuzzing is a highly effective technique for finding bugs in software.
 ClusterFuzzLite makes your code more secure by fuzzing changes before they even
 enter the codebase.
-ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build], getting the
-benefits of continuous fuzzing is simple if you can use these CI systems.
+ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build], so getting
+the benefits of continuous fuzzing is simple if you can use these CI systems.
 Suppport for more CI systems is in-progress and
 [extending support to other CI systems] is easy.
 
 ClusterFuzzLite offers many useful features, including:
-1. Quickly fuzzing code changes (pull requests) before they land and allowing
+- Quickly fuzzing code changes (pull requests) before they land and allowing
    you to download the crashing testcases.
-1. Continous longer running fuzzing (batch fuzzing) that asynchronously find
+- Continuous longer running fuzzing (batch fuzzing) that asynchronously find
    deeper bugs missed during code change fuzzing and build a minimal corpus for
    use in code change fuzzing.
-1. Coverage reports, so users can see which parts of their code is fuzzed.
+- Coverage reports, so users can see which parts of their code is fuzzed.
 
 ClusterFuzzLite is modular, so you can decide which features you want to use.
 
 ClusterFuzzLite uses [libFuzzer] and important sanitizers for finding bugs in
 C/C++ code:
-1. [AddressSanitizer], for finding memory safety issues.
-1. [MemorySanitizer], for finding use of uninitialized memory.
-1. [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
-   overflows).
+- [AddressSanitizer], for finding memory safety issues.
+- [MemorySanitizer], for finding use of uninitialized memory.
+- [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
+  overflows).
 
-ClusterFuzzLite can also supports other programming languages and runtimes
+ClusterFuzzLite also supports other programming languages and runtimes
 including: Java (and other JVM-based languages), Go, Python, Rust, and Swift.
 
 Using ClusterFuzzLite is simple and requires two major steps:
