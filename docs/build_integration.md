@@ -24,7 +24,88 @@ By the end of the document you will be able to build and run your fuzz targets
 with libFuzzer and a variety of sanitizers. More importantly, your project will
 be ready to be fuzzed by ClusterFuzzLite.
 
+## Introducing fuzzing with libFuzzer and Sanitizers.
+
+Feel free to skip this section and go to [#prerequisites] if you know what
+libFuzzer and sanitizers are.
+
+### Fuzzing
+
+[Fuzzing] is a technique were randomized inputs are automatically created and
+fed as input to a (target) program in order to find bugs in that program.
+The program that creates the inputs is called a fuzzer.
+Fuzzing is highly effective at finding bugs missed by manually written tests,
+code review or auditing.
+Fuzzing has found thousands of bugs in mature software such as Chrome, OpenSSL,
+and Curl.
+If fuzzing isn't finding bugs in your code, your code is probably not bug free,
+you are probably not fuzzing well.
+
+### libFuzzer
+
+[LibFuzzer] is a fuzzer (sometimes called a fuzzing engine) that mutates inputs
+and feeds them to target code in a loop.
+During execution of the target on the input, libFuzzer observes the coverage of
+the code under test using instrumentation inserted by the compiler.
+LibFuzzer uses this coverage feedback to "evolve" progressively more interesting
+inputs and reach deeper program states, allowing it to find interesting bugs
+with little developer effort.
+
+### Fuzz target
+
+To fuzz target code, you must define a function called a [fuzz target] with the
+following API:
+
+```C++
+// fuzz_target.cc
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
+  DoSomethingInterestingWithMyAPI(Data, Size);
+  return 0;  // Non-zero return values are reserved for future use.
+}
+```
+Clang's `-fsanitizer=fuzzer` option will link this fuzz target function against
+libFuzzer, producing a fuzzer binary that will fuzz your target code when run.
+Note that in ClusterFuzzLite, you will not use this flag directly, you should
+use the `$LIB_FUZZING_ENGINE` environment variable which we discuss later in
+this document.
+
+### Sanitizers
+
+Sanitizers are tools that detect bugs in code (typically "native code" such as
+C/C++, Rust, Go, and Swift) and report bugs by crashing.
+Sanitizers are useful outside of fuzzing, but are particularly helpful when
+fuzzing.
+ClusterFuzzLite relies on sanitizers to to detect bugs that would otherwise be
+missed.
+Sanitizers work by instructing clang to add compile-time instrumentation,
+therefore different builds are needed to use different sanitizers.
+
+The sanitizers ClusterFuzzLite uses are:
+- [AddressSanitizer (ASan)]: For detecting memory safety issues. This is the
+  most important sanitizer to fuzz with. AddressSanitizer also detects memory
+  leaks.
+- [UndefinedBehaviorSanitizer (UBSan)]: For detecting undefined behavior such as
+  integer overflows.
+- [MemorySanitizer (MSan)]: For detecting use of uninitialized memory. MSan
+  is the hardest sanitizer to use because an MSan instrumented binary must be
+  entirely instrumented with MSan. If any part of the binary is not instrumented
+  with MSan, MSan will report false positives.
+
+The ClusterFuzzLite codebase uses shorter names for the sanitizers. So when
+referring to a sanitizer when giving input to ClusterFuzzLite, ASan is
+`address`, UBSan is `ubsan` and MSan is `memory`.
+
+With that, you have enough background to build fuzzers for ClusterFuzzLite.
+
+[Fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
+[LibFuzzer]: https://llvm.org/docs/LibFuzzer.html
+[fuzz target]: https://github.com/google/fuzzing/blob/master/docs/glossary.md#fuzz-target
+[AddressSanitizer (ASan)]: https://clang.llvm.org/docs/AddressSanitizer.html
+[UndefinedBehaviorSanitizer (UBSan)]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
+[MemorySanitizer (MSan)]: https://clang.llvm.org/docs/MemorySanitizer.html
+
 ## Prerequisites
+
 ClusterFuzzLite supports statically linked [libFuzzer targets] built with Clang
 on Linux.
 
@@ -33,13 +114,16 @@ means that ClusterFuzzLite will build your project in a docker container.
 If you are familiar with OSS-Fuzz, most of the concepts here are exactly the
 same, with one key difference. Rather than checking out the source code in the
 [`Dockerfile`](#dockerfile) using `git clone`, the `Dockerfile` copies in the
-source code directly during `docker build`.
+source code directly during `docker build`. Another minor difference is that
+ClusterFuzzLite only supports libFuzzer and not other fuzzing engines.
 If you are not familiar with OSS-Fuzz, have no fear! This document is written
 with you in mind and assumes no knowledge of OSS-Fuzz.
 
 Before you can start setting up your new project for fuzzing, you must do the
 following to use the ClusterFuzzLite toolchain:
-- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) with your codebase. For examples, see TODO.
+- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
+  with your codebase. For examples, see TODO.
+
 - [Install Docker](https://docs.docker.com/engine/installation)
 
   [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker)
@@ -74,7 +158,8 @@ $ python infra/helper.py generate --external $PATH_TO_PROJECT
 TODO: Other languages
 
 Once the configuration files are generated, you should modify them to fit your
-project.
+project. Let's look at each file one-by-one and explain what you should add to
+them.
 
 ## project.yaml {#projectyaml}
 
@@ -82,6 +167,7 @@ This configuration file stores project metadata. Currently it is only used by
 `helper.py` to build your project.
 The only field you must fill out in this file is:
 
+TODO: make this less weird. Is it even needed if generate does this?
 - [language](#language)
 
 ### language
@@ -104,30 +190,38 @@ Your [build.sh](#buildsh) script will be executed inside the image this file
 defines.
 For most projects, the Dockerfile is simple:
 ```docker
-FROM gcr.io/oss-fuzz-base/base-builder:v1          # Base image with clang toolchain
+FROM gcr.io/oss-fuzz-base/base-builder:v1       # Base image with clang toolchain
 RUN apt-get update && apt-get install -y ...    # Install required packages to build your project.
 COPY . $SRC/<project_name>                      # Copy your project's source code.
-WORKDIR $SRC/<project_name>                     # Working directory for the build script.
+WORKDIR $SRC/<project_name>                     # Working directory for build.sh.
 COPY ./clusterfuzzlite/build.sh $SRC/           # Copy build.sh into $SRC dir.
 ```
-TODO: Provide examples.
+TODO: Provide example.
 
 ## build.sh {#buildsh}
 
-This file defines how to build binaries for [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) in your project.
+This script must build binaries for [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) in your project.
 The script is executed within the image built from your [Dockerfile](#Dockerfile).
 
 In general, this script should do the following:
 
 - Build the project using your build system with ClusterFuzzLite's compiler.
-- Provide ClusterFuzzLite's compiler flags (defined as [environment variables](#Requirements)) to the build system.
+- Provide ClusterFuzzLite's compiler flags (defined as [environment variables](#compilation-env)) to the build system.
 - Build your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
-  and link your project's build with `$LIB_FUZZING_ENGINE` (libFuzzer).
+  and link your project's build with the `$LIB_FUZZING_ENGINE` (libFuzzer) environment variable.
+- Place any fuzz target binaries in the directory defined by the environment variable `$OUT`.
 
-Resulting binaries should be placed in `$OUT`.
+Make sure that the binary names for your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
+contain only alphanumeric characters, underscore (`_`) or dash (`-`). They
+should not contain periods (`.`) or have file extensions. Otherwise, they won't
+run.
+Your build.sh should not delete any source code. Source code is needed for code
+coverage reports.
 
-Here's an example from Expat
-([source](https://github.com/google/oss-fuzz/blob/master/projects/expat/build.sh)):
+The `$WORK` environment variable defines a directory you where build.sh can
+store intermediate files. !!! Delete this?
+
+Here's an example build.sh from Expat:
 
 ```bash
 #!/bin/bash -eu
@@ -146,98 +240,70 @@ $CXX $CXXFLAGS -std=c++11 -Ilib/ \
 cp $SRC/*.dict $SRC/*.options $OUT/
 ```
 
-If your project is written in Go, check out the [Integrating a Go project]({{ site.baseurl }}//getting-started/new-project-guide/go-lang/) page.
+If your project is written in Go, check out the [Integrating a Go project]({{site.baseurl }}//getting-started/new-project-guide/go-lang/)
+as some of the steps will be different.
+Otherwise, continue to the next section which explains how your build.sh must
+use environment variables to compile the fuzz targets properly.
 
-**Note:**
-1. Make sure that the binary names for your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) contain only
-alphanumeric characters, underscore (`_`) or dash (`-`). Otherwise, they won't run.
-They should not contain periods (`.`) or file extensions.
-1. Don't remove source code files. They are needed for code coverage.
+### build.sh environment variables for compilation {#compilation-env}
 
-### Temporarily disabling code instrumentation during builds
-
-In some cases, it's not necessary to instrument every 3rd party library or tool that supports the build target. Use the following snippet to build tools or libraries without instrumentation:
-
-```
-CFLAGS_SAVE="$CFLAGS"
-CXXFLAGS_SAVE="$CXXFLAGS"
-unset CFLAGS
-unset CXXFLAGS
-export AFL_NOOPT=1
-
-#
-# build commands here that should not result in instrumented code.
-#
-
-export CFLAGS="${CFLAGS_SAVE}"
-export CXXFLAGS="${CXXFLAGS_SAVE}"
-unset AFL_NOOPT
-```
-
-### build.sh script environment
-
-When your build.sh script is executed, the following locations are available within the image:
-
-| Location| Env Variable | Description |
-|---------| ------------ | ----------  |
-| `/out/` | `$OUT`         | Directory to store build artifacts (fuzz targets, dictionaries, options files, seed corpus archives). |
-| `/src/` | `$SRC`         | Directory to checkout source files. |
-| `/work/`| `$WORK`        | Directory to store intermediate files. |
-
-In case your fuzz target uses the [FuzzedDataProvider] class, make sure it is
-included via `#include <fuzzer/FuzzedDataProvider.h>` directive.
-
-[FuzzedDataProvider]: https://github.com/google/fuzzing/blob/master/docs/split-inputs.md#fuzzed-data-provider
-
-### build.sh requirements {#Requirements}
-
-You *must* use the special compiler flags needed to build your project and fuzz targets.
-These flags are provided in the following environment variables:
+You *must* use ClusterFuzzLite's compilers and compiler flags to build your fuzz
+targets.
+These are provided in the following environment variables:
 
 | Env Variable           | Description
 | -------------          | --------
-| `$CC`, `$CXX`, `$CCC`  | The C and C++ compiler binaries.
+| `$CC`, `$CXX`, `$CCC`  | C and C++ compilers.
 | `$CFLAGS`, `$CXXFLAGS` | C and C++ compiler flags.
 | `$LIB_FUZZING_ENGINE`  | C++ compiler argument to link fuzz target against the prebuilt engine library (e.g. libFuzzer).
 
-Even if your project is written in pure C you *must* use `$CXX` as a linker.
+These compiler flags are needed to properly instrument your fuzzers with
+sanitizers and coverage instrumentation.
 
-Most well-crafted build scripts will automatically use these variables. If not,
-pass them manually to the build tool.
+Note that even if your project is written in pure C you *must* use `$CXX` to
+link your fuzz target binaries.
+
+Many build tools will automatically use these environment variables (with the
+exception of `$LIB_FUZZING_ENGINE`. If not, pass them manually to the build
+tool.
+
+You can also do the final linking step with `$LIB_FUZZING_ENGINE` in your
+`build.sh`.
 
 See the [Provided Environment Variables](https://github.com/google/oss-fuzz/blob/master/infra/base-images/base-builder/README.md#provided-environment-variables) section in
-`base-builder` image documentation for more details.
+`base-builder` image documentation for more details on environment variables that are available to `build.sh`.
 
 ## Fuzzer execution environment
 
 For more on the environment that
 your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) run in, and the assumptions you can make, see the [fuzzer environment]({{ site.baseurl }}/further-reading/fuzzer-environment/) page.
+TODO: much of this isn't applicable.
 
 ## Testing locally
 
 When you have completed writing the build.sh and Dockerfile, you should test
 that they work.
-1. Run the same helper script you used to create your directory structure, this time using it to build your docker image and [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target):
+This includes running your fuzz targets, which we strongly recommend.
+The helper.py script you used to generate your config files offers a few different ways of doing this:
+1. Build your docker image and [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target):
 
     ```bash
     $ python infra/helper.py build_image --external $PATH_TO_PROJECT
-    $ python infra/helper.py build_fuzzers --external $PATH_TO_PROJECT --sanitizer <address/undefined/coverage>
+    $ python infra/helper.py build_fuzzers --external $PATH_TO_PROJECT --sanitizer <address/undefined/memory>
     ```
     The built binaries appear in the `/path/to/oss-fuzz/build/out/$PROJECT_NAME`
-    directory on your machine (and `$OUT` in the container). Note that
+    directory on your host nmachine (and `$OUT` in the container). Note that
     `$PROJECT_NAME` is the name of the directory of your project (e.g. if
     `$PATH_TO_PROJECT` is `/path/to/systemd`, `$PROJECT_NAME` is `systemd`).
-
-    **Note:** We *strongly recommmend* running your fuzz targets locally make
-    sure that they work properly.
 
 2. Find common build issues to fix by running the `check_build` command:
 
     ```bash
-    $ python infra/helper.py check_build --external $PATH_TO_PROJECT
+    $ python infra/helper.py check_build --external $PATH_TO_PROJECT --sanitizer <address/undefined/memory>
     ```
+    This checks that your fuzz targets are compiled with the right sanitizer and doesn't crash after fuzzing for a few seconds.
 
-3. If you want to test changes against a particular fuzz target, run the following command:
+3. If run a particular fuzz target, use `run_fuzzer`:
 
     ```bash
     $ python infra/helper.py run_fuzzer --external --corpus-dir=<path-to-temp-corpus-dir> $PATH_TO_PROJECT <fuzz_target>
@@ -259,13 +325,13 @@ coverage tools. Please refer to
 information on code coverage generation.
 
 <b>Make sure to test each
-of the supported build configurations with the above commands (`build_fuzzers` and `run_fuzzer` as well as `coverage`).</b>
+of the sanitizers with `build_fuzzers`, `check_build`, and `run_fuzzer`.</b>
 
-If everything works locally, it should also work on ClusterFuzzLite. If you
-check in your files and experience failures, review your
+If everything works locally, it should also work on ClusterFuzzLite.
+If you experience failures running fuzzers on ClusterFuzzLite, review your
 [dependencies](https://google.github.io/oss-fuzz/further-reading/fuzzer-environment/).
 
-## Debugging Problems
+## Debugging problems
 
 If you run into problems, the
 [Debugging page](https://google.github.io/oss-fuzz/advanced-topics/debugging/)
@@ -286,7 +352,7 @@ please see the relevant subguide in the
 ## Running ClusterFuzzLite
 
 Once everything is complete, you are ready to set up ClusterFuzzLite to run on
-your CI. Check out the [documents on Running ClusterFuzzLite] to do this.
+your CI. Check out the [docs on Running ClusterFuzzLite] to do this.
 
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
 [OSS-Fuzz]: https://github.com/google/oss-fuzz
