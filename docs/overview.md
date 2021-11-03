@@ -66,12 +66,12 @@ Sanitizers work by instructing clang to add compile-time instrumentation,
 therefore different builds are needed to use different sanitizers.
 
 The sanitizers ClusterFuzzLite uses are:
-- [AddressSanitizer (ASan)]: For detecting memory safety issues. This is the
+- [AddressSanitizer (ASan)] : For detecting memory safety issues. This is the
   most important sanitizer to fuzz with. AddressSanitizer also detects memory
   leaks.
-- [UndefinedBehaviorSanitizer (UBSan)]: For detecting undefined behavior such as
-  integer overflows.
-- [MemorySanitizer (MSan)]: For detecting use of uninitialized memory. MSan
+- [UndefinedBehaviorSanitizer (UBSan)] : For detecting undefined behavior such
+  as integer overflows.
+- [MemorySanitizer (MSan)] : For detecting use of uninitialized memory. MSan
   is the hardest sanitizer to use because an MSan instrumented binary must be
   entirely instrumented with MSan. If any part of the binary is not instrumented
   with MSan, MSan will report false positives.
