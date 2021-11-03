@@ -18,8 +18,7 @@ enter the codebase.
 ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build], so getting
 the benefits of continuous fuzzing is simple if you can use these CI systems.
 Suppport for more CI systems is in-progress and
-[extending support to other CI systems] is easy. ClusterFuzzLite supports programming languages and runtimes
-including: Java (and other JVM-based languages), Go, Python, Rust, and Swift.
+[extending support to other CI systems] is easy. ClusterFuzzLite supports programming languages and runtimes beyond C and C++, including Java (and other JVM-based languages), Go, Python, Rust, and Swift.
 
 ClusterFuzzLite offers many useful features, including:
 - Quickly fuzzing code changes (pull requests) before they land and allowing
