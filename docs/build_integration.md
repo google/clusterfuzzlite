@@ -151,7 +151,7 @@ You can generate empty versions of these files with the following command:
 ```bash
 $ cd /path/to/oss-fuzz
 $ export PATH_TO_PROJECT=<path_to_your_project>
-$ python infra/helper.py generate --external --language=c++ --$PATH_TO_PROJECT
+$ python infra/helper.py generate --external --language=c++ $PATH_TO_PROJECT
 ```
 
 Once the configuration files are generated, you should modify them to fit your
@@ -174,8 +174,9 @@ Programming language the project is written in. Values you can specify include:
 * [`rust`]({{ site.baseurl }}//build-integration/rust-lang/)
 * [`python`]({{ site.baseurl }}//build-integration/python-lang/)
 * [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//build-integration/jvm-lang/)
+* [swift]({{ site.baseurl }}//build-integration/swift-lang/)
 
-Most of these guide applies directly to C/C++ projects. Please see the relevant
+Most of this guide applies directly to C/C++ projects. Please see the relevant
 subguides for how to build fuzzers for that language.
 
 ## Dockerfile {#dockerfile}
@@ -296,11 +297,22 @@ The helper.py script you used to generate your config files offers a few differe
     ```
     This checks that your fuzz targets are compiled with the right sanitizer and doesn't crash after fuzzing for a few seconds.
 
-3. If run a particular fuzz target, use `run_fuzzer`:
+3. To run a particular fuzz target, use `run_fuzzer`:
 
     ```bash
     $ python infra/helper.py run_fuzzer --external --corpus-dir=<path-to-temp-corpus-dir> $PATH_TO_PROJECT <fuzz_target>
     ```
+4. If you are going to use the code coverage report feature of ClusterFuzzLite
+it is a good idea to test that coverage report generation works. This would use
+the corpus generated from the previous `run_fuzzer` step in your local corpus
+directory.
+
+    ```bash
+    $ python infra/helper.py build_fuzzers --external --sanitizer coverage $PATH_TO_PROJECT
+    $ python infra/helper.py coverage --external $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir>
+    ```
+
+You may need to run `python infra/helper.py pull_images` to use the latest coverage tools.
 
 <b>Make sure to test each
 of the sanitizers with `build_fuzzers`, `check_build`, and `run_fuzzer`.</b>
