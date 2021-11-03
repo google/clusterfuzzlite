@@ -8,11 +8,10 @@ permalink: /overview/
 ---
 # Overview
 
-
 ## Introducing fuzzing with libFuzzer and Sanitizers.
 
 This section provides an overview of the fuzzing process and defines common terms. 
-If you are already familiar with the process of fuzzing, feel free to skip to [Build Integration] 
+If you are already familiar with libFuzzer and Sanitizers, feel free to skip to [Build Integration] 
 to begin writing fuzzers and integrating with ClusterFuzzLite's build system.
 
 ### Fuzzing
@@ -21,7 +20,7 @@ to begin writing fuzzers and integrating with ClusterFuzzLite's build system.
 fed as input to a (target) program in order to find bugs in that program.
 The program that creates the inputs is called a fuzzer.
 Fuzzing is highly effective at finding bugs missed by manually written tests,
-code review or auditing.
+code review, or auditing.
 Fuzzing has found thousands of bugs in mature software such as Chrome, OpenSSL,
 and Curl.
 If fuzzing isn't finding bugs in your code, your code is probably not bug free,
@@ -52,8 +51,8 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 Clang's `-fsanitizer=fuzzer` option will link this fuzz target function against
 libFuzzer, producing a fuzzer binary that will fuzz your target code when run.
 Note that in ClusterFuzzLite, you will not use this flag directly, you should
-use the `$LIB_FUZZING_ENGINE` environment variable which we discuss later in
-this document.
+use the `$LIB_FUZZING_ENGINE` environment variable, which we discuss later in
+[Build Integration].
 
 ### Sanitizers
 
@@ -81,7 +80,7 @@ The ClusterFuzzLite codebase uses shorter names for the sanitizers. So when
 referring to a sanitizer when giving input to ClusterFuzzLite, ASan is
 `address`, UBSan is `ubsan` and MSan is `memory`.
 
-With that, you have enough background to build fuzzers for ClusterFuzzLite.
+With that, you have enough background to build fuzzers for ClusterFuzzLite. Continue on to [Build Integration] for directions. 
 
 [Fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
 [LibFuzzer]: https://llvm.org/docs/LibFuzzer.html
@@ -90,4 +89,3 @@ With that, you have enough background to build fuzzers for ClusterFuzzLite.
 [UndefinedBehaviorSanitizer (UBSan)]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
 [MemorySanitizer (MSan)]: https://clang.llvm.org/docs/MemorySanitizer.html
 [Build Integration]: {{ site.baseurl }}/build-integration/
-
