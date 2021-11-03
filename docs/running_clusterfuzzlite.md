@@ -140,7 +140,7 @@ all uppercase and use underscores (`_`) instead of hyphens (`-`). For example:
 the environment variable for `fuzz-seconds` is `FUZZ_SECONDS`.
 
 At this point you are ready to run ClusterFuzzLite using your specific CI system!
-Follow the [subguide](#subguides) for your CI system to get started.
+Choose the [subguide](#subguides) for your CI system to get started.
 
 ## Supported Continous Integration systems {#subguides}
 
