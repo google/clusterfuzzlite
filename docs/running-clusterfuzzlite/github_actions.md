@@ -272,13 +272,12 @@ However, you can edit the file to:
 - Enable a [storage repo] (`storage-repo`, `storage-repo-branch`,
   `storage-repo-branch-coverage`).
 
-Finally, lets discuss the last task that ClusterFuzzLite can run: coverage report generation.
+Finally, let's discuss the last task that ClusterFuzzLite can run: coverage
+report generation.
 
 ## Coverage reports
 
-Periodic coverage reports can also be generated using the latest corpus from
-batch fuzzing.
-To enable this, add the following to the `jobs` field in
+To generate periodic coverage reports, add the following to the `jobs` field in
 `.github/workflows/cflite_cron.yml` after the `Pruning` job:
 
 {% raw %}
@@ -309,8 +308,8 @@ jobs:
 {% endraw %}
 
 You can copy and paste the above file and pruning should just work.
-But here is where the killer feature offered by `storage-repo`,
-`storage-repo-branch`, and `storage-repo-branch-coverage`.
+But here is where `storage-repo`, `storage-repo-branch`, and
+`storage-repo-branch-coverage` come in handy.
 
 If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
 default), then coverage reports can be viewed at
