@@ -16,94 +16,59 @@ permalink: /running-clusterfuzzlite/
 ## Overview
 ![overview]({{ site.baseurl }}/assets/overview.png)
 
+Before running ClusterFuzzLite, you must integrate your project with ClusterFuzzLite's build system to build your project's fuzzers. See [Integrating with ClusterFuzzLite's build system] if you haven't already taken this step.
+
 Once your project's fuzzers can be built and run by the OSS-Fuzz/ClusterFuzzLite
 helper script, it is ready to be fuzzed by ClusterFuzzLite.
-Make sure you've read the document on [integrating with ClusterFuzzLite's build
-system] before reading this one if you are trying to set up ClusterFuzzLite.
 
-The exact method for running ClusterFuzzLite will depend on the where you are
-running ClusterFuzzLite (i.e. which CI system).
-The rest of this page will explain general concepts and configuration options
-that are important to understand but are agnostic to how ClusterFuzzLite is run.
-After reading this page, you can check out the [subguides] for instructions how
-to run them for your particular CI system (e.g. [GitHub Actions]).
+The exact method for running ClusterFuzzLite will depend on which CI system you are using.
+The rest of this page explains important concepts and configuration options
+that are agnostic to which CI system you are using.
+After reading this page, see the [subguides] for instructions specific to your particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
 
 ## ClusterFuzzLite modes
 
-ClusterFuzzLite offers two flavors of fuzzing: [code change fuzzing] and
+ClusterFuzzLite offers two primary modes of fuzzing: [code change fuzzing] and
 [batch fuzzing].
 ClusterFuzzLite also offers two helper modes for running fuzzers that don't
 actually fuzz but provide useful functionality: [prune] and [coverage].
 ClusterFuzzLite can be instructed to perform any of these functions using the
 "mode" option.
-The simplest way to use ClusterFuzzLite is to only do code change fuzzing, but
-using the other modes in addition to code change fuzzing provides significant
-benefits.
-We will discuss these benefits, as well as the the high-level details of each of
-these functions/modes and how they tie together below.
-Don't worry if you don't understand everything, there are simple
-instructions and examples that you can copy and paste to enable each mode in
-the [subguides].
 
 ### Code Change Fuzzing ("code-change") {#code-change}
 
-One of the core ways for using ClusterFuzzLite is for fuzzing code changes which
-were introduced in a pull request/code review or commit.
-
-Pull request fuzzing allows ClusterFuzzLite to find bugs before they are
+One of the core ways to use ClusterFuzzLite is to fuzz code changes that
+were introduced in a pull request/code review or commit. Code change fuzzing allows ClusterFuzzLite to find bugs before they are
 commited into your code and while they are easiest to fix.
-Note that we believe pull request fuzzing is sufficient and don't provide
-guidance on commit fuzzing.
 
-Code change fuzzing needs to be fast to be useful for developers.
-This is the reason behind much of the design of code change fuzzing such as:
-1. It defaults to running for 10 minutes, [though this can be changed].
-2. It quits after finding a single crash, even if there are other fuzzers to
+Code change fuzzing is designed to be fast so that it integrates easily into your development workcycle:
+- It defaults to running for 10 minutes, [though this can be changed].
+- It quits after finding a single crash, even if there are other fuzzers to
    run.
-3. It relies on ClusterFuzzLite functionality done outside of code change
-   fuzzing to offer some useful features, such as:
-   - [Continuous builds]. These are used by ClusterFuzzLite to test if a
-     crash was introduced by the code change or if it was pre-existing. If it
-     was pre-existing, it is not reported by code change fuzzing. This is to
-     prevent users from being bothered by crashes that already exist. Note
-     though this does introduce some quirks: Code change fuzzing cannot be
-     easily used to verify fixes of crashes that were not introduced in the
-     change under test. Also, when you first use ClusterFuzzLite, code change
-     fuzzing will not report the bugs that already exist in your codebase.
-     [Batch fuzzing] will report these bugs, however. Note that if code change
-     fuzzing does not have continuous builds, it will report all crashes.
-   - [Batch fuzzing]. Batch fuzzing develops a corpus that is saved and used for
-     other modes, including code change fuzzing. Code change fuzzing does not
-     save a corpus because we don't know if the code being fuzzed will end up
-     being committed to the codebase, and thus saving the corpus could result in
-     useless testcases being saved. If code change fuzzing does not have a
-     corpus to start with it will start from nothing or the provided seed
-     corpus.
-   - [Code coverage report generation]. Coverage data generated by this mode is
-     used by code change fuzzing to determine which fuzzers are affected by a
-     change. If code change fuzzing can determine which fuzzers are affected,
-     it will only run those fuzzers. If code change fuzzing cannot determine
-     which fuzzers are affected, it will run all of them.
-
-Let's discuss the other modes and how they can help you independently of helping
-code change fuzzing.
+   
+Running only code change fuzzing is the easiest way to use ClusterFuzzLite. 
+However, we suggest using code change fuzzing in conjunction with other modes to gain ClusterFuzzLite's full benefits. 
+For example, running [batch fuzzing] will develop a [corpus] that can be used by code change fuzzing. 
+If no corpus is available from batch fuzzing, code change fuzzing will start from nothing or the provided seed corpus. 
+Furthermore, when you first use ClusterFuzzLite, code change
+fuzzing will not report the bugs that already exist in your codebase, while [batch fuzzing] will. 
+See also [Code Coverage Report Generation] and [Continuous Builds] for additional functionalities.
 
 ### Batch Fuzzing ("batch") {#batch}
 
-ClusterFuzzLite can also run in a batch fuzzing mode where all fuzzers are run
-for a longer amount of time. This shouldn't be done on code changes however,
-since long running CI jobs are annoying for developers. It's better to run
-batch fuzzing on a schedule, such as once daily.
+In batch fuzzing mode all fuzzers are run
+for a preset longer amount of time. Unlike in code change mode, batch fuzzing will not exit immediately upon
+discovering a bug. It will keep running other fuzzers until reaching
+the allotted fuzzing time.
 
-Unlike in code change fuzzing, batch fuzzing will not exit immediately upon
-discovering a bug, it will keep running other fuzzers until it reaches
-the time allotted for fuzzing.
+Given the longer runtime, we suggest batch fuzzing should be run on a schedule
+such as once daily, rather than on code changes. 
 
-By running for a longer amount of time than code change fuzzing, batch fuzzing
+By running for a longer amount of time, batch fuzzing
 serves two important purposes:
-1. It can find bugs that are missed or are not reported by code change fuzzing.
+- It can find bugs that are missed or are not reported by code change fuzzing.
    Note that batch fuzzing reports all crashes, not just "new" ones.
-2. It builds a [corpus] for each of your fuzz targets, leading to more
+- It builds a [corpus] for each of your fuzz targets, leading to more
    code coverage and better bug discovery.
    This corpus will be used by [Code coverage report generation],
    [code change fuzzing], and later runs of batch fuzzing.
@@ -116,75 +81,71 @@ serves two important purposes:
 Over time, redundant testcases will get introduced into your fuzzer's corpuses
 during [batch fuzzing].
 
-Corpus pruning minimizes the corpuses by removing corpus files (testcases) that
+Corpus pruning is a helper function that minimizes the corpuses by removing corpus files (testcases) that
 do not increase the fuzzer's code coverage.
 
-Running corpus pruning once a day will prevent buildup of these redundant
-testcases and keep fuzzing efficient.
+If you are using [batch fuzzing], you should run corpus pruning once a day to prevent buildup of these redundant
+testcases and keep fuzzing efficient. Corpus pruning should be considered mandatory when you are using [batch fuzzing] but otherwise should not be used.
 
-As discussed, pruning is a mode that helps [batch fuzzing]. It should be
-considered required if you are using [batch fuzzing] but otherwise should not be
-used.
+### Code Coverage Report Generation ("coverage") {#coverage}
 
-### Code Coverage report generation ("coverage") {#coverage}
-
-ClusterFuzzLite also provides code coverage report generation.
-This will use the corpus developed during [batch fuzzing] to generate an HTML
-coverage report you can read to see which parts of your code are covered by
+Code coverage report generation is a helper function that can be used when batch fuzzing is enabled. 
+This mode uses the corpus developed during batch fuzzing to generate an HTML
+coverage report that shows which parts of your code are covered by
 fuzzing.
+
 The data from coverage reports is also used by [code change fuzzing] to
-determine which fuzzers are affected by a code change.
+determine which fuzzers are affected by a code change. If code change fuzzing can determine which fuzzers are affected, it will run only those fuzzers. Otherwise, it will run all of them. Even if you are primarily interested in using only code coverage mode, we suggest also using 
+batch fuzzing and code coverage report generation as well, since they add this functionality to your code coverage fuzzing.
 
-Coverage report generation uses the corpuses saved by [batch fuzzing] and
-therefore should only be used if batch fuzzing is enabled. It is not required
-if [batch fuzzing] is enabled, but is strongly recommended.
+Since code coverage report generation uses the corpuses saved by batch fuzzing, it should be used only if batch fuzzing is enabled. 
 
-### Continuous builds
+### Continuous Builds
 
-Continuous builds are not actually a mode of running fuzzers but is another
-"task" for ClusterFuzzLite that you can set up. Instead of running the fuzzers
-after building them, in continuous builds, the builds are saved for later use by
-[code change fuzzing]. As discussed earlier, [code change fuzzing] uses the
-saved builds to determine if crashes are novel.
+Continuous builds are not actually a mode of running fuzzers but is an additional
+"task" for ClusterFuzzLite that you can set up (see [subguides]). Instead of running the fuzzers
+after building them, in continuous builds, the builds are saved for later use by the
+[code change fuzzing] mode. 
 
-Now that we've discussed the different ClusterFuzzLite tasks, let's look at some
-configuration options that can be passed to ClusterFuzzLite.
+The continuous builds task enables code change fuzzing to identify whether a
+crash was introduced by the code change or if it was pre-existing. If the cause of the crash
+was pre-existing, the crash is not reported by code change fuzzing. If code change fuzzing is run without the continuous builds task, all crashes 
+will be reported.
 
 ## Configuration Options
 
-Below are configuration options that you can set when running ClusterFuzzLite.
-We will explain how to set these in each of the subguides.
+This section is an overview of the configuration options you can set when running ClusterFuzzLite.
+See the [subguides] for details on how to set each configuration within your specific CI system. 
 
 - `language`: The language your target code is written in. Defaults to `c++`.
   This should be the same as the value you set in `project.yaml`. See [this
   explanation] for more details.
 
 - `fuzz-seconds`: Instructs ClusterFuzzLite on how long to spend fuzzing, in
-  seconds. The default is 600 seconds. You should change to spend more time
-  batch fuzzing or you can change if you'd like to spend more time code change
-  fuzzing.
+  seconds. The default is 600 seconds, which is an appropriate starting point for code change fuzzing. You should 
+  increase this number to spend more time batch fuzzing.
 
-- `sanitizer`: Determines sanitizer to build and run fuzz targets with. The
+- `sanitizer`: Determines the sanitizer to build and run fuzz targets with. The
   choices are `'address'`, `'undefined'`, `'memory'` and `'coverage'` (for
-  coverage report generation). The default is `'address'`.
+  coverage report generation). The default is `'address'`. See [Sanitizers] for more information.
 
 - `mode`: The mode for ClusterFuzzLite to execute. `code-change` by default. See
   [ClusterFuzzLite modes] for more details on how to run different modes.
 
 - `dry-run`: Determines if ClusterFuzzLite reports bugs/crashes. The default
   value is `false`. When set to `true`, ClusterFuzzLite will never report a
-  failure even if it finds a crash in your project. This requires the user to
+  failure even if it finds a crash in your project, and users will have to
   manually check the logs for detected bugs.
 
-**Note:** How options are passed to ClusterFuzzLite will be determined by the CI
-system being used. Because some CI systems will pass them using environment
+**Note:** Your specific CI system will determine how options are passed to ClusterFuzzLite. Because 
+some CI systems will pass them using environment
 variables, the names of the environment variables can be slightly different than
 names of the corresponding options. In particular, environment variables will be
 all uppercase and use underscores (`_`) instead of hyphens (`-`). For example:
 the environment variable for `fuzz-seconds` is `FUZZ_SECONDS`.
 
-At this point you are ready to run ClusterFuzzLite!
-Follow the [subguide](#subguides) for your CI system to get started.
+At this point you are ready to run ClusterFuzzLite using your specific CI system!
+Choose the [subguide](#subguides) for your CI system to get started.
 
 ## Supported Continous Integration systems {#subguides}
 
@@ -205,3 +166,4 @@ Follow the [subguide](#subguides) for your CI system to get started.
 [prune]: #prune
 [coverage]: #coverage
 [though this can be changed]: #configuration-options
+[sanitizers]: {{ site.baseurl }}/overview/#sanitizers
