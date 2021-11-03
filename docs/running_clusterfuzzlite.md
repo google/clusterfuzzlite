@@ -14,7 +14,9 @@ permalink: /running-clusterfuzzlite/
 ---
 
 ## Overview
-![overview]({{ site.baseurl }}/assets/overview.png)Before running ClusterFuzzLite, you must integrate your project with ClusterFuzzLite's build system to build your project's fuzzers. See [Integrating with ClusterFuzzLite's build system] if you haven't already taken this step.
+![overview]({{ site.baseurl }}/assets/overview.png)
+
+Before running ClusterFuzzLite, you must integrate your project with ClusterFuzzLite's build system to build your project's fuzzers. See [Integrating with ClusterFuzzLite's build system] if you haven't already taken this step.
 
 Once your project's fuzzers can be built and run by the OSS-Fuzz/ClusterFuzzLite
 helper script, it is ready to be fuzzed by ClusterFuzzLite.
@@ -22,7 +24,7 @@ helper script, it is ready to be fuzzed by ClusterFuzzLite.
 The exact method for running ClusterFuzzLite will depend on which CI system you are using.
 The rest of this page explains important concepts and configuration options
 that are agnostic to which CI system you are using.
-After reading this page, see the [subguides] for instructions specifics to your particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
+After reading this page, see the [subguides] for instructions specific to your particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
 
 ## ClusterFuzzLite modes
 
@@ -98,7 +100,7 @@ Since code coverage report generation uses the corpuses saved by batch fuzzing, 
 ### Continuous Builds
 
 Continuous builds are not actually a mode of running fuzzers but is an additional
-"task" for ClusterFuzzLite that you can set up (see [subguides]. Instead of running the fuzzers
+"task" for ClusterFuzzLite that you can set up (see [subguides]). Instead of running the fuzzers
 after building them, in continuous builds, the builds are saved for later use by the
 [code change fuzzing] mode. 
 
@@ -161,4 +163,4 @@ Choose the [subguide](#subguides) for your CI system to get started.
 [prune]: #prune
 [coverage]: #coverage
 [though this can be changed]: #configuration-options
-[sanitizers]: #sanitizers
+[sanitizers]: {{ site.baseurl }}/overview/#sanitizers
