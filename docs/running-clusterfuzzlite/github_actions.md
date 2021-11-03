@@ -16,7 +16,7 @@ permalink: /running-clusterfuzzlite/github-actions/
 This page explains how to set up ClusterFuzzLite to run on GitHub Actions.
 To get the most of this page, you should have already set up your
 [build integration] and read the more
-[high-level document on running ClusterFuzzLite]
+[high-level document on running ClusterFuzzLite].
 
 For basic ClusterFuzzLite functionality, all you need is a single workflow file
 to enable fuzzing on your pull requests.
