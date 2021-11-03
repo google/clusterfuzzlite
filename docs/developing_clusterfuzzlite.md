@@ -3,7 +3,7 @@ layout: default
 parent: ClusterFuzzLite
 title: Developing ClusterFuzzLite
 has_children: true
-nav_order: 4
+nav_order: 5
 permalink: /developing-clusterfuzzlite/
 ---
 # Developing ClusterFuzzLite
