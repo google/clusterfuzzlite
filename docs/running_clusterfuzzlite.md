@@ -46,9 +46,13 @@ Code change fuzzing is designed to be fast so that it integrates easily into you
 - It quits after finding a single crash, even if there are other fuzzers to
    run.
    
-Running only code change fuzzing is the easiest way to use ClusterFuzzLite. However, we suggest using this code change fuzzing in conjunction with other modes to gain ClusterFuzzLite's full benefits. For example, running [batch fuzzing] will develop a [corpus] that can be used by code change fuzzing. If no corpus is available from batch fuzzing, code change fuzzing will start from nothing or the provided seed corpus. Furthermore, when you first use ClusterFuzzLite, code change
-fuzzing will not report the bugs that already exist in your codebase, while [batch fuzzing] will. See also [Code Coverage Report Generation] and [Continuous Builds] for additional functionalities.
-
+Running only code change fuzzing is the easiest way to use ClusterFuzzLite. 
+However, we suggest using code change fuzzing in conjunction with other modes to gain ClusterFuzzLite's full benefits. 
+For example, running [batch fuzzing] will develop a [corpus] that can be used by code change fuzzing. 
+If no corpus is available from batch fuzzing, code change fuzzing will start from nothing or the provided seed corpus. 
+Furthermore, when you first use ClusterFuzzLite, code change
+fuzzing will not report the bugs that already exist in your codebase, while [batch fuzzing] will. 
+See also [Code Coverage Report Generation] and [Continuous Builds] for additional functionalities.
 
 ### Batch Fuzzing ("batch") {#batch}
 
