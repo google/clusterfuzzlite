@@ -3,7 +3,7 @@ layout: default
 parent: ClusterFuzzLite
 title: Build Integration
 has_children: true
-nav_order: 2
+nav_order: 3
 permalink: /build-integration/
 ---
 # Build integration
