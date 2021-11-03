@@ -77,7 +77,7 @@ A usage example from go-dns project is
 compile_go_fuzzer github.com/miekg/dns FuzzNewRR fuzz_newrr fuzz
 ```
 
-Arguments are :
+Arguments are:
 * path of the package with the fuzz target
 * name of the fuzz function
 * name of the fuzzer to be built
