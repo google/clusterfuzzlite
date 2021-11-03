@@ -44,7 +44,7 @@ Code change fuzzing is designed to be fast so that it integrates easily into you
 - It quits after finding a single crash, even if there are other fuzzers to
    run.
    
-Although code change fuzzing is the simplest and fastest way to run ClusterFuzzLite, we suggest using it in conjunction with other modes to
+Although code change fuzzing is the simplest and fastest way to run ClusterFuzzLite, we suggest using this mode in conjunction with other modes to
 gain ClusterFuzzLite's full benefits. For example, running [batch fuzzing] will develop a [corpus] that can be used by code change fuzzing. If no corpus is available from batch fuzzing, code change fuzzing will start from nothing or the provided seed corpus. Furthermore, when you first use ClusterFuzzLite, code change
 fuzzing will not report the bugs that already exist in your codebase, while [batch fuzzing] will. See also [Code Coverage Report Generation] and [Continuous Builds] for additional functionalities.
 
@@ -52,12 +52,12 @@ fuzzing will not report the bugs that already exist in your codebase, while [bat
 ### Batch Fuzzing ("batch") {#batch}
 
 In batch fuzzing mode all fuzzers are run
-for a preset longer amount of time. Given the longer runtime, we suggest batch fuzzing should be run on a schedule
-such as once daily, rather than on code changes. 
-
-Unlike in code change mode, batch fuzzing will not exit immediately upon
+for a preset longer amount of time. Unlike in code change mode, batch fuzzing will not exit immediately upon
 discovering a bug. It will keep running other fuzzers until reaching
 the allotted fuzzing time.
+
+Given the longer runtime, we suggest batch fuzzing should be run on a schedule
+such as once daily, rather than on code changes. 
 
 By running for a longer amount of time, batch fuzzing
 serves two important purposes:
@@ -98,19 +98,18 @@ Since code coverage report generation uses the corpuses saved by batch fuzzing, 
 ### Continuous Builds
 
 Continuous builds are not actually a mode of running fuzzers but is an additional
-"task" for ClusterFuzzLite that you can set up. Instead of running the fuzzers
-after building them, in continuous builds, the builds are saved for later use by
-[code change fuzzing]. 
+"task" for ClusterFuzzLite that you can set up (see [subguides]. Instead of running the fuzzers
+after building them, in continuous builds, the builds are saved for later use by the
+[code change fuzzing] mode. 
 
 The continuous builds task enables code change fuzzing to identify whether a
-crash was introduced by the code change or if it was pre-existing. If it
-was pre-existing, it is not reported by code change fuzzing so as not to bother users
-by reporting crashes that already exist. If code change fuzzing is run without continuous builds, all crashes 
+crash was introduced by the code change or if it was pre-existing. If the cause of the crash
+was pre-existing, the crash is not reported by code change fuzzing. If code change fuzzing is run without the continuous builds task, all crashes 
 will be reported.
 
 ## Configuration Options
 
-The following are configuration options that you can set when running ClusterFuzzLite.
+This section is an overview of the configuration options you can set when running ClusterFuzzLite.
 See the [subguides] for details on how to set each configuration within your specific CI system. 
 
 - `language`: The language your target code is written in. Defaults to `c++`.
@@ -118,9 +117,8 @@ See the [subguides] for details on how to set each configuration within your spe
   explanation] for more details.
 
 - `fuzz-seconds`: Instructs ClusterFuzzLite on how long to spend fuzzing, in
-  seconds. The default is 600 seconds. You should change to spend more time
-  batch fuzzing or you can change if you'd like to spend more time code change
-  fuzzing.
+  seconds. The default is 600 seconds, which is an appropriate starting point for code change fuzzing. You should 
+  increase this number to spend more time batch fuzzing.
 
 - `sanitizer`: Determines the sanitizer to build and run fuzz targets with. The
   choices are `'address'`, `'undefined'`, `'memory'` and `'coverage'` (for
@@ -131,7 +129,7 @@ See the [subguides] for details on how to set each configuration within your spe
 
 - `dry-run`: Determines if ClusterFuzzLite reports bugs/crashes. The default
   value is `false`. When set to `true`, ClusterFuzzLite will never report a
-  failure even if it finds a crash in your project. If set to `true`, users would have to
+  failure even if it finds a crash in your project, and users will have to
   manually check the logs for detected bugs.
 
 **Note:** Your specific CI system will determine how options are passed to ClusterFuzzLite. Because 
@@ -141,7 +139,7 @@ names of the corresponding options. In particular, environment variables will be
 all uppercase and use underscores (`_`) instead of hyphens (`-`). For example:
 the environment variable for `fuzz-seconds` is `FUZZ_SECONDS`.
 
-At this point you are ready to run ClusterFuzzLite on your specific CI system!
+At this point you are ready to run ClusterFuzzLite using your specific CI system!
 Follow the [subguide](#subguides) for your CI system to get started.
 
 ## Supported Continous Integration systems {#subguides}
