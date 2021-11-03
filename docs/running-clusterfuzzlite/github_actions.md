@@ -316,9 +316,9 @@ default), then coverage reports can be viewed at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
 This should be much nicer than downloading the coverage report as an artifact.
 
-### Extra configuration
+## Extra configuration
 
-## Git repo for storage {#storage-repo}
+### Git repo for storage {#storage-repo}
 
 As previously discussed, it's optional but recommended that you set up a
 separate git repo for storing corpora and coverage reports.
@@ -347,7 +347,7 @@ GitHub artifacts instead. They should still work regardless.
 [repository secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
 [issues with the storage repo]: https://github.com/google/oss-fuzz/issues/6668
 
-## Private repos
+### Private repos
 
 In order for ClusterFuzzLite to clone private repos, the GitHub token needs to
 be passed to the build steps as well.
