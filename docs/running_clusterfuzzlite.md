@@ -165,7 +165,8 @@ We will explain how to set these in each of the subguides.
   fuzzing.
 
 - `sanitizer`: Determines sanitizer to build and run fuzz targets with. The
-  choices are `'address'`, and `'undefined'`. The default is `'address'`.
+  choices are `'address'`, `'undefined'`, `'memory'` and `'coverage'` (for
+  coverage report generation). The default is `'address'`.
 
 - `mode`: The mode for ClusterFuzzLite to execute. `code-change` by default. See
   [ClusterFuzzLite modes] for more details on how to run different modes.
