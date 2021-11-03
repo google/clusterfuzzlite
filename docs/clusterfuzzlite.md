@@ -14,10 +14,11 @@ ClusterFuzzLite is based on [ClusterFuzz].
 Fuzzing is a highly effective technique for finding bugs in software.
 ClusterFuzzLite makes your code more secure by fuzzing changes before they even
 enter the codebase.
+
 ClusterFuzzLite supports [GitHub Actions] and [Google Cloud Build], so getting
 the benefits of continuous fuzzing is simple if you can use these CI systems.
 Suppport for more CI systems is in-progress and
-[extending support to other CI systems] is easy.
+[extending support to other CI systems] is easy. ClusterFuzzLite supports programming languages and runtimes beyond C and C++, including Java (and other JVM-based languages), Go, Python, Rust, and Swift.
 
 ClusterFuzzLite offers many useful features, including:
 - Quickly fuzzing code changes (pull requests) before they land and allowing
@@ -36,13 +37,11 @@ C/C++ code:
 - [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
   overflows).
 
-ClusterFuzzLite also supports other programming languages and runtimes
-including: Java (and other JVM-based languages), Go, Python, Rust, and Swift.
+If you're new to using libFuzzer and sanitizers, start with the [Overview] for an explanation of terms and the fuzzing process. 
 
-Using ClusterFuzzLite is simple and requires two major steps:
+If you're already familiar with using libFuzzer and sanitizers, you're ready to begin fuzzing with ClusterFuzzLite. Using ClusterFuzzLite is simple and requires two major steps:
 1. [Writing fuzzers and integrating with ClusterFuzzLite's build system]
 1. [Configuring ClusterFuzzLite to run in your CI]
-
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
 [fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
