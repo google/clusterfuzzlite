@@ -129,9 +129,9 @@ used.
 ### Code Coverage report generation ("coverage") {#coverage}
 
 ClusterFuzzLite also provides code coverage report generation.
-This will run your fuzzers on the corpus developed during [batch fuzzing] and
-will generate an HTML coverage report you can read to see which parts of your
-code are covered by fuzzing.
+This will use the corpus developed during [batch fuzzing] to generate an HTML
+coverage report you can read to see which parts of your code are covered by
+fuzzing.
 The data from coverage reports is also used by [code change fuzzing] to
 determine which fuzzers are affected by a code change.
 
@@ -160,7 +160,9 @@ We will explain how to set these in each of the subguides.
   explanation] for more details.
 
 - `fuzz-seconds`: Instructs ClusterFuzzLite on how long to spend fuzzing, in
-  seconds. The default is 600 seconds.
+  seconds. The default is 600 seconds. You should change to spend more time
+  batch fuzzing or you can change if you'd like to spend more time code change
+  fuzzing.
 
 - `sanitizer`: Determines sanitizer to build and run fuzz targets with. The
   choices are `'address'`, and `'undefined'`. The default is `'address'`.
