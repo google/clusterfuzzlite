@@ -51,7 +51,7 @@ Using ClusterFuzzLite is simple and requires two major steps:
 [Overview]: {{ site.baseurl }}/overview/
 [Google Cloud Build]: {{ site.baseurl }}/running-clusterfuzzlite/google-cloud-build/
 [extending support to other CI systems]:{{ site.baseurl }}/developing-clusterfuzzlite/new-platform/
-[libFuzzer]: https://libfuzzer.info
+[libFuzzer]: https://llvm.org/docs/LibFuzzer.html
 [AddressSanitizer]: https://clang.llvm.org/docs/AddressSanitizer.html
 [UndefinedBehaviorSanitizer]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
 [Writing fuzzers and integrating with ClusterFuzzLite's build system]: {{ site.baseurl }}/build-integration/

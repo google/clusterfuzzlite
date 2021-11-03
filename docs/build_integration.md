@@ -2,7 +2,7 @@
 layout: default
 parent: ClusterFuzzLite
 title: Build Integration
-has_children: false
+has_children: true
 nav_order: 2
 permalink: /build-integration/
 ---
@@ -26,7 +26,7 @@ be ready to be fuzzed by ClusterFuzzLite.
 
 ## Introducing fuzzing with libFuzzer and Sanitizers.
 
-Feel free to skip this section and go to [#prerequisites] if you know what
+Feel free to skip this section and go to [Prerequisites](#prerequisites) if you know what
 libFuzzer and sanitizers are.
 
 ### Fuzzing
@@ -106,8 +106,7 @@ With that, you have enough background to build fuzzers for ClusterFuzzLite.
 
 ## Prerequisites
 
-ClusterFuzzLite supports statically linked [libFuzzer targets] built with Clang
-on Linux.
+ClusterFuzzLite supports [libFuzzer targets] built with Clang on Linux.
 
 ClusterFuzzLite re-uses the [OSS-Fuzz] toolchain to make building easier. This
 means that ClusterFuzzLite will build your project in a docker container.
@@ -121,12 +120,11 @@ with you in mind and assumes no knowledge of OSS-Fuzz.
 
 Before you can start setting up your new project for fuzzing, you must do the
 following to use the ClusterFuzzLite toolchain:
-- Integrate [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
-  with your codebase. For examples, see TODO.
+- Integrate [fuzz targets] with your codebase. See
+  [this page](https://github.com/google/fuzzing/blob/master/docs/good-fuzz-target.md)
+  for more details.
 
 - [Install Docker](https://docs.docker.com/engine/installation)
-
-  [Why Docker?]({{ site.baseurl }}/faq/#why-do-you-use-docker)
 
   If you want to run `docker` without `sudo`, you can
   [create a docker group](https://docs.docker.com/engine/installation/linux/ubuntulinux/#/create-a-docker-group).
@@ -144,7 +142,7 @@ To do this, your project needs three configuration files in the
 `.clusterfuzzlite` directory in your project's root:
 * [.clusterfuzzlite/project.yaml](#projectyaml) - provides metadata about the project.
 * [.clusterfuzzlite/Dockerfile](#dockerfile) - defines the container environment with information
-on dependencies needed to build the project and its [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target). TODO broken link.
+on dependencies needed to build the project and its [fuzz targets].
 * [.clusterfuzzlite/build.sh](#buildsh) - defines the build script that executes inside the Docker container and
 generates the project build.
 
@@ -153,9 +151,8 @@ You can generate empty versions of these files with the following command:
 ```bash
 $ cd /path/to/oss-fuzz
 $ export PATH_TO_PROJECT=<path_to_your_project>
-$ python infra/helper.py generate --external $PATH_TO_PROJECT
+$ python infra/helper.py generate --external --language=c++ --$PATH_TO_PROJECT
 ```
-TODO: Other languages
 
 Once the configuration files are generated, you should modify them to fit your
 project. Let's look at each file one-by-one and explain what you should add to
@@ -167,21 +164,19 @@ This configuration file stores project metadata. Currently it is only used by
 `helper.py` to build your project.
 The only field you must fill out in this file is:
 
-TODO: make this less weird. Is it even needed if generate does this?
-- [language](#language)
-
 ### language
 
 Programming language the project is written in. Values you can specify include:
 
 * `c`
 * `c++`
-* [`go`]({{ site.baseurl }}//getting-started/new-project-guide/go-lang/)
-* [`rust`]({{ site.baseurl }}//getting-started/new-project-guide/rust-lang/)
-* [`python`]({{ site.baseurl }}//getting-started/new-project-guide/python-lang/)
-* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//getting-started/new-project-guide/jvm-lang/) TODO: link broken
+* [`go`]({{ site.baseurl }}//build-integration/go-lang/)
+* [`rust`]({{ site.baseurl }}//build-integration/rust-lang/)
+* [`python`]({{ site.baseurl }}//build-integration/python-lang/)
+* [`jvm` (Java, Kotlin, Scala and other JVM-based languages)]({{ site.baseurl }}//build-integration/jvm-lang/)
 
-TODO: include example.
+Most of these guide applies directly to C/C++ projects. Please see the relevant
+subguides for how to build fuzzers for that language.
 
 ## Dockerfile {#dockerfile}
 
@@ -196,22 +191,25 @@ COPY . $SRC/<project_name>                      # Copy your project's source cod
 WORKDIR $SRC/<project_name>                     # Working directory for build.sh.
 COPY ./clusterfuzzlite/build.sh $SRC/           # Copy build.sh into $SRC dir.
 ```
-TODO: Provide example.
+
+See
+[here](https://github.com/oliverchang/curl/blob/master/.clusterfuzzlite/Dockerfile)
+for an example.
 
 ## build.sh {#buildsh}
 
-This script must build binaries for [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) in your project.
+This script must build binaries for [fuzz targets] in your project.
 The script is executed within the image built from your [Dockerfile](#Dockerfile).
 
 In general, this script should do the following:
 
 - Build the project using your build system with ClusterFuzzLite's compiler.
 - Provide ClusterFuzzLite's compiler flags (defined as [environment variables](#compilation-env)) to the build system.
-- Build your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
+- Build your [fuzz targets]
   and link your project's build with the `$LIB_FUZZING_ENGINE` (libFuzzer) environment variable.
 - Place any fuzz target binaries in the directory defined by the environment variable `$OUT`.
 
-Make sure that the binary names for your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target)
+Make sure that the binary names for your [fuzz targets]
 contain only alphanumeric characters, underscore (`_`) or dash (`-`). They
 should not contain periods (`.`) or have file extensions. Otherwise, they won't
 run.
@@ -239,11 +237,6 @@ $CXX $CXXFLAGS -std=c++11 -Ilib/ \
 
 cp $SRC/*.dict $SRC/*.options $OUT/
 ```
-
-If your project is written in Go, check out the [Integrating a Go project]({{site.baseurl }}//getting-started/new-project-guide/go-lang/)
-as some of the steps will be different.
-Otherwise, continue to the next section which explains how your build.sh must
-use environment variables to compile the fuzz targets properly.
 
 ### build.sh environment variables for compilation {#compilation-env}
 
@@ -275,9 +268,9 @@ See the [Provided Environment Variables](https://github.com/google/oss-fuzz/blob
 
 ## Fuzzer execution environment
 
-For more on the environment that
-your [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target) run in, and the assumptions you can make, see the [fuzzer environment]({{ site.baseurl }}/further-reading/fuzzer-environment/) page.
-TODO: much of this isn't applicable.
+You should not make any assumptions on the availability of dependent packages
+in the execution environment and the built fuzzers should have dependencies
+statically linked.
 
 ## Testing locally
 
@@ -285,7 +278,7 @@ When you have completed writing the build.sh and Dockerfile, you should test
 that they work.
 This includes running your fuzz targets, which we strongly recommend.
 The helper.py script you used to generate your config files offers a few different ways of doing this:
-1. Build your docker image and [fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target):
+1. Build your docker image and [fuzz targets]:
 
     ```bash
     $ python infra/helper.py build_image --external $PATH_TO_PROJECT
@@ -309,23 +302,9 @@ The helper.py script you used to generate your config files offers a few differe
     $ python infra/helper.py run_fuzzer --external --corpus-dir=<path-to-temp-corpus-dir> $PATH_TO_PROJECT <fuzz_target>
     ```
 
-4. We recommend taking a look at your code coverage as a test to ensure that
-your fuzz targets get to the code you expect. This would use the corpus
-generated from the previous `run_fuzzer` step in your local corpus directory.
-
-    ```bash
-    $ python infra/helper.py build_fuzzers --external --sanitizer coverage $PATH_TO_PROJECT
-    $ python infra/helper.py coverage --external $PATH_TO_PROJECT --fuzz-target=<fuzz_target> --corpus-dir=<path-to-temp-corpus-dir>
-    ```
-TODO: This seems excessive.
-
-You may need to run `python infra/helper.py pull_images` to use the latest
-coverage tools. Please refer to
-[code coverage]({{ site.baseurl }}/advanced-topics/code-coverage/) for detailed
-information on code coverage generation.
-
 <b>Make sure to test each
 of the sanitizers with `build_fuzzers`, `check_build`, and `run_fuzzer`.</b>
+
 
 If everything works locally, it should also work on ClusterFuzzLite.
 If you experience failures running fuzzers on ClusterFuzzLite, review your
@@ -336,24 +315,19 @@ If you experience failures running fuzzers on ClusterFuzzLite, review your
 If you run into problems, the
 [Debugging page](https://google.github.io/oss-fuzz/advanced-topics/debugging/)
 lists ways to debug your build scripts and
-[fuzz targets]({{ site.baseurl }}/reference/glossary/#fuzz-target).
+[fuzz targets].
 
 ## Efficient fuzzing
 
 To improve your fuzz target ability to find bugs faster, please read
 [this section](https://google.github.io/oss-fuzz/getting-started/new-project-guide/#efficient-fuzzing).
 
-## Other languages
-
-For details on how to build fuzzers for other languages (Go, Swift, Rust, Python, Java),
-please see the relevant subguide in the
-[OSS-Fuzz documentation](https://google.github.io/oss-fuzz/getting-started/new-project-guide/).
-
 ## Running ClusterFuzzLite
 
 Once everything is complete, you are ready to set up ClusterFuzzLite to run on
 your CI. Check out the [docs on Running ClusterFuzzLite] to do this.
 
+[fuzz targets]: https://github.com/google/fuzzing/blob/masteer/docs/glossary.md#fuzz-target
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
 [OSS-Fuzz]: https://github.com/google/oss-fuzz
 [`Dockerfile`]: #dockerfile
