@@ -13,46 +13,20 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-We recommend having separate workflow files for each part of ClusterFuzzLite:
+For basic ClusterFuzzLite functionality, all you need is a single workflow file
+to enable fuzzing on your pull requests.
+
+- `.github/workflows/cflite_pr.yml` (for PR fuzzing)
+
+To enable more features, we recommend having these additional files:
 
 - `.github/workflows/cflite_build.yml` (for building/continuous fuzzing)
 - `.github/workflows/cflite_batch.yml` (for batch fuzzing)
-- `.github/workflows/cflite_pr.yml` (for PR fuzzing)
 - `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule)
 
 For a complete example on a real project, see
 <https://github.com/oliverchang/curl>. GitHub Actions documentation can be
 found [here](https://docs.github.com/en/actions).
-
-## Continuous builds (required)
-
-Continuous builds are used whenever a crash is found during PR or batch fuzzing
-to determine if this crash was newly introduced.
-
-Add the following to `.github/workflows/cflite_build.yml`:
-
-{% raw %}
-```yaml
-name: ClusterFuzzLite continuous builds
-on:
-  push:
-    branches:
-      - main  # Use your actual default branch here.
-permissions: read-all
-jobs:
-  Build:
-   runs-on: ubuntu-latest
-   steps:
-   - name: Build Fuzzers
-     id: build
-     uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-     with:
-       upload-build: true
-```
-{% endraw %}
-
-This causes a build to be triggered and uploaded as a GitHub Actions artifact
-whenever a new push is done to main/default branch.
 
 ## PR fuzzing
 
@@ -73,7 +47,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sanitizer: [address, undefined, memory]  # Override this with the sanitizers you want.
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
     steps:
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
@@ -95,7 +73,55 @@ jobs:
 ```
 {% endraw %}
 
-## Batch fuzzing
+## Batch fuzzing and continuous builds
+
+Running batch fuzzing and continuous builds requires a few more workflow files
+to be set up.
+
+Batch fuzzing enables continuous, regular fuzzing on your latest HEAD, and
+allows a corpus of inputs to build up over time that greatly improves the
+effectiveness of fuzzing.
+
+### Continuous builds
+
+Continuous builds are used whenever a crash is found during PR fuzzing to
+determine if this crash was newly introduced.
+
+Add the following to `.github/workflows/cflite_build.yml`:
+
+{% raw %}
+```yaml
+name: ClusterFuzzLite continuous builds
+on:
+  push:
+    branches:
+      - main  # Use your actual default branch here.
+permissions: read-all
+jobs:
+  Build:
+   runs-on: ubuntu-latest
+   strategy:
+     fail-fast: false
+     matrix:
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
+   steps:
+   - name: Build Fuzzers (${{ matrix.sanitizer }})
+     id: build
+     uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+     with:
+       sanitizer: ${{ matrix.sanitizer }}
+       upload-build: true
+```
+{% endraw %}
+
+This causes a build to be triggered and uploaded as a GitHub Actions artifact
+whenever a new push is done to main/default branch.
+
+### Batch fuzzing
 
 To enable batch fuzzing, add the following to
 `.github/workflows/cflite_batch.yml`:
@@ -118,7 +144,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sanitizer: [address, undefined, memory]  # Override this with the sanitizers you want.
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
     steps:
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
@@ -141,7 +171,7 @@ jobs:
 ```
 {% endraw %}
 
-### Git repo for storage
+#### Git repo for storage
 
 It's optional but recommended that you set up a separate git repo for storing
 corpora and coverage reports.
@@ -156,7 +186,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sanitizer: [address, undefined, memory]  # Override this with the sanitizers you want.
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
     steps:
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
@@ -198,7 +232,7 @@ GitHub artifacts instead.
 [repository secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
 [issues with the storage repo]: https://github.com/google/oss-fuzz/issues/6668
 
-## Coverage reports
+### Coverage reports
 
 Periodic coverage reports can also be generated using the latest corpus. To
 enable this, add the following to `.github/workflows/cflite_cron.yml`:
@@ -236,7 +270,7 @@ If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
 default), then coverage reports can be viewed at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
 
-## Corpus pruning
+### Corpus pruning
 
 Corpus pruning minimizes a corpus by removing redundant items while keeping the
 same code coverage. To enable this, add the following to `.github/workflows/cflite_cron.yml`:
