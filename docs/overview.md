@@ -22,7 +22,8 @@ The program that creates the inputs is called a fuzzer.
 Fuzzing is highly effective at finding bugs missed by manually written tests,
 code review, or auditing.
 Fuzzing has found thousands of bugs in mature software such as Chrome, OpenSSL,
-and Curl. When done well, fuzzing is able to find bugs in virtually any code.
+and Curl. 
+When done well, fuzzing is able to find bugs in virtually any code.
 
 ### libFuzzer
 
