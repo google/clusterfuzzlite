@@ -13,13 +13,6 @@ permalink: /developing-clusterfuzzlite/
 {:toc}
 ---
 
-TODO
-
-Explain external
-Explain multiple images
-Explain environment variables
-Explain filestore
-
 ## Code location
 
 The code for ClusterFuzzLite is located in the [`infra/cifuzz` directory] of the
