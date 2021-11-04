@@ -40,8 +40,8 @@ document.
 Note that this must be the same as the directory in `/src` where your project's
 code is located.
 Also note that the configuration examples set the environment variables
-`CFL_PLATFORM` and `FILESTORE` these values are general for all GCB users. Do not
-change them.
+`CFL_PLATFORM` and `FILESTORE` these values are general for all GCB users.
+Do not change them.
 
 TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
 
@@ -208,9 +208,7 @@ To run this workflow periodically: set up a trigger that runs this workflow *man
 Then follow the
 [documentation](https://cloud.google.com/build/docs/automating-builds/create-scheduled-triggers)
 on making the workflow run on a schedule.
-We reccommend scheduling coverage reports to run once a day.
-Note that it's better to schedule this to run after pruning has
-completed, but not required.
+We recommend scheduling coverage reports to run once a day.
 
 ## Testing it Out
 
