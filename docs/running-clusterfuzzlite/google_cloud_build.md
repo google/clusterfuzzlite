@@ -18,6 +18,9 @@ This document explains how to set up ClusterFuzzLite on
 This document assumes the reader has set up builds using GCB before.
 Documentation on using GCB is available
 [here](https://cloud.google.com/build/docs/quickstart-build).
+To get the most of this page, you should have already set up your
+[build integration] and read the more
+[high-level document on running ClusterFuzzLite].
 This document also assumes your code is hosted on GitHub, but it should be
 mostly applicable if your code is hosted elsewhere.
 
@@ -32,23 +35,21 @@ We recommend having separate workflow files for each part of ClusterFuzzLite:
 First, you must
 [create a Google Cloud Storage Bucket](https://cloud.google.com/storage/docs/creating-buckets).
 This will be refered to as
-`<your-cloud-bucket>` in the config examples in this document. If
+`<your-cloud-bucket>` in the config examples in this document.
 The bucket will be used to store crashes, builds, corpora, and coverage reports.
 You will also need to  set the `REPOSITORY` environment variable.
 The value for `REPOSITORY` will be denoted by `<your-repo-name>` in this
 document.
 Note that this must be the same as the directory in `/src` where your project's
 code is located.
-Also note that the configuration examples set the environment variables
-`CFL_PLATFORM` and `FILESTORE` these values are general for all GCB users.
+Also note that the configuration examples sets the environment variable:
+`CFL_PLATFORM` this value are general for all GCB users.
 Do not change them.
 
-TODO: Host a clean, complete example somewhere.  TODO: multiple sanitizers
+<!-- TODO: Host a clean, complete example somewhere. -->
 
 ## Continuous builds (required)
 
-TODO: Maybe lets get rid of this and have pruning or batch fuzzing upload a
-build instead?
 Continuous builds are used whenever a crash is found during PR or batch fuzzing
 to determine if this crash was newly introduced.
 
@@ -61,10 +62,10 @@ steps:
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'UPLOAD_BUILD=True'
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 ```
 {% endraw %}
 
@@ -87,17 +88,16 @@ steps:
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 ```
 {% endraw %}
 
@@ -121,17 +121,17 @@ steps:
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
       - 'MODE=batch
       - 'FUZZ_SECONDS=3600'  # You can change this to a value you prefer.
 ```
@@ -159,17 +159,17 @@ steps:
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'SANITIZER=address' # This can be changed to other sanitizers you use.
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
       - 'MODE=prune'
 ```
 {% endraw %}
@@ -187,28 +187,44 @@ steps:
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'SANITIZER=coverage'
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 
   - name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     env:
       - 'CLOUD_BUCKET=<your-cloud-bucket>'
       - 'REPOSITORY=<your-repo-name>'
-      - 'LANGUAGE=c++'
+      - 'LANGUAGE=c++' # Change this to your project's language.
       - 'MODE=coverage
       - 'SANITIZER=coverage'
       - 'CFL_PLATFORM=gcb'
-      - 'FILESTORE=gsutil'
 ```
 {% endraw %}
 
-To run this workflow periodically: set up a trigger that runs this workflow *manually*.
+To run this workflow periodically: set up a trigger that runs this workflow
+*manually*.
 Then follow the
 [documentation](https://cloud.google.com/build/docs/automating-builds/create-scheduled-triggers)
 on making the workflow run on a schedule.
 We recommend scheduling coverage reports to run once a day.
+
+## Viewing crashes
+
+Google Cloud Build does not offer an easy way to download files associated with
+a build. Therefore, to download crashes that were found by ClusterFuzzLite,
+inspect the logs to find the name of the crash file and then download it them
+from `<your-cloud-bucket>/crashes/<fuzzer>/<sanitizer>/<crash-file>`
+where `<crash-file>` is the name of the crash that was found by ClusterFuzzLite,
+`<fuzzer>` is the fuzzer that found the crash, and `<sanitizer>` is the
+sanitizer used to find the crash.
+Note that these files can be downloaded using a web browser by nagivating to
+`https://console.cloud.google.com/storage/browser/<your-cloud-bucket-without-gs>/crashes/<fuzzer>/<sanitizer>`
+Where `<your-cloud-bucket-without-gs>` is `<your-cloud-bucket>` without `gs://`
+at the beginning.
+For example, if `<your-cloud-bucket>` is
+`gs://clusterfuzzlite-storage` `<your-cloud-bucket-without-gs>` is
+`clusterfuzzlite-storage`.
 
 ## Testing it Out
 
@@ -219,17 +235,32 @@ or on the command line using [gcloud](https://cloud.google.com/sdk/gcloud).
 [submit the build to run on Google Cloud](https://cloud.google.com/build/docs/running-builds/start-build-command-line-api),
 or you can simulate the build locally using
 [cloud-build-local](https://cloud.google.com/build/docs/build-debug-locally).
-
+If you want to submit the builds to run on Google Cloud manually, please
+create an empty file named `.gcloudignore` in the root of your repository
+or see [this github issue] because Google Cloud Build will not by default
+include the `.git` folder of your repository for manually submitted builds.
 
 ## Storage Layout
 
 Artifacts produced by ClusterFuzzLite are stored in `<your-cloud-bucket>`.
 The bucket has the following layout.
-1. Coverage report: <your-cloud-bucket>/coverage/latest/report/linux/index.html
-1. Builds: <your-cloud-bucket>/build/<sanitizer>-<commit>/
-1. Corpora: <your-cloud-bucket>/corpus/<fuzz-target>/
-1. Crashes: <your-cloud-bucket>/crashes/<fuzz-target>/<sanitizer>/<crash-file> and <your-cloud-bucket>/crashes/<fuzz-target>/<sanitizer>/<crash-file>.summary (output from crash).
+- Crashes:
+    - `<your-cloud-bucket>/crashes/<fuzzer>/<sanitizer>/<crash-file>`
+    - `<your-cloud-bucket>/crashes/<fuzzer>/<sanitizer>/<crash-file>.summary` (output from crash).
+- Coverage report: `<your-cloud-bucket>/coverage/latest/report/linux/index.html`
+- Corpora: `<your-cloud-bucket>/corpus/<fuzzer>/`
+- Builds: `<your-cloud-bucket>/build/<sanitizer>-<commit>/`
+Note that the bucket can be explored using a web browser by navigating to:
+`https://console.cloud.google.com/storage/browser/<your-cloud-bucket-without-gs>`
+Where `<your-cloud-bucket-without-gs>` is `<your-cloud-bucket>` without `gs://`
+at the beginning.
+For example, if `<your-cloud-bucket>` is
+`gs://clusterfuzzlite-storage` `<your-cloud-bucket-without-gs>` is
+`clusterfuzzlite-storage`.
 
-TODO: Viewing crashes
-TODO: Configure private bucket to view coverage report.
-TODO: empty .gcloudignore https://github.com/GoogleCloudPlatform/cloud-builders/issues/236
+<!-- TODO(ochang): Investigate if it's possible to configure private bucket to
+allow viewing coverage reports in browser. -->
+
+[this github issue]: https://github.com/GoogleCloudPlatform/cloud-builders/issues/236#issuecomment-374629200
+[build integration]: {{ site.baseurl }}/build-integration/
+[high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
