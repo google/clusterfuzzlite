@@ -213,17 +213,17 @@ We recommend scheduling coverage reports to run once a day.
 
 Google Cloud Build does not offer an easy way to download files associated with
 a build. Therefore, to download crashes that were found by ClusterFuzzLite,
-inspect the logs to find the name of the crash file and then download it them
+inspect the logs to find the name of the crash file and then download it
 from `<your-cloud-bucket>/crashes/<fuzzer>/<sanitizer>/<crash-file>`
-where `<crash-file>` is the name of the crash that was found by ClusterFuzzLite,
-`<fuzzer>` is the fuzzer that found the crash, and `<sanitizer>` is the
-sanitizer used to find the crash.
+where `<crash-file>` is the name of the crashing input that was found by
+ClusterFuzzLite, `<fuzzer>` is the fuzzer that found the crashing input, and
+`<sanitizer>` is the sanitizer used to find the crash.
 Note that these files can be downloaded using a web browser by nagivating to
 `https://console.cloud.google.com/storage/browser/<your-cloud-bucket-without-gs>/crashes/<fuzzer>/<sanitizer>`
 Where `<your-cloud-bucket-without-gs>` is `<your-cloud-bucket>` without `gs://`
 at the beginning.
 For example, if `<your-cloud-bucket>` is
-`gs://clusterfuzzlite-storage` `<your-cloud-bucket-without-gs>` is
+`gs://clusterfuzzlite-storage`, then `<your-cloud-bucket-without-gs>` is
 `clusterfuzzlite-storage`.
 
 ## Testing it Out
@@ -255,7 +255,7 @@ Note that the bucket can be explored using a web browser by navigating to:
 Where `<your-cloud-bucket-without-gs>` is `<your-cloud-bucket>` without `gs://`
 at the beginning.
 For example, if `<your-cloud-bucket>` is
-`gs://clusterfuzzlite-storage` `<your-cloud-bucket-without-gs>` is
+`gs://clusterfuzzlite-storage`, then `<your-cloud-bucket-without-gs>` is
 `clusterfuzzlite-storage`.
 
 <!-- TODO(ochang): Investigate if it's possible to configure private bucket to
