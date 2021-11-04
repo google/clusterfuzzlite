@@ -22,9 +22,8 @@ The program that creates the inputs is called a fuzzer.
 Fuzzing is highly effective at finding bugs missed by manually written tests,
 code review, or auditing.
 Fuzzing has found thousands of bugs in mature software such as Chrome, OpenSSL,
-and Curl.
-If fuzzing isn't finding bugs in your code, your code is probably not bug free,
-you are probably not fuzzing well.
+and Curl. 
+When done well, fuzzing is able to find bugs in virtually any code.
 
 ### libFuzzer
 
@@ -50,20 +49,18 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 ```
 Clang's `-fsanitizer=fuzzer` option will link this fuzz target function against
 libFuzzer, producing a fuzzer binary that will fuzz your target code when run.
-Note that in ClusterFuzzLite, you will not use this flag directly, you should
-use the `$LIB_FUZZING_ENGINE` environment variable, which we discuss later in
+Note that in ClusterFuzzLite, you will not use this flag directly. Instead, you should
+use the `$LIB_FUZZING_ENGINE` environment variable, which is discussed in more detail in
 [Build Integration].
 
 ### Sanitizers
 
 Sanitizers are tools that detect bugs in code (typically "native code" such as
 C/C++, Rust, Go, and Swift) and report bugs by crashing.
-Sanitizers are useful outside of fuzzing, but are particularly helpful when
-fuzzing.
-ClusterFuzzLite relies on sanitizers to to detect bugs that would otherwise be
+ClusterFuzzLite relies on sanitizers to detect bugs that would otherwise be
 missed.
-Sanitizers work by instructing clang to add compile-time instrumentation,
-therefore different builds are needed to use different sanitizers.
+Sanitizers work by instructing clang to add compile-time instrumentation, so different
+builds are needed to use different sanitizers.
 
 The sanitizers ClusterFuzzLite uses are:
 - [AddressSanitizer (ASan)] : For detecting memory safety issues. This is the
@@ -76,11 +73,12 @@ The sanitizers ClusterFuzzLite uses are:
   entirely instrumented with MSan. If any part of the binary is not instrumented
   with MSan, MSan will report false positives.
 
-The ClusterFuzzLite codebase uses shorter names for the sanitizers. So when
-referring to a sanitizer when giving input to ClusterFuzzLite, ASan is
+The ClusterFuzzLite codebase uses shorter names for the sanitizers. When
+referring to a sanitizer as an input to ClusterFuzzLite, ASan is
 `address`, UBSan is `ubsan` and MSan is `memory`.
 
-With that, you have enough background to build fuzzers for ClusterFuzzLite. Continue on to [Build Integration] for directions. 
+With that, you have enough background to build fuzzers for ClusterFuzzLite. Continue on 
+to [Build Integration] for directions on integrating your project with ClusterFuzzLite's build system. 
 
 [Fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
 [LibFuzzer]: https://llvm.org/docs/LibFuzzer.html

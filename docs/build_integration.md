@@ -138,7 +138,7 @@ Your build.sh should not delete any source code. Source code is needed for code
 coverage reports.
 
 The `$WORK` environment variable defines a directory you where build.sh can
-store intermediate files. !!! Delete this?
+store intermediate files. 
 
 Here's an example build.sh from Expat:
 
@@ -257,10 +257,10 @@ To improve your fuzz target ability to find bugs faster, please read
 ## Running ClusterFuzzLite
 
 Once everything is complete, you are ready to set up ClusterFuzzLite to run on
-your CI. Check out the [docs on Running ClusterFuzzLite] to do this.
+your CI. Check out the instructions on [Running ClusterFuzzLite] to do this.
 
 [fuzz targets]: https://github.com/google/fuzzing/blob/masteer/docs/glossary.md#fuzz-target
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
 [OSS-Fuzz]: https://github.com/google/oss-fuzz
 [`Dockerfile`]: #dockerfile
-[documents on Running ClusterFuzzLite]: {{ site.baseurl}}/running-clusterfuzzlite/
+[Running ClusterFuzzLite]: {{ site.baseurl}}/running-clusterfuzzlite/

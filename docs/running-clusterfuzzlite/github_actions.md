@@ -13,7 +13,7 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-This page explains how to set up ClusterFuzzLite to run on GitHub Actions.
+This page explains how to set up ClusterFuzzLite to run on [GitHub Actions](https://docs.github.com/en/actions).
 To get the most of this page, you should have already set up your
 [build integration] and read the more
 [high-level document on running ClusterFuzzLite].
@@ -31,7 +31,6 @@ To enable more features, we recommend having these additional files:
 
 These workflow files are used by GitHub actions to run the ClusterFuzzLite
 actions.
-GitHub Actions documentation can be found [here](https://docs.github.com/en/actions).
 For a complete example on a real project, see
 <https://github.com/oliverchang/curl>.
 
