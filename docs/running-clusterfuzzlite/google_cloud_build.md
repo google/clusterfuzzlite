@@ -27,7 +27,7 @@ mostly applicable if your code is hosted elsewhere.
 We recommend having separate workflow files for each part of ClusterFuzzLite:
 
 - `.clusterfuzzlite/cflite_build.yml` (for building/continuous fuzzing)
-- `.clusterfuzzlite/cflite_pr.yml` (for PR fuzzing)
+- `.clusterfuzzlite/cflite_pr.yml` (for code change (pull request) fuzzing)
 - `.clusterfuzzlite/cflite_batch.yml` (for batch fuzzing)
 - `.clusterfuzzlite/cflite_prune.yml` (for corpus pruning)
 - `.clusterfuzzlite/cflite_coverage.yml` (for coverage reports)
@@ -50,7 +50,7 @@ Do not change it.
 
 ## Continuous builds (required)
 
-Continuous builds are used whenever a crash is found during PR or batch fuzzing
+Continuous builds are used whenever a crash is found during code change fuzzing
 to determine if this crash was newly introduced.
 
 Add the following to `.clusterfuzzlite/cflite_build.yml`:
@@ -76,7 +76,7 @@ This trigger will cause a build to be saved for each commit to your repo's main
 branch.
 
 
-## PR fuzzing
+## Code change fuzzing
 
 To add a fuzzing workflow that runs on all pull requests to your project, add
 the following to `.clusterfuzzlite/cflite_pr.yml`:
