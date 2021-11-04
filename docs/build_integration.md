@@ -138,7 +138,7 @@ Your build.sh should not delete any source code. Source code is needed for code
 coverage reports.
 
 The `$WORK` environment variable defines a directory you where build.sh can
-store intermediate files. !!! Delete this?
+store intermediate files. 
 
 Here's an example build.sh from Expat:
 
