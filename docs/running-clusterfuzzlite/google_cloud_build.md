@@ -42,9 +42,9 @@ The value for `REPOSITORY` will be denoted by `<your-repo-name>` in this
 document.
 Note that this must be the same as the directory in `/src` where your project's
 code is located.
-Also note that the configuration examples sets the environment variable:
-`CFL_PLATFORM` this value are general for all GCB users.
-Do not change them.
+Also note that the configuration examples set the environment variable:
+`CFL_PLATFORM` this value is general for all GCB users.
+Do not change it.
 
 <!-- TODO: Host a clean, complete example somewhere. -->
 
