@@ -6,12 +6,14 @@ title: Prow
 nav_order: 3
 permalink: /running-clusterfuzzlite/prow/
 ---
-# Prow
+# Prow (beta)
 {: .no_toc}
 
 - TOC
 {:toc}
 ---
+
+**NOTE: Clusterfuzzlite for Prow is in beta. If there are any issues please file at github.com/google/oss-fuzz/issues**
 
 This document explains how to set up ClusterFuzzLite on [Prow].
 This document assumes the reader has set up Prow on their repo.
@@ -76,7 +78,7 @@ the following to your job config under either Presubmits or Postsubmits:
   spec:
     serviceAccountName: <K8s-SA>
     containers:
-    - image: gcr.io/k8s-testimages/ci_fuzz:latest
+    - image: gcr.io/k8s-testimages/clusterfuzzlite:latest
       command:
         - runner.sh
       args:
@@ -124,7 +126,7 @@ jobs:
   spec:
     serviceAccountName: <K8s-SA>
     containers:
-    - image: gcr.io/k8s-testimages/ci_fuzz:latest
+    - image: gcr.io/k8s-testimages/clusterfuzzlite:latest
       command:
         - runner.sh
       args:
@@ -175,7 +177,7 @@ same code coverage. To enable this, add the following to your prow job config fo
   spec:
     serviceAccountName: <K8s-SA>
     containers:
-    - image: gcr.io/k8s-testimages/ci_fuzz:latest
+    - image: gcr.io/k8s-testimages/clusterfuzzlite:latest
       command:
         - runner.sh
       args:
@@ -218,7 +220,7 @@ To enable this, add the following to your prow job config for periodic jobs:
   spec:
     serviceAccountName: <K8s-SA>
     containers:
-    - image: gcr.io/k8s-testimages/ci_fuzz:latest
+    - image: gcr.io/k8s-testimages/clusterfuzzlite:latest
       command:
         - runner.sh
       args:
