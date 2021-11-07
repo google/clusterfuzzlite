@@ -13,7 +13,7 @@ permalink: /running-clusterfuzzlite/prow/
 {:toc}
 ---
 
-**NOTE: Clusterfuzzlite for Prow is in beta. If there are any issues please file at github.com/google/oss-fuzz/issues**
+**NOTE: ClusterFuzzLite for Prow is in beta. If there are any issues please file at github.com/google/clusterfuzzlite/issues**
 
 This document explains how to set up ClusterFuzzLite on [Prow].
 This document assumes the reader has set up Prow on their repo.
