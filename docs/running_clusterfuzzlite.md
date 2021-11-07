@@ -183,6 +183,7 @@ Choose the [subguide](#subguides) for your CI system to get started.
 
 - [GitHub Actions]
 - [Google Cloud Build]
+- [Prow] (beta)
 
 [subguides]: #subguides
 [Google Cloud Build]: {{ site.baseurl }}/google-cloud-build/
@@ -192,6 +193,7 @@ Choose the [subguide](#subguides) for your CI system to get started.
 [this explanation]: {{ site.baseurl }}/build-integration/#language
 [ClusterFuzzLite modes]: #clusterfuzzlite-modes
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
+[Prow]: {{ site.baseurl }}/running-clusterfuzzlite/prow/
 [Batch Fuzzing]: #batch
 [Continuous builds]: #continuous-builds
 [code change fuzzing]: #code-change
