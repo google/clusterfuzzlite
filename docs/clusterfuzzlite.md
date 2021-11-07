@@ -15,7 +15,7 @@ Fuzzing is a highly effective technique for finding bugs in software.
 ClusterFuzzLite makes your code more secure by fuzzing changes before they even
 enter the codebase.
 
-ClusterFuzzLite supports [GitHub Actions], [Google Cloud Build], and [prow], so
+ClusterFuzzLite supports [GitHub Actions], [Google Cloud Build], and [Prow], so
 getting the benefits of continuous fuzzing is simple if you can use these CI
 systems.
 Suppport for more CI systems is in-progress and [extending support to other CI
