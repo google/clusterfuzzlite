@@ -13,7 +13,7 @@ permalink: /running-clusterfuzzlite/github-actions/
 {:toc}
 ---
 
-This page explains how to set up ClusterFuzzLite to run on [GitHub Actions](https://docs.github.com/en/actions).
+This page explains how to set up ClusterFuzzLite to run on [GitHub Actions].
 To get the most of this page, you should have already set up your
 [build integration] and read the more
 [high-level document on running ClusterFuzzLite].
@@ -96,8 +96,12 @@ However, you can edit the file to:
   discussed [later on], feel free to skip this at first.
 
 Merge this file into your GitHub repo and open a pull request to test it out.
-Now that we have discussed setting up code change fuzzing on pull requests, let's
-look at setting up other tasks to get the most out of ClusterFuzzLite.
+To download crashes from code change fuzzing, please see the [section
+on downloading artifacts].
+Now that we have discussed setting up code change fuzzing on pull requests,
+let's look at setting up other tasks to get the most out of ClusterFuzzLite.
+
+![github-actions-crash]
 
 [later on]: #storage-repo
 
@@ -313,7 +317,17 @@ But here is where `storage-repo`, `storage-repo-branch`, and
 If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
 default), then coverage reports can be viewed at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
-This should be much nicer than downloading the coverage report as an artifact.
+This should be much nicer than downloading the coverage report as an artifact
+and can be seen in the screenshot below:
+![github-actions-coverage-report]
+
+## Downloading artifacts
+
+To download an artifact from a ClusterFuzzLite run:
+- Click on the summary from the run.
+![github-actions-summary]
+- Click on the artifact you with to download from the summary page.
+![github-actions-download-crash]
 
 ## Extra configuration
 
@@ -328,11 +342,14 @@ An empty repository for this is sufficient.
 
 You'll need to set up a [personal access token] with write permissions to the
 storage repo and add it as a [repository secret] called
-`PERSONAL_ACCESS_TOKEN`. This is because the default GitHub auth token is not
-able to write to other repositories.
+`PERSONAL_ACCESS_TOKEN`.
+This is because the default GitHub auth token is not able to write to other
+repositories.
 Note that if you run into [issues with the storage repo], you may have
 accidentally set the secret as an *environment secret* instead of a
 *repository secret*.
+![new-repo-secret]
+![personal-access-token]
 
 If you would like PR fuzzing to only run fuzzers affected by the current
 change, you'll need to add these same options to the ["Build Fuzzers" step
@@ -371,3 +388,11 @@ like so:
 [storage repo]: #storage
 [continuous builds]: #continuous-builds
 [batch fuzzing]: #batch-fuzzing
+[GitHub Actions]: https://docs.github.com/en/actions
+[github-actions-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-crash.png
+[github-actions-coverage-report]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-coverage-report.png
+[section on downloading artifacts]: #downloading-artifacts
+[github-actions-summary]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-summary.png
+[github-actions-download-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-download-crash.png
+[new-repo-secret]: https://storage.googleapis.com/clusterfuzzlite-public/images/new-repo-secret.png
+[personal-access-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/personal-access-token.png
