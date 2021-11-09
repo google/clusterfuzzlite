@@ -77,8 +77,7 @@ The ClusterFuzzLite codebase uses shorter names for the sanitizers. When
 referring to a sanitizer as an input to ClusterFuzzLite, ASan is
 `address`, UBSan is `ubsan` and MSan is `memory`.
 
-With that, you have enough background to build fuzzers for ClusterFuzzLite. Continue on 
-to [Build Integration] for directions on integrating your project with ClusterFuzzLite's build system. 
+Next: [Step 1: Build Integration] for directions on integrating your project with ClusterFuzzLite's build system. 
 
 [Fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
 [LibFuzzer]: https://llvm.org/docs/LibFuzzer.html
@@ -86,4 +85,4 @@ to [Build Integration] for directions on integrating your project with ClusterFu
 [AddressSanitizer (ASan)]: https://clang.llvm.org/docs/AddressSanitizer.html
 [UndefinedBehaviorSanitizer (UBSan)]: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html
 [MemorySanitizer (MSan)]: https://clang.llvm.org/docs/MemorySanitizer.html
-[Build Integration]: {{ site.baseurl }}/build-integration/
+[Step 1: Build Integration]: {{ site.baseurl }}/build-integration/
