@@ -15,8 +15,7 @@ ClusterFuzzLite is based on [ClusterFuzz].
 ## Support
 - C, C++, Java (and other JVM-based languages), Go, Python, Rust, and Swift
 - [GitHub Actions], [Google Cloud Build], and [Prow] (with more CI systems in progress)
-- Suppport for more CI systems is in-progress and [extending support to other CI
-systems] is easy.
+- [Extending support to other CI systems] is easy.
 
 ## Features
 
