@@ -14,13 +14,12 @@ permalink: /running-clusterfuzzlite/
 {:toc}
 ---
 
-## Overview
-![overview]
-
 Before running ClusterFuzzLite, you must integrate your project with
 ClusterFuzzLite's build system to build your project's fuzzers.
-See [Integrating with ClusterFuzzLite's build system] if you haven't already
-taken this step.
+See [Step 1: Build Integration] if you haven't already taken this step.
+
+## Overview
+![overview]
 
 Once your project's fuzzers can be built and run by the OSS-Fuzz/ClusterFuzzLite
 helper script, it is ready to be fuzzed by ClusterFuzzLite.
@@ -188,7 +187,7 @@ Choose the [subguide](#subguides) for your CI system to get started.
 
 [subguides]: #subguides
 [Google Cloud Build]: {{ site.baseurl }}/google-cloud-build/
-[integrating with ClusterFuzzLite's build system]: {{ site.baseurl }}/build-integration/
+[Step 1: Build Integration]: {{ site.baseurl }}/build-integration/
 [Batch Fuzzing]: #batch-fuzzing-batch
 [Code Coverage report generation]: #code-coverage-report-generation-coverage
 [this explanation]: {{ site.baseurl }}/build-integration/#language
