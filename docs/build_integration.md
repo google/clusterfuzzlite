@@ -22,8 +22,7 @@ with our build system, ClusterFuzzLite will be able to use the most recent
 versions of these tools to secure your code.
 
 By the end of the document you will be able to build and run your fuzz targets
-with libFuzzer and a variety of sanitizers. More importantly, your project will
-be ready to be fuzzed by ClusterFuzzLite.
+with libFuzzer and a variety of sanitizers. 
 
 ## Prerequisites
 
@@ -257,8 +256,7 @@ To improve your fuzz target ability to find bugs faster, please read
 
 ## Running ClusterFuzzLite
 
-Once everything is complete, you are ready to set up ClusterFuzzLite to run on
-your CI. Check out the instructions on [Running ClusterFuzzLite] to do this.
+Next: [Step 2: Running ClusterFuzzLite] for directions on setting up ClusterFuzzLite to run on your CI.
 
 [fuzz targets]: https://github.com/google/fuzzing/blob/masteer/docs/glossary.md#fuzz-target
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
