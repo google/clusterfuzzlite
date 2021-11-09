@@ -31,7 +31,7 @@ that are agnostic to which CI system you are using.
 After reading this page, see the [subguides] for instructions specific to your
 particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
 
-## ClusterFuzzLite modes
+## ClusterFuzzLite Modes
 
 ClusterFuzzLite offers two primary modes of fuzzing: [code change fuzzing] and
 [batch fuzzing].
@@ -179,7 +179,7 @@ At this point you are ready to run ClusterFuzzLite using your specific CI
 system!
 Choose the [subguide](#subguides) for your CI system to get started.
 
-## Supported Continous Integration systems {#subguides}
+## Supported Continous Integration Systems {#subguides}
 
 - [GitHub Actions]
 - [Google Cloud Build]
