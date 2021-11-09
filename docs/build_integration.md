@@ -1,7 +1,8 @@
 ---
 layout: default
 parent: ClusterFuzzLite
-title: Build Integration
+title: >
+  Step One: Build Integration
 has_children: true
 nav_order: 3
 permalink: /build-integration/
