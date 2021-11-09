@@ -15,7 +15,7 @@ ClusterFuzzLite is based on [ClusterFuzz].
 ## Support
 - C, C++, Java (and other JVM-based languages), Go, Python, Rust, and Swift
 - [GitHub Actions], [Google Cloud Build], and [Prow] (with more CI systems in progress)
-- [Extending support to other CI systems] is easy.
+- [Extending support to other CI systems] is easy
 
 ## Features
 
@@ -32,9 +32,9 @@ ClusterFuzzLite is based on [ClusterFuzz].
 
 - [libFuzzer] library for coverage-guided testing
 - [AddressSanitizer], for finding memory safety issues.
-- [MemorySanitizer], for finding use of uninitialized memory.
+- [MemorySanitizer], for finding use of uninitialized memory
 - [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
-  overflows).
+  overflows)
 
 ## Getting Started 
 
