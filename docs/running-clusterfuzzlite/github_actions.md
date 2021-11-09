@@ -18,6 +18,7 @@ To get the most of this page, you should have already set up your
 [build integration] and read the more
 [high-level document on running ClusterFuzzLite].
 
+## Workflow Files
 For basic ClusterFuzzLite functionality, all you need is a single workflow file
 to enable fuzzing on your pull requests.
 
@@ -34,7 +35,9 @@ actions.
 For a complete example on a real project, see
 <https://github.com/oliverchang/curl>.
 
-## PR fuzzing
+## Mode Configurations
+
+### PR fuzzing
 
 To add a fuzzing workflow that fuzzes all pull requests to your repo, add the
 following to `.github/workflows/cflite_pr.yml`:
@@ -105,65 +108,11 @@ let's look at setting up other tasks to get the most out of ClusterFuzzLite.
 
 [later on]: #storage-repo
 
-## Continuous builds and Batch fuzzing
-
-Running [continuous builds] and [batch fuzzing] require a few more workflow
-files.
-
-[Continuous builds] allow code change fuzzing to detect if crashes were
-introduced by the change under test.
-If the crash is not novel, code change/PR fuzzing will not report it.
+### Batch fuzzing
 
 Batch fuzzing enables continuous, regular fuzzing on your latest HEAD, and
 allows a corpus of inputs to build up over time that greatly improves the
 effectiveness of fuzzing.
-
-### Continuous builds
-
-As mentioned above, continuous builds are used whenever a crash is found during
-PR fuzzing to determine if this crash was newly introduced.
-This means that there will be less unrelated failures when running code change
-fuzzing.
-To set up continuous builds, add the following to `.github/workflows/cflite_build.yml`:
-
-{% raw %}
-```yaml
-name: ClusterFuzzLite continuous builds
-on:
-  push:
-    branches:
-      - main  # Use your actual default branch here.
-permissions: read-all
-jobs:
-  Build:
-   runs-on: ubuntu-latest
-   strategy:
-     fail-fast: false
-     matrix:
-        sanitizer:
-        - address
-        # Override this with the sanitizers you want.
-        # - undefined
-        # - memory
-   steps:
-   - name: Build Fuzzers (${{ matrix.sanitizer }})
-     id: build
-     uses: google/clusterfuzzlite/actions/build_fuzzers@v1
-     with:
-       sanitizer: ${{ matrix.sanitizer }}
-       upload-build: true
-```
-{% endraw %}
-
-This causes a build to be triggered and uploaded as a GitHub Actions artifact
-whenever a new push is done to main/default branch.
-You can copy and paste the above file, but make sure to change the `branches`
-field to whatever is your project's main branch.
-If you are going to use multiple sanitizers to fuzz your project, you should
-change the `sanitizer` field to enable builds for each sanitizer you are fuzzing
-with.
-
-### Batch fuzzing
 
 To enable batch fuzzing, add the following to
 `.github/workflows/cflite_batch.yml`:
@@ -230,9 +179,58 @@ on:
 As usual, make sure to change `branches` to the actual branch(es) you wish to
 fuzz.
 
-If batch fuzzing is running, you must also run corpus pruning, which we will discuss next.
+If batch fuzzing is running, you must also run [corpus pruning].
 
 [GitHub's documentation]: https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#schedule
+
+### Continuous builds
+
+Continuous builds allow code change fuzzing to detect if crashes were
+introduced by the change under test.
+If the crash is not novel, code change/PR fuzzing will not report it.
+
+Continuous builds are used whenever a crash is found during PR fuzzing to determine if this crash was newly introduced.
+This means that there will be fewer unrelated failures when running code change
+fuzzing.
+
+To set up continuous builds, add the following to `.github/workflows/cflite_build.yml`:
+
+{% raw %}
+```yaml
+name: ClusterFuzzLite continuous builds
+on:
+  push:
+    branches:
+      - main  # Use your actual default branch here.
+permissions: read-all
+jobs:
+  Build:
+   runs-on: ubuntu-latest
+   strategy:
+     fail-fast: false
+     matrix:
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
+   steps:
+   - name: Build Fuzzers (${{ matrix.sanitizer }})
+     id: build
+     uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+     with:
+       sanitizer: ${{ matrix.sanitizer }}
+       upload-build: true
+```
+{% endraw %}
+
+This causes a build to be triggered and uploaded as a GitHub Actions artifact
+whenever a new push is done to main/default branch.
+You can copy and paste the above file, but make sure to change the `branches`
+field to whatever is your project's main branch.
+If you are going to use multiple sanitizers to fuzz your project, you should
+change the `sanitizer` field to enable builds for each sanitizer you are fuzzing
+with.
 
 ### Corpus pruning
 
@@ -278,7 +276,7 @@ However, you can edit the file to:
 Finally, let's discuss the last task that ClusterFuzzLite can run: coverage
 report generation.
 
-## Coverage reports
+### Coverage reports
 
 To generate periodic coverage reports, add the following to the `jobs` field in
 `.github/workflows/cflite_cron.yml` after the `Pruning` job:
@@ -321,7 +319,7 @@ This should be much nicer than downloading the coverage report as an artifact
 and can be seen in the screenshot below:
 ![github-actions-coverage-report]
 
-## Downloading artifacts
+### Downloading artifacts
 
 To download an artifact from a ClusterFuzzLite run:
 - Click on the summary from the run.
@@ -385,7 +383,7 @@ like so:
 
 [build integration]: {{ site.baseurl }}/build-integration/
 [high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
-[storage repo]: #storage
+[storage repo]: #storage-repo
 [continuous builds]: #continuous-builds
 [batch fuzzing]: #batch-fuzzing
 [GitHub Actions]: https://docs.github.com/en/actions
@@ -396,3 +394,4 @@ like so:
 [github-actions-download-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-download-crash.png
 [new-repo-secret]: https://storage.googleapis.com/clusterfuzzlite-public/images/new-repo-secret.png
 [personal-access-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/personal-access-token.png
+[corpus pruning]: #corpus-pruning
