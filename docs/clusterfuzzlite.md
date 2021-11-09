@@ -7,13 +7,10 @@ permalink: /
 ---
 
 # ClusterFuzzLite
+ClusterFuzzLite is a continuous fuzzing solution that runs as part of CI/CD workflows to find vulnerabilities faster than ever before. 
+With just a few lines of code, GitHub users can integrate ClusterFuzzLite into their workflow and fuzz pull requests to catch bugs before they are committed, enhancing the overall security of the software supply chain.
 
-ClusterFuzzLite makes [fuzzing] part of [Continuous Integration (CI)].
 ClusterFuzzLite is based on [ClusterFuzz].
-
-Fuzzing is a highly effective technique for finding bugs in software.
-ClusterFuzzLite makes your code more secure by fuzzing changes before they even
-enter the codebase.
 
 ## Support
 - C, C++, Java (and other JVM-based languages), Go, Python, Rust, and Swift
