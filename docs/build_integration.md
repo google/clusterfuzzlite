@@ -262,4 +262,4 @@ Next: [Step 2: Running ClusterFuzzLite] for directions on setting up ClusterFuzz
 [libFuzzer targets]: {{ site.baseurl}}/reference/glossary/#fuzz-target
 [OSS-Fuzz]: https://github.com/google/oss-fuzz
 [`Dockerfile`]: #dockerfile
-[Running ClusterFuzzLite]: {{ site.baseurl}}/running-clusterfuzzlite/
+[Step 2: Running ClusterFuzzLite]: {{ site.baseurl}}/running-clusterfuzzlite/
