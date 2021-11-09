@@ -1,7 +1,8 @@
 ---
 layout: default
 parent: ClusterFuzzLite
-title: Running ClusterFuzzLite
+title: > 
+   Step 2: Running ClusterFuzzLite
 has_children: true
 nav_order: 4
 permalink: /running-clusterfuzzlite/
