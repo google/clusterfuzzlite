@@ -19,12 +19,12 @@ ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Features
 
-- Quickly fuzzing code changes (pull requests) before they land and allowing
-   you to download the crashing testcases
-- Continuous longer running fuzzing (batch fuzzing) that asynchronously find
+- Quick code change (pull requests) fuzzing to find bugs before they land  
+- Downloads of crashing testcases
+- Continuous longer running fuzzing (batch fuzzing) to asynchronously find
    deeper bugs missed during code change fuzzing and build a minimal corpus for
    use in code change fuzzing
-- Coverage reports, so users can see which parts of their code is fuzzed
+- Coverage reports showing which parts of your code is fuzzed
 - Modular funtionality, so you can decide which features you want to use
 
 
