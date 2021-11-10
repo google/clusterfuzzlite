@@ -12,11 +12,6 @@ With just a few lines of code, GitHub users can integrate ClusterFuzzLite into t
 
 ClusterFuzzLite is based on [ClusterFuzz].
 
-## Support
-- C, C++, Java (and other JVM-based languages), Go, Python, Rust, and Swift
-- [GitHub Actions], [Google Cloud Build], and [Prow] (with more CI systems in progress)
-- [Extending support to other CI systems] is easy
-
 ## Features
 
 - Quick code change (pull requests) fuzzing to find bugs before they land  
@@ -27,6 +22,21 @@ ClusterFuzzLite is based on [ClusterFuzz].
 - Coverage reports showing which parts of your code is fuzzed
 - Modular funtionality, so you can decide which features you want to use
 
+## Languages
+- C
+- C++
+- Java (and other JVM-based languages)
+- Go
+- Python
+- Rust
+- Swift
+
+
+## CI Systems
+- [GitHub Actions]
+- [Google Cloud Build]
+- [Prow] (with more CI systems in progress)
+- More CI systems are in development, and [extending support to other CI systems] is easy
 
 ## Library and Sanitizers
 
