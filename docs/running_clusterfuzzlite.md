@@ -1,7 +1,8 @@
 ---
 layout: default
 parent: ClusterFuzzLite
-title: Running ClusterFuzzLite
+title: > 
+   Step 2: Running ClusterFuzzLite
 has_children: true
 nav_order: 4
 permalink: /running-clusterfuzzlite/
@@ -13,13 +14,12 @@ permalink: /running-clusterfuzzlite/
 {:toc}
 ---
 
-## Overview
-![overview]
-
 Before running ClusterFuzzLite, you must integrate your project with
 ClusterFuzzLite's build system to build your project's fuzzers.
-See [Integrating with ClusterFuzzLite's build system] if you haven't already
-taken this step.
+See [Step 1: Build Integration] if you haven't already taken this step.
+
+## Overview
+![overview]
 
 Once your project's fuzzers can be built and run by the OSS-Fuzz/ClusterFuzzLite
 helper script, it is ready to be fuzzed by ClusterFuzzLite.
@@ -31,7 +31,7 @@ that are agnostic to which CI system you are using.
 After reading this page, see the [subguides] for instructions specific to your
 particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
 
-## ClusterFuzzLite modes
+## ClusterFuzzLite Modes
 
 ClusterFuzzLite offers two primary modes of fuzzing: [code change fuzzing] and
 [batch fuzzing].
@@ -179,7 +179,7 @@ At this point you are ready to run ClusterFuzzLite using your specific CI
 system!
 Choose the [subguide](#subguides) for your CI system to get started.
 
-## Supported Continous Integration systems {#subguides}
+## Supported Continous Integration Systems {#subguides}
 
 - [GitHub Actions]
 - [Google Cloud Build]
@@ -187,7 +187,7 @@ Choose the [subguide](#subguides) for your CI system to get started.
 
 [subguides]: #subguides
 [Google Cloud Build]: {{ site.baseurl }}/google-cloud-build/
-[integrating with ClusterFuzzLite's build system]: {{ site.baseurl }}/build-integration/
+[Step 1: Build Integration]: {{ site.baseurl }}/build-integration/
 [Batch Fuzzing]: #batch-fuzzing-batch
 [Code Coverage report generation]: #code-coverage-report-generation-coverage
 [this explanation]: {{ site.baseurl }}/build-integration/#language
