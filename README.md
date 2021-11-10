@@ -34,11 +34,14 @@ ClusterFuzzLite is based on [ClusterFuzz](https://google.github.io/clusterfuzz/)
   systems is easy
 
 ## Documentation
-Read our [detailed documentation] to learn how to use ClusterFuzzLite.
+
+Read our [detailed documentation](google.github.io/clusterfuzzlite) to learn how
+to use ClusterFuzzLite.
 
 ## Staying in touch
 Join our [mailing list](https://groups.google.com/g/clusterfuzzlite-users) for
 announcements and discussions.
+
 If you use ClusterFuzzLite, please fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSdAKB03YM4HjMwNe1K4T6Yr16OE4lCMj-VzThuUOrZUc3ytWw/viewform?usp=sf_link)
 so we know who is using it.
 This gives us an idea of the impact of ClusterFuzzLite and allows us to justify
