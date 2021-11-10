@@ -111,7 +111,7 @@ on downloading artifacts].
 
 Batch fuzzing enables continuous, regular fuzzing on your latest HEAD and
 allows a corpus of inputs to build up over time, which greatly improves the
-effectiveness of fuzzing. Batch fuzzing can be run on either pushes to your default branch or on a cron schedule (or both).
+effectiveness of fuzzing. Batch fuzzing can be run on a cron schedule.
 
 To enable batch fuzzing, add the following to
 `.github/workflows/cflite_batch.yml`:
@@ -184,7 +184,7 @@ The continuous build task causes a build to be triggered and uploaded as a GitHu
 whenever a new push is done to main/default branch.
 
 Continuous builds are used when a crash is found during PR fuzzing to determine whether the crash was newly introduced.
-If the crash is not novel, code change/PR fuzzing will not report it.
+If the crash is not novel, PR fuzzing will not report it.
 This means that there will be fewer unrelated failures when running code change
 fuzzing.
 
@@ -300,6 +300,7 @@ Optionally, edit the following fields to view coverage reports at
 -  set `storage-repo` ([instructions here])
 - set `storage-repo-branch-coverage` to "gh-pages" (the
 default)
+- set `owner` and `storage-repo-name` to the appropriate values for your storage repo
 
 
 ![github-actions-coverage-report]
@@ -337,7 +338,7 @@ accidentally set the secret as an *environment secret* instead of a
 If you would like PR fuzzing to run only the fuzzers affected by the current
 change, you'll need to add these same options to the ["Build Fuzzers" step
 above](#pr-fuzzing). The "affected fuzzers" are determined by using
-coverage reports, which require a storage repo.
+coverage reports.
 
 If a storage repo isn't specified, corpora and coverage reports will be uploaded as
 GitHub artifacts instead. 
