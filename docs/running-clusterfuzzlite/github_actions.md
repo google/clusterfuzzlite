@@ -319,12 +319,13 @@ This should be much nicer than downloading the coverage report as an artifact
 and can be seen in the screenshot below:
 ![github-actions-coverage-report]
 
-### Downloading artifacts
+## Downloading artifacts
 
-To download an artifact from a ClusterFuzzLite run:
-- Click on the summary from the run.
+To download an artifact from the ClusterFuzzLite run, do the following steps:
+- Click on the summary from the run, as illustrated in the screenshot below:
 ![github-actions-summary]
-- Click on the artifact you with to download from the summary page.
+- Click on the artifact you wish to download from the summary page, as
+  illustrated in the screenshot below:
 ![github-actions-download-crash]
 
 ## Extra configuration
