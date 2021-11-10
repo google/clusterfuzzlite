@@ -111,7 +111,7 @@ on downloading artifacts].
 
 Batch fuzzing enables continuous, regular fuzzing on your latest HEAD and
 allows a corpus of inputs to build up over time, which greatly improves the
-effectiveness of fuzzing. Batch fuzzing can be run on either pushes to your default branch, or on a cron schedule (or both).
+effectiveness of fuzzing. Batch fuzzing can be run on either pushes to your default branch or on a cron schedule (or both).
 
 To enable batch fuzzing, add the following to
 `.github/workflows/cflite_batch.yml`:
