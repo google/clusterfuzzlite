@@ -37,10 +37,13 @@ For a complete example on a real project, see
 
 ## Mode Configurations
 
+The following configuration guides show default configuration settings for each workflow file. 
+Simply copying the default settings should work for most projects, or you can choose to edit the files to customize the settings.
+
 ### PR fuzzing
 
 To add a fuzzing workflow that fuzzes all pull requests to your repo, add the
-following to `.github/workflows/cflite_pr.yml`:
+following default configurations to `.github/workflows/cflite_pr.yml`:
 
 {% raw %}
 ```yaml
@@ -90,34 +93,28 @@ jobs:
 ```
 {% endraw %}
 
-You can copy and paste the above file and PR fuzzing should just work.
-However, you can edit the file to:
-- Enable more sanitizers (`sanitizers`).
-- Change the amount of time spent fuzzing (`fuzz-seconds`).
-- Enable a [storage repo] (`storage-repo`, `storage-repo-branch`,
-  `storage-repo-branch-coverage`), which is an optional but useful feature
-  discussed [later on], feel free to skip this at first.
+Optionally, edit the following fields to customize your settings:
+- `sanitizers` Change or enable more sanitizers. 
+- `fuzz-seconds` Change the amount of time spent fuzzing. 
+- `storage-repo`, `storage-repo-branch`,
+  `storage-repo-branch-coverage` Enable a [storage repo] (not necessary for initial runs, but a useful feature discussed [later on]).
 
-Merge this file into your GitHub repo and open a pull request to test it out.
+Merge this file into your GitHub repo.
+To test the workflow, open a pull request to your project.
+
 To download crashes from code change fuzzing, please see the [section
 on downloading artifacts].
-Now that we have discussed setting up code change fuzzing on pull requests,
-let's look at setting up other tasks to get the most out of ClusterFuzzLite.
-
-![github-actions-crash]
 
 [later on]: #storage-repo
 
 ### Batch fuzzing
 
-Batch fuzzing enables continuous, regular fuzzing on your latest HEAD, and
-allows a corpus of inputs to build up over time that greatly improves the
-effectiveness of fuzzing.
+Batch fuzzing enables continuous, regular fuzzing on your latest HEAD and
+allows a corpus of inputs to build up over time, which greatly improves the
+effectiveness of fuzzing. Batch fuzzing can be run on either pushes to your default branch, or on a cron schedule (or both).
 
 To enable batch fuzzing, add the following to
 `.github/workflows/cflite_batch.yml`:
-
-This can be run on either pushes to your default branch, or on a cron schedule (or both).
 
 {% raw %}
 ```yaml
@@ -159,16 +156,14 @@ jobs:
 ```
 {% endraw %}
 
-You can copy and paste the above file and batch fuzzing should just work.
-However, you can edit the file to:
-- Change how frequently batch fuzzing is run (`cron`). See [GitHub's documentation] on this.
-- Enable more sanitizers (`sanitizers`).
-- Change the amount of time spent fuzzing (`fuzz-seconds`).
-- Enable a [storage repo] (`storage-repo`, `storage-repo-branch`,
-  `storage-repo-branch-coverage`).
+Optionally, edit the following fields to customize your settings:
+- `cron` Change how frequently batch fuzzing is run. See [GitHub's documentation] on this.
+- `sanitizers` Change or enable more sanitizers. 
+- `fuzz-seconds` Change the amount of time spent fuzzing.
+- `storage-repo`, `storage-repo-branch`,
+  `storage-repo-branch-coverage` Enable a [storage repo]. 
 
-Another edit you can make is to configure batch fuzzing to run on each push to
-your main branch by changing the `on` field to:
+To configure batch fuzzing to run on each push to your main branch, change the `on` field to:
 
 ```yaml
 on:
@@ -176,20 +171,20 @@ on:
     branches:
       - main  # Use your actual default branch here.
 ```
-As usual, make sure to change `branches` to the actual branch(es) you wish to
+Make sure to change `branches` to the actual branch(es) you wish to
 fuzz.
 
-If batch fuzzing is running, you must also run [corpus pruning].
+NOTE: If batch fuzzing is running, you must also run [corpus pruning].
 
 [GitHub's documentation]: https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#schedule
 
 ### Continuous builds
 
-Continuous builds allow code change fuzzing to detect if crashes were
-introduced by the change under test.
-If the crash is not novel, code change/PR fuzzing will not report it.
+The continuous build task causes a build to be triggered and uploaded as a GitHub Actions artifact
+whenever a new push is done to main/default branch.
 
-Continuous builds are used whenever a crash is found during PR fuzzing to determine if this crash was newly introduced.
+Continuous builds are used when a crash is found during PR fuzzing to determine whether the crash was newly introduced.
+If the crash is not novel, code change/PR fuzzing will not report it.
 This means that there will be fewer unrelated failures when running code change
 fuzzing.
 
@@ -224,13 +219,9 @@ jobs:
 ```
 {% endraw %}
 
-This causes a build to be triggered and uploaded as a GitHub Actions artifact
-whenever a new push is done to main/default branch.
-You can copy and paste the above file, but make sure to change the `branches`
-field to whatever is your project's main branch.
-If you are going to use multiple sanitizers to fuzz your project, you should
-change the `sanitizer` field to enable builds for each sanitizer you are fuzzing
-with.
+NOTE: Be sure to change the `branches` field to whatever is your project's main branch. 
+
+If you plan to use multiple sanitizers, add them all to the `sanitizer` field (to enable builds for each sanitizer)
 
 ### Corpus pruning
 
@@ -267,14 +258,10 @@ jobs:
 ```
 {% endraw %}
 
-You can copy and paste the above file and pruning should just work.
-However, you can edit the file to:
+Optionally, edit the following field to customize your settings:
 
-- Enable a [storage repo] (`storage-repo`, `storage-repo-branch`,
-  `storage-repo-branch-coverage`).
-
-Finally, let's discuss the last task that ClusterFuzzLite can run: coverage
-report generation.
+- `storage-repo`, `storage-repo-branch`,
+  `storage-repo-branch-coverage` Enable a [storage repo].
 
 ### Coverage reports
 
@@ -308,15 +295,13 @@ jobs:
 ```
 {% endraw %}
 
-You can copy and paste the above file and pruning should just work.
-But here is where `storage-repo`, `storage-repo-branch`, and
-`storage-repo-branch-coverage` come in handy.
+Optionally, edit the following fields to view coverage reports at
+`https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`:
+-  set `storage-repo` ([instructions here])
+- set `storage-repo-branch-coverage` to "gh-pages" (the
+default)
 
-If `storage-repo` is set and `storage-repo-branch-coverage` is "gh-pages" (the
-default), then coverage reports can be viewed at
-`https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`.
-This should be much nicer than downloading the coverage report as an artifact
-and can be seen in the screenshot below:
+
 ![github-actions-coverage-report]
 
 ### Downloading artifacts
@@ -331,10 +316,10 @@ To download an artifact from a ClusterFuzzLite run:
 
 ### Git repo for storage {#storage-repo}
 
-As previously discussed, it's optional but recommended that you set up a
+It's optional but recommended that you set up a
 separate git repo for storing corpora and coverage reports.
-It is recommended because the storage repo will make corpus management better in
-some scenarios and will allow coverage reports to be viewed from the web.
+The storage repo will make corpus management better in
+some scenarios and will allow you to view coverage reports on the web rather than downloading them as artifacts.
 
 An empty repository for this is sufficient.
 
@@ -343,19 +328,19 @@ storage repo and add it as a [repository secret] called
 `PERSONAL_ACCESS_TOKEN`.
 This is because the default GitHub auth token is not able to write to other
 repositories.
-Note that if you run into [issues with the storage repo], you may have
+Note: if you run into [issues with the storage repo], you may have
 accidentally set the secret as an *environment secret* instead of a
 *repository secret*.
 ![new-repo-secret]
 ![personal-access-token]
 
-If you would like PR fuzzing to only run fuzzers affected by the current
+If you would like PR fuzzing to run only the fuzzers affected by the current
 change, you'll need to add these same options to the ["Build Fuzzers" step
-above](#pr-fuzzing). The way "affected fuzzers" are determined is by using
-coverage reports.
+above](#pr-fuzzing). The "affected fuzzers" are determined by using
+coverage reports, which require a storage repo.
 
-If this isn't specified, corpora and coverage reports will be uploaded as
-GitHub artifacts instead. They should still work regardless.
+If a storage repo isn't specified, corpora and coverage reports will be uploaded as
+GitHub artifacts instead. 
 
 [personal access token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [repository secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
@@ -364,10 +349,9 @@ GitHub artifacts instead. They should still work regardless.
 ### Private repos
 
 In order for ClusterFuzzLite to clone private repos, the GitHub token needs to
-be passed to the build steps as well.
+be passed to the build steps.
 This token is automaticallly set by GitHub actions so no extra action is
-required from you except passing it to build fuzzers in each workflow file
-like so:
+required from you except passing it to build fuzzers in each workflow file:
 
 {% raw %}
 ```yaml
@@ -384,6 +368,7 @@ like so:
 [build integration]: {{ site.baseurl }}/build-integration/
 [high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
 [storage repo]: #storage-repo
+[instructions here]: #storage-repo
 [continuous builds]: #continuous-builds
 [batch fuzzing]: #batch-fuzzing
 [GitHub Actions]: https://docs.github.com/en/actions
