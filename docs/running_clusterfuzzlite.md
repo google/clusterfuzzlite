@@ -1,7 +1,8 @@
 ---
 layout: default
 parent: ClusterFuzzLite
-title: Running ClusterFuzzLite
+title: > 
+   Step 2: Running ClusterFuzzLite
 has_children: true
 nav_order: 4
 permalink: /running-clusterfuzzlite/
@@ -13,13 +14,12 @@ permalink: /running-clusterfuzzlite/
 {:toc}
 ---
 
-## Overview
-![overview]
-
 Before running ClusterFuzzLite, you must integrate your project with
 ClusterFuzzLite's build system to build your project's fuzzers.
-See [Step 1: Build Integration] if you haven't already
-taken this step.
+See [Step 1: Build Integration] if you haven't already taken this step.
+
+## Overview
+![overview]
 
 The exact method for running ClusterFuzzLite will depend on which CI system you
 are using.
@@ -28,7 +28,7 @@ that are agnostic to which CI system you are using.
 After reading this page, see the [subguides] for instructions specific to your
 particular CI system (e.g. [GitHub Actions] or [Google Cloud Build]).
 
-## ClusterFuzzLite modes
+## ClusterFuzzLite Modes
 
 ClusterFuzzLite offers two primary modes of fuzzing: [code change fuzzing] and
 [batch fuzzing].
@@ -176,7 +176,7 @@ system!
 
 Next: choose the [subguide](#subguides) for your CI system.
 
-## Supported Continous Integration systems {#subguides}
+## Supported Continous Integration Systems {#subguides}
 
 - [GitHub Actions]
 - [Google Cloud Build]
