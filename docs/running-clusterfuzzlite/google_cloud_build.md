@@ -1,6 +1,6 @@
 ---
 layout: default
-parent: Running ClusterFuzzLite
+parent: Step 2&#58; Running ClusterFuzzLite
 grand_parent: ClusterFuzzLite
 title: Google Cloud Build
 nav_order: 2

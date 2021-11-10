@@ -1,6 +1,6 @@
 ---
 layout: default
-parent: Running ClusterFuzzLite
+parent: Step 2&#58; Running ClusterFuzzLite
 grand_parent: ClusterFuzzLite
 title: GitHub Actions
 nav_order: 1
