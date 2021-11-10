@@ -10,13 +10,14 @@ permalink: /
 ClusterFuzzLite is a continuous [fuzzing] solution that runs as part of
 [Continuous Integration (CI)] workflows to find vulnerabilities faster than ever
 before.
-With just a few lines of code, GitHub users can integrate ClusterFuzzLite into their workflow and fuzz pull requests to catch bugs before they are committed.
+With just a few lines of code, GitHub users can integrate ClusterFuzzLite into
+their workflow and fuzz pull requests to catch bugs before they are committed.
 
 ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Features
 
-- Quick code change (pull requests) fuzzing to find bugs before they land
+- Quick code change (pull request) fuzzing to find bugs before they land
 - Downloads of crashing testcases
 - Continuous longer running fuzzing (batch fuzzing) to asynchronously find
    deeper bugs missed during code change fuzzing and build a corpus for
