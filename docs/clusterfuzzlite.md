@@ -64,6 +64,9 @@ it.
 This gives us an idea of the impact of ClusterFuzzLite and allows us to
 justify working on it.
 
+Feel free to [file an issue] if you experience any trouble or have feature
+requests.
+
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
 [fuzzing]: {{ site.baseurl }}/overview.md#fuzzing
 [ClusterFuzz]: https://google.github.io/clusterfuzz/
@@ -81,3 +84,4 @@ justify working on it.
 [MemorySanitizer]: https://clang.llvm.org/docs/MemorySanitizer.html
 [mailing list]: https://groups.google.com/g/clusterfuzzlite-users
 [this form]: https://docs.google.com/forms/d/e/1FAIpQLSdAKB03YM4HjMwNe1K4T6Yr16OE4lCMj-VzThuUOrZUc3ytWw/viewform?usp=sf_link
+[file an issue]: https://github.com/google/clusterfuzzlite/issues/new

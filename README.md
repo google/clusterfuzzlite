@@ -46,3 +46,7 @@ If you use ClusterFuzzLite, please fill out [this form](https://docs.google.com/
 so we know who is using it.
 This gives us an idea of the impact of ClusterFuzzLite and allows us to justify
 working on it.
+
+Feel free to
+[file an issue](https://github.com/google/clusterfuzzlite/issues/new)
+if you experience any trouble or have feature requests.
