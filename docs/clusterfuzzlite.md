@@ -7,22 +7,25 @@ permalink: /
 ---
 
 # ClusterFuzzLite
-ClusterFuzzLite is a continuous [fuzzing] solution that runs as part of CI workflows to find vulnerabilities faster than ever before. 
-With just a few lines of code, GitHub users can integrate ClusterFuzzLite into their workflow and fuzz pull requests to catch bugs before they are committed.
+ClusterFuzzLite is a continuous [fuzzing] solution that runs as part of
+[Continuous Integration (CI)] workflows to find vulnerabilities faster than ever
+before.
+With just a few lines of code, GitHub users can integrate ClusterFuzzLite into
+their workflow and fuzz pull requests to catch bugs before they are committed.
 
 ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Features
 
-- Quick code change (pull requests) fuzzing to find bugs before they land  
+- Quick code change (pull request) fuzzing to find bugs before they land
 - Downloads of crashing testcases
 - Continuous longer running fuzzing (batch fuzzing) to asynchronously find
-   deeper bugs missed during code change fuzzing and build a minimal corpus for
+   deeper bugs missed during code change fuzzing and build a corpus for
    use in code change fuzzing
-- Coverage reports showing which parts of your code is fuzzed
+- Coverage reports showing which parts of your code are fuzzed
 - Modular funtionality, so you can decide which features you want to use
 
-## Languages
+## Supported Languages
 - C
 - C++
 - Java (and other JVM-based languages)
@@ -31,14 +34,14 @@ ClusterFuzzLite is based on [ClusterFuzz].
 - Rust
 - Swift
 
-
-## CI Systems
+## Supported CI Systems
 - [GitHub Actions]
 - [Google Cloud Build]
-- [Prow] 
-- More CI systems are in development, and [extending support to other CI systems] is easy
+- [Prow]
+- Support for more CI systems is in-progess, and [extending support to other CI
+  systems] is easy
 
-## Library and Sanitizers
+## Supported Fuzzing Engine and Sanitizers
 
 - [libFuzzer] library for coverage-guided testing
 - [AddressSanitizer] for finding memory safety issues
@@ -46,11 +49,24 @@ ClusterFuzzLite is based on [ClusterFuzz].
 - [UndefinedBehaviorSanitizer] for finding undefined behavior (e.g. integer
   overflows)
 
-## Getting Started 
+## Getting Started
 
-If you're new to using libFuzzer and sanitizers, start with the [Overview] for an explanation of terms and the fuzzing process. 
+If you're new to using libFuzzer and sanitizers, start with the [Overview] for
+an explanation of terms and the fuzzing process.
 
-If you're already familiar with using libFuzzer and sanitizers, start with [Step 1: Build Integration].
+If you're already familiar with using libFuzzer and sanitizers, start with [Step
+1: Build Integration].
+
+## Staying in touch
+
+Join our [mailing list] for announcements and discussions.
+If you use ClusterFuzzLite, please fill out [this form] so we know who is using
+it.
+This gives us an idea of the impact of ClusterFuzzLite and allows us to
+justify working on it.
+
+Feel free to [file an issue] if you experience any trouble or have feature
+requests.
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
 [fuzzing]: {{ site.baseurl }}/overview.md#fuzzing
@@ -67,3 +83,6 @@ If you're already familiar with using libFuzzer and sanitizers, start with [Step
 [Running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
 [Configuring ClusterFuzzLite to run in your CI]: {{ site.baseurl }}/running-clusterfuzzlite/
 [MemorySanitizer]: https://clang.llvm.org/docs/MemorySanitizer.html
+[mailing list]: https://groups.google.com/g/clusterfuzzlite-users
+[this form]: https://docs.google.com/forms/d/e/1FAIpQLSdAKB03YM4HjMwNe1K4T6Yr16OE4lCMj-VzThuUOrZUc3ytWw/viewform?usp=sf_link
+[file an issue]: https://github.com/google/clusterfuzzlite/issues/new

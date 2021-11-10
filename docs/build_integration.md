@@ -2,7 +2,7 @@
 layout: default
 parent: ClusterFuzzLite
 title: >
-  Step One: Build Integration
+  Step 1: Build Integration
 has_children: true
 nav_order: 3
 permalink: /build-integration/
@@ -22,7 +22,7 @@ with our build system, ClusterFuzzLite will be able to use the most recent
 versions of these tools to secure your code.
 
 By the end of the document you will be able to build and run your fuzz targets
-with libFuzzer and a variety of sanitizers. 
+with libFuzzer and a variety of sanitizers.
 
 ## Prerequisites
 
