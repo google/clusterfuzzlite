@@ -16,7 +16,7 @@ ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Features
 
-- Quick code change (pull requests) fuzzing to find bugs before they land.
+- Quick code change (pull requests) fuzzing to find bugs before they land
 - Downloads of crashing testcases
 - Continuous longer running fuzzing (batch fuzzing) to asynchronously find
    deeper bugs missed during code change fuzzing and build a corpus for
@@ -58,9 +58,10 @@ If you're already familiar with using libFuzzer and sanitizers, start with [Step
 
 ## Staying in touch
 
-Join our [mailing list] for announcements and discussions and announcements.
+Join our [mailing list] for announcements and discussions.
 If you use ClusterFuzzLite, please fill out [this form] so we know who is using
-it. This gives us an idea of the impact of ClusterFuzzLite and allows us to
+it.
+This gives us an idea of the impact of ClusterFuzzLite and allows us to
 justify working on it.
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
