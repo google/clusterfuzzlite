@@ -16,7 +16,7 @@ to begin writing fuzzers and integrating with ClusterFuzzLite's build system.
 
 ### Fuzzing
 
-[Fuzzing] is a technique were randomized inputs are automatically created and
+[Fuzzing] is a technique where randomized inputs are automatically created and
 fed as input to a (target) program in order to find bugs in that program.
 The program that creates the inputs is called a fuzzer.
 Fuzzing is highly effective at finding bugs missed by manually written tests,
