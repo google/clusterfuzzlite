@@ -7,7 +7,7 @@ permalink: /
 ---
 
 # ClusterFuzzLite
-ClusterFuzzLite is a continuous fuzzing solution that runs as part of CI/CD workflows to find vulnerabilities faster than ever before. 
+ClusterFuzzLite is a continuous [fuzzing] solution that runs as part of CI/CD workflows to find vulnerabilities faster than ever before. 
 With just a few lines of code, GitHub users can integrate ClusterFuzzLite into their workflow and fuzz pull requests to catch bugs before they are committed, enhancing the overall security of the software supply chain.
 
 ClusterFuzzLite is based on [ClusterFuzz].
@@ -53,7 +53,7 @@ If you're new to using libFuzzer and sanitizers, start with the [Overview] for a
 If you're already familiar with using libFuzzer and sanitizers, start with [Step 1: Build Integration].
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
-[fuzzing]: https://en.wikipedia.org/wiki/Fuzzing
+[fuzzing]: {{ site.baseurl }}/overview.md#fuzzing
 [ClusterFuzz]: https://google.github.io/clusterfuzz/
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
 [Prow]: {{ site.baseurl }}/running-clusterfuzzlite/prow/
