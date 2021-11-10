@@ -18,11 +18,8 @@ permalink: /running-clusterfuzzlite/
 
 Before running ClusterFuzzLite, you must integrate your project with
 ClusterFuzzLite's build system to build your project's fuzzers.
-See [Integrating with ClusterFuzzLite's build system] if you haven't already
+See [Step 1: Build Integration] if you haven't already
 taken this step.
-
-Once your project's fuzzers can be built and run by the OSS-Fuzz/ClusterFuzzLite
-helper script, it is ready to be fuzzed by ClusterFuzzLite.
 
 The exact method for running ClusterFuzzLite will depend on which CI system you
 are using.
@@ -56,10 +53,11 @@ your development workcycle:
 Running only code change fuzzing is the easiest way to use ClusterFuzzLite.
 However, we suggest using code change fuzzing in conjunction with other modes to
 gain ClusterFuzzLite's full benefits.
+
 For example, running [batch fuzzing] will develop a [corpus] that can be used by
 code change fuzzing.
-If no corpus is available from batch fuzzing, code change fuzzing will start
-from nothing or the provided seed corpus.
+(If no corpus is available from batch fuzzing, code change fuzzing will start
+from nothing or the provided seed corpus.)
 Furthermore, when you first use ClusterFuzzLite, code change
 fuzzing will not report the bugs that already exist in your codebase, while
 [batch fuzzing] will.
@@ -126,14 +124,12 @@ it should be used only if batch fuzzing is enabled.
 ### Continuous Builds
 
 Continuous builds are not actually a mode of running fuzzers but is an
-additional "task" for ClusterFuzzLite that you can set up (see [subguides]).
-Instead of running the fuzzers after building them, in continuous builds, the
-builds are saved for later use by the [code change fuzzing] mode.
+additional "task" for ClusterFuzzLite that you can set up (see [subguides]) for instructions specific to your CI system).
+Instead of running the fuzzers after building them, the continuous builds task saves the builds for later use by the [code change fuzzing] mode.
 
-The continuous builds task enables code change fuzzing to identify whether a
-crash was introduced by the code change or if it was pre-existing.
-If the cause of the crash was pre-existing, the crash is not reported by code
-change fuzzing.
+The continuous builds task enables code change fuzzing to identify whether the cause of a
+crash was introduced by the code change.
+With the continuous builds task, if the cause of the crash was pre-existing, the crash is not reported by code change fuzzing.
 If code change fuzzing is run without the continuous builds task, all crashes
 will be reported.
 
@@ -177,7 +173,8 @@ environment variable for `fuzz-seconds` is `FUZZ_SECONDS`.
 
 At this point you are ready to run ClusterFuzzLite using your specific CI
 system!
-Choose the [subguide](#subguides) for your CI system to get started.
+
+Next: choose the [subguide](#subguides) for your CI system.
 
 ## Supported Continous Integration systems {#subguides}
 
@@ -187,7 +184,7 @@ Choose the [subguide](#subguides) for your CI system to get started.
 
 [subguides]: #subguides
 [Google Cloud Build]: {{ site.baseurl }}/google-cloud-build/
-[integrating with ClusterFuzzLite's build system]: {{ site.baseurl }}/build-integration/
+[Step 1: Build Integration]: {{ site.baseurl }}/build-integration/
 [Batch Fuzzing]: #batch-fuzzing-batch
 [Code Coverage report generation]: #code-coverage-report-generation-coverage
 [this explanation]: {{ site.baseurl }}/build-integration/#language
