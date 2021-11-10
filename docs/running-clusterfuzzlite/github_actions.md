@@ -219,7 +219,7 @@ jobs:
 ```
 {% endraw %}
 
-NOTE: Be sure to change the `branches` field to whatever is your project's main branch. 
+NOTE: Be sure to change the `branches` field to match your project's main branch. 
 
 If you plan to use multiple sanitizers, add them all to the `sanitizer` field (to enable builds for each sanitizer)
 
