@@ -41,9 +41,9 @@ ClusterFuzzLite is based on [ClusterFuzz].
 ## Library and Sanitizers
 
 - [libFuzzer] library for coverage-guided testing
-- [AddressSanitizer], for finding memory safety issues
-- [MemorySanitizer], for finding use of uninitialized memory
-- [UndefinedBehaviorSanitizer], for finding undefined behavior (e.g. integer
+- [AddressSanitizer] for finding memory safety issues
+- [MemorySanitizer] for finding use of uninitialized memory
+- [UndefinedBehaviorSanitizer] for finding undefined behavior (e.g. integer
   overflows)
 
 ## Getting Started 
