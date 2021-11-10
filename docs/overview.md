@@ -11,7 +11,7 @@ permalink: /overview/
 ## Introducing fuzzing with libFuzzer and Sanitizers.
 
 This section provides an overview of the fuzzing process and defines common terms. 
-If you are already familiar with libFuzzer and Sanitizers, feel free to skip to [Build Integration] 
+If you are already familiar with libFuzzer and Sanitizers, feel free to skip to [Step 1: Build Integration] 
 to begin writing fuzzers and integrating with ClusterFuzzLite's build system.
 
 ### Fuzzing
