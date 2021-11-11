@@ -36,7 +36,7 @@ ClusterFuzzLite is based on [ClusterFuzz](https://google.github.io/clusterfuzz/)
 
 ## Documentation
 
-Read our [detailed documentation](google.github.io/clusterfuzzlite) to learn how
+Read our [detailed documentation](https://google.github.io/clusterfuzzlite) to learn how
 to use ClusterFuzzLite.
 
 ## Staying in touch
