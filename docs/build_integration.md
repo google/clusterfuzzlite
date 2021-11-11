@@ -74,8 +74,8 @@ $ export PATH_TO_PROJECT=<path_to_your_project>
 $ python infra/helper.py generate --external --language=c++ $PATH_TO_PROJECT
 ```
 Note that you may need to change the `--language` argument to another value
-if your project is written in another language, this is discussed more in the
-[language section](#language).
+if your project is written in another language.
+This is discussed more in the [language section](#language).
 
 Once the configuration files are generated, you should modify them to fit your
 project. Let's look at each file one-by-one and explain what you should add to
