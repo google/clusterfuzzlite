@@ -28,7 +28,7 @@ To enable more features, we recommend having these additional files:
 
 - `.github/workflows/cflite_build.yml` (for continuous builds)
 - `.github/workflows/cflite_batch.yml` (for batch fuzzing)
-- `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule)
+- `.github/workflows/cflite_cron.yml` (for tasks done on a cron schedule: pruning and coverage)
 
 These workflow files are used by GitHub actions to run the ClusterFuzzLite
 actions.
@@ -94,8 +94,8 @@ jobs:
 {% endraw %}
 
 Optionally, edit the following fields to customize your settings:
-- `sanitizers` Change or enable more sanitizers. 
-- `fuzz-seconds` Change the amount of time spent fuzzing. 
+- `sanitizers` Change or enable more sanitizers.
+- `fuzz-seconds` Change the amount of time spent fuzzing.
 - `storage-repo`, `storage-repo-branch`,
   `storage-repo-branch-coverage` Enable a [storage repo] (not necessary for initial runs, but a useful feature discussed [later on]).
 
@@ -158,12 +158,13 @@ jobs:
 
 Optionally, edit the following fields to customize your settings:
 - `cron` Change how frequently batch fuzzing is run. See [GitHub's documentation] on this.
-- `sanitizers` Change or enable more sanitizers. 
+- `sanitizers` Change or enable more sanitizers.
 - `fuzz-seconds` Change the amount of time spent fuzzing.
 - `storage-repo`, `storage-repo-branch`,
-  `storage-repo-branch-coverage` Enable a [storage repo]. 
+  `storage-repo-branch-coverage` Enable a [storage repo].
 
-To configure batch fuzzing to run on each push to your main branch, change the `on` field to:
+Though not recommended, you can configure batch fuzzing to run on each push to
+your main branch, change the `on` field to:
 
 ```yaml
 on:
@@ -301,7 +302,7 @@ jobs:
 
 Optionally, edit the following fields to view coverage reports at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`:
--  set `storage-repo` ([instructions here])
+- set `storage-repo` ([instructions here])
 - set `storage-repo-branch-coverage` to "gh-pages" (the
 default)
 - set `owner` and `storage-repo-name` to the appropriate values for your storage repo
@@ -318,7 +319,7 @@ To download an artifact from the ClusterFuzzLite run, do the following steps:
 
 - Click on the artifact you wish to download from the summary page, as
   illustrated in the screenshot below:
-  
+
 ![github-actions-download-crash]
 
 ## Extra configuration
@@ -349,7 +350,7 @@ above](#pr-fuzzing). The "affected fuzzers" are determined by using
 coverage reports.
 
 If a storage repo isn't specified, corpora and coverage reports will be uploaded as
-GitHub artifacts instead. 
+GitHub artifacts instead.
 
 [personal access token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [repository secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-an-environment
@@ -357,10 +358,11 @@ GitHub artifacts instead.
 
 ### Private repos
 
-In order for ClusterFuzzLite to clone private repos, the GitHub token needs to
-be passed to the build steps.
+In order for ClusterFuzzLite to use private repos, the GitHub token needs to
+be passed to the build and run steps.
 This token is automaticallly set by GitHub actions so no extra action is
-required from you except passing it to build fuzzers in each workflow file:
+required from you except passing it to build fuzzers and run fuzzers in each
+workflow file:
 
 {% raw %}
 ```yaml
@@ -370,7 +372,16 @@ required from you except passing it to build fuzzers in each workflow file:
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+      ...
+    - name: Run Fuzzers
+      id: run
+      uses: google/clusterfuzzlite/actions/run_fuzzers@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+      ...
 ```
+Note that if your storage repo is private, you should pass this token to every
+step that uses the storage repo.
 
 {% endraw %}
 

@@ -48,7 +48,7 @@ Do not change it.
 
 <!-- TODO: Host a clean, complete example somewhere. -->
 
-## Continuous builds (required)
+## Continuous builds
 
 Continuous builds are used whenever a crash is found during code change fuzzing
 to determine if this crash was newly introduced.
