@@ -49,9 +49,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 ```
 Clang's `-fsanitizer=fuzzer` option will link this fuzz target function against
 libFuzzer, producing a fuzzer binary that will fuzz your target code when run.
-Note that in ClusterFuzzLite, you will not use this flag directly. Instead, you should
-use the `$LIB_FUZZING_ENGINE` environment variable, which is discussed in more detail in
-[Build Integration].
+Note that in ClusterFuzzLite, you will not use this flag directly.
+Instead, you should use the `$LIB_FUZZING_ENGINE` environment variable,
+which is discussed in more detail in [Step 1: Build Integration].
 
 ### Sanitizers
 
@@ -59,8 +59,8 @@ Sanitizers are tools that detect bugs in code (typically "native code" such as
 C/C++, Rust, Go, and Swift) and report bugs by crashing.
 ClusterFuzzLite relies on sanitizers to detect bugs that would otherwise be
 missed.
-Sanitizers work by instructing clang to add compile-time instrumentation, so different
-builds are needed to use different sanitizers.
+Sanitizers work by instructing clang to add compile-time instrumentation, so
+different builds are needed to use different sanitizers.
 
 The sanitizers ClusterFuzzLite uses are:
 - [AddressSanitizer (ASan)] : For detecting memory safety issues. This is the

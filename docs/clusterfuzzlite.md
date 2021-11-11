@@ -43,7 +43,7 @@ ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Supported Fuzzing Engine and Sanitizers
 
-- [libFuzzer] library for coverage-guided testing
+- [libFuzzer] for coverage-guided testing
 - [AddressSanitizer] for finding memory safety issues
 - [MemorySanitizer] for finding use of uninitialized memory
 - [UndefinedBehaviorSanitizer] for finding undefined behavior (e.g. integer
@@ -60,12 +60,13 @@ If you're already familiar with using libFuzzer and sanitizers, start with [Step
 ## Staying in touch
 
 Join our [mailing list] for announcements and discussions.
+
 If you use ClusterFuzzLite, please fill out [this form] so we know who is using
 it.
 This gives us an idea of the impact of ClusterFuzzLite and allows us to
-justify working on it.
+justify future work.
 
-Feel free to [file an issue] if you experience any trouble or have feature
+Please [file an issue] if you experience any trouble or have feature
 requests.
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
