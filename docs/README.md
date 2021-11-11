@@ -1,6 +1,6 @@
 # Readme
 
-Use the following instructions to make documentation changes locally.
+Use the following instructions to view documentation changes locally.
 
 ## Prerequisites
 ```bash

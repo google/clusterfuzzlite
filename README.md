@@ -45,8 +45,8 @@ announcements and discussions.
 
 If you use ClusterFuzzLite, please fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSdAKB03YM4HjMwNe1K4T6Yr16OE4lCMj-VzThuUOrZUc3ytWw/viewform?usp=sf_link)
 so we know who is using it.
-This gives us an idea of the impact of ClusterFuzzLite and allows us to justify
-working on it.
+This gives us an idea of the impact of ClusterFuzzLite and allows us to
+justify future work.
 
 Feel free to
 [file an issue](https://github.com/google/clusterfuzzlite/issues/new)
