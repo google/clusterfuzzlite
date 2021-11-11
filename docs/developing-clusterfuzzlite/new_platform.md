@@ -35,8 +35,8 @@ example.
 Then specify the name of your module using the `CFL_PLATFORM` environment
 variable when running ClusterFuzzLite.
 One of the more important configuration properties your `PlatformConfig` class
-should define is a [filestore]. It may be better to let users override this, but
-it is not required.
+should define is a [filestore](#filestore).
+It may be better to let users override this, but it is not required.
 
 ## Filestore
 
