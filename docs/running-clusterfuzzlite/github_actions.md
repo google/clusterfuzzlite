@@ -188,6 +188,10 @@ If the crash is not novel, PR fuzzing will not report it.
 This means that there will be fewer unrelated failures when running code change
 fuzzing.
 
+**Disclaimer**: If your builds are large they may exceed the free
+[GitHub actions quotas](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes).
+In this case it's recommended to not enable continuous builds.
+
 To set up continuous builds, add the following to `.github/workflows/cflite_build.yml`:
 
 {% raw %}
