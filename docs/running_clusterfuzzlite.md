@@ -38,14 +38,14 @@ ClusterFuzzLite can be instructed to perform any of these functions using the
 
 ### Code Change Fuzzing ("code-change") {#code-change}
 
-One of the core ways to use ClusterFuzzLite is to fuzz code changes that
-were introduced in a pull request/code review or commit.
+The core way to use ClusterFuzzLite is to fuzz code changes that were introduced
+in a pull request/code review or commit.
 Code change fuzzing allows ClusterFuzzLite to find bugs before they are commited
 into your code and while they are easiest to fix.
 
 Code change fuzzing is designed to be fast so that it integrates easily into
 your development workcycle:
-- It defaults to running for 10 minutes, [though this can be changed].
+- It defaults to fuzzing for 10 minutes, [though this can be changed].
 - It quits after finding a single crash, even if there are other fuzzers to
    run.
 
@@ -66,7 +66,7 @@ additional functionalities.
 
 ### Batch Fuzzing ("batch") {#batch}
 
-In batch fuzzing mode all fuzzers are run for a preset longer amount of time.
+In batch fuzzing mode all fuzzers are run for a preset, longer, amount of time.
 Unlike in code change mode, batch fuzzing will not exit immediately upon
 discovering a bug.
 It will keep running other fuzzers until reaching the allotted fuzzing time.
@@ -86,7 +86,7 @@ serves two important purposes:
 
 [corpus]: https://github.com/google/fuzzing/blob/master/docs/glossary.md#corpus
 
-### Corpus Pruning ("prune")
+### Corpus Pruning ("prune") {#prune}
 
 Over time, redundant testcases will get introduced into your fuzzer's corpuses
 during [batch fuzzing].
@@ -115,20 +115,19 @@ Otherwise, it will run all of them.
 Coverage report generation uses the corpuses saved by [batch fuzzing] and
 therefore should only be used if batch fuzzing is enabled.
 It is not required if [batch fuzzing] is enabled, but is strongly recommended.
-
-Since code coverage report generation uses the corpuses saved by batch fuzzing,
-it should be used only if batch fuzzing is enabled.
 ![github-actions-coverage-report]
 
 ### Continuous Builds
 
 Continuous builds are not actually a mode of running fuzzers but is an
-additional "task" for ClusterFuzzLite that you can set up (see [subguides]) for instructions specific to your CI system).
-Instead of running the fuzzers after building them, the continuous builds task saves the builds for later use by the [code change fuzzing] mode.
+additional "task" for ClusterFuzzLite that you can set up.
+Instead of running the fuzzers after building them, the continuous builds task
+saves the builds for later use by the [code change fuzzing] mode.
 
-The continuous builds task enables code change fuzzing to identify whether the cause of a
-crash was introduced by the code change.
-With the continuous builds task, if the cause of the crash was pre-existing, the crash is not reported by code change fuzzing.
+The continuous builds task enables code change fuzzing to identify whether the
+cause of a crash was introduced by the code change.
+With the continuous builds task, if the cause of the crash was pre-existing, the
+crash is not reported by code change fuzzing.
 If code change fuzzing is run without the continuous builds task, all crashes
 will be reported.
 
@@ -161,6 +160,7 @@ specific CI system.
   value is `false`. When set to `true`, ClusterFuzzLite will never report a
   failure even if it finds a crash in your project, and users will have to
   manually check the logs for detected bugs.
+  This should only be used for testing ClusterFuzzLite.
 
 **Note:** Your specific CI system will determine how options are passed to
 ClusterFuzzLite.
@@ -182,10 +182,10 @@ Next: choose the [subguide](#subguides) for your CI system.
 - [Prow] (beta)
 
 [subguides]: #subguides
-[Google Cloud Build]: {{ site.baseurl }}/google-cloud-build/
+[Google Cloud Build]: {{ site.baseurl }}/running-clusterfuzzlite/google-cloud-build/
 [Step 1: Build Integration]: {{ site.baseurl }}/build-integration/
 [Batch Fuzzing]: #batch-fuzzing-batch
-[Code Coverage report generation]: #code-coverage-report-generation-coverage
+[Code Coverage report generation]: #coverage
 [this explanation]: {{ site.baseurl }}/build-integration/#language
 [ClusterFuzzLite modes]: #clusterfuzzlite-modes
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
@@ -197,6 +197,6 @@ Next: choose the [subguide](#subguides) for your CI system.
 [coverage]: #coverage
 [though this can be changed]: #configuration-options
 [sanitizers]: {{ site.baseurl }}/overview/#sanitizers
-[overview] https://storage.googleapis.com/clusterfuzzlite-public/images/overview.png
+[overview]: https://storage.googleapis.com/clusterfuzzlite-public/images/overview.png
 [github-actions-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-crash.png
 [github-actions-coverage-report]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-coverage-report.png
