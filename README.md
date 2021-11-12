@@ -16,7 +16,7 @@ ClusterFuzzLite is based on [ClusterFuzz](https://google.github.io/clusterfuzz/)
    deeper bugs missed during code change fuzzing and build a corpus for
    use in code change fuzzing
 - Coverage reports showing which parts of your code are fuzzed
-- Modular funtionality, so you can decide which features you want to use
+- Modular functionality, so you can decide which features you want to use
 
 ![demo](https://storage.googleapis.com/clusterfuzzlite-public/images/demo.gif)
 
