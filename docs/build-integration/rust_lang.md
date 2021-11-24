@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Integrating a Rust project
-parent: Build Integration
+parent: >
+  Step 1: Build Integration
 grand_parent: ClusterFuzzLite
 nav_order: 2
 permalink: /build-integration/rust-lang/

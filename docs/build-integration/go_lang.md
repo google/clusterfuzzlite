@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Integrating a Go project
-parent: Build Integration
+parent: >
+  Step 1: Build Integration
 grand_parent: ClusterFuzzLite
 nav_order: 1
 permalink: /build-integration/go-lang/
