@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Integrating a Java/JVM project
-parent: Build Integration
+parent: >
+  Step 1: Build Integration
 grand_parent: ClusterFuzzLite
 nav_order: 4
 permalink: /build-integration/jvm-lang/
