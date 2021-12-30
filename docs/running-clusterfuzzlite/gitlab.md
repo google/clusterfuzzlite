@@ -210,7 +210,18 @@ You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
 - corpus
 - continuous build
 
-To do so, you need to define an [access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+To do so, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs :
+{% raw %}
+```yaml
+  cache:
+    key: clusterfuzz-lite
+    paths:
+      - cfl-cache/
+```
+{% endraw %}
+You should ensure that these runners share the access to the cache.
+
+Another option is to define an [access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 with the scope `read_api`.
 
 Then, you need to use its value in a variable which you can define in your CI/CD settings.
