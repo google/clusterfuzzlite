@@ -48,8 +48,6 @@ following default configurations to `.gitlab-ci.yml`:
 ```yaml
 variables:
   SANITIZER: "address"
-  WORKSPACE: $CI_PROJECT_DIR
-  REPOSITORY: $CI_PROJECT_NAME
   CFL_PLATFORM: gitlab
 
 clusterfuzzlite:
@@ -62,9 +60,6 @@ clusterfuzzlite:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       variables:
         MODE: "code-change"
-  # to select a relevant runner
-  tags:
-    - fuzz
   before_script:
     # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
@@ -77,6 +72,8 @@ clusterfuzzlite:
 ```
 {% endraw %}
 
+You may also wish to set [tags](https://docs.gitlab.com/runner/#tags) to select a relevant runner.
+
 Optionally, edit the following variables to customize your settings:
 - `SANITIZER` Change or enable more sanitizers.
 - `LANGUAGE` Define the language of your project.
@@ -85,12 +82,13 @@ Optionally, edit the following variables to customize your settings:
 - `FUZZ_SECONDS` Change the amount of time spent fuzzing.
 - `CFL_ARTIFACTS_DIR` : To save your artifacts in a different directory than `artifacts`
 
+For `SANITIZER`, you may also use a matrix to use multiple sanitizers with the same job.
 
 ### Batch fuzzing and corpus pruning
 
 Batch fuzzing enables continuous, regular fuzzing on your latest HEAD and
 allows a corpus of inputs to build up over time, which greatly improves the
-effectiveness of fuzzing. Batch fuzzing can be run on a schedule.
+effectiveness of fuzzing. Batch fuzzing should be run on a schedule.
 
 To enable batch fuzzing, add the following to
 `.gitlab-ci.yml`:
@@ -106,8 +104,6 @@ clusterfuzzlite-corpus:
   rules:
     - if: $MODE == "prune"
     - if: $MODE == "batch"
-  tags:
-    - fuzz
   before_script:
     # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
@@ -151,8 +147,6 @@ clusterfuzzlite-build:
       variables:
         MODE: "code-change"
         UPLOAD_BUILD: "true"
-  tags:
-    - fuzz
   before_script:
     # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
@@ -182,8 +176,6 @@ clusterfuzzlite-coverage:
     SANITIZER: "coverage"
   rules:
     - if: $MODE == "coverage"
-  tags:
-    - fuzz
   before_script:
     # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
