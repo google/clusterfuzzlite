@@ -197,7 +197,7 @@ This schedule should target the main/default/`CFL_BRANCH` branch.
 
 ### Gitlab artifacts filestore
 
-You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
+You can use the variable `FILESTORE: gitlab-artifacts` to use Gitlab artifacts for storing
 - coverage reports
 - corpus
 - continuous build
@@ -205,13 +205,16 @@ You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
 To do so, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs :
 {% raw %}
 ```yaml
+  variables:
+    CFL_CACHE_DIR: cfl-cache
   cache:
     key: clusterfuzz-lite
     paths:
       - cfl-cache/
 ```
 {% endraw %}
-You should ensure that these runners share the access to the cache.
+And the cache directory needs to defined as `CFL_CACHE_DIR` to be used by clusterfuzz-lite.
+You should ensure that the runners share the access to the cache.
 
 Another option is to define an [access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 with the scope `read_api`.
