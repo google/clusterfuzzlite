@@ -67,6 +67,8 @@ clusterfuzzlite:
     # will build and run the fuzzers
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
+    # upload artifacts when a crash makes the job fail
+    when: always
     paths:
       - artifacts/crashes/
 ```
@@ -110,6 +112,7 @@ clusterfuzzlite-corpus:
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
+    when: always
     paths:
       - artifacts/corpus/
       - artifacts/crashes/
@@ -153,6 +156,7 @@ clusterfuzzlite-build:
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
+    when: always
     paths:
       - artifacts/build/
       - artifacts/crashes/
@@ -182,6 +186,7 @@ clusterfuzzlite-coverage:
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
+    when: always
     paths:
       - artifacts/coverage/
       - artifacts/crashes/
