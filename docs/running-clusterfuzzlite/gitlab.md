@@ -52,6 +52,9 @@ clusterfuzzlite:
     name: google/clusterfuzzlite/actions/build_fuzzers@v1
     entrypoint: [""]
   stage: fuzz
+  parallel:
+    matrix:
+      - SANITIZER: [address, undefined]
   rules:
     # Default code change.
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
