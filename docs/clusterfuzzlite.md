@@ -38,6 +38,7 @@ ClusterFuzzLite is based on [ClusterFuzz].
 
 ## Supported CI Systems
 - [GitHub Actions]
+- [GitLab]
 - [Google Cloud Build]
 - [Prow]
 - Support for more CI systems is in-progess, and [extending support to other CI

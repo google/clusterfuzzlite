@@ -3,7 +3,7 @@ layout: default
 parent: Step 2&#58; Running ClusterFuzzLite
 grand_parent: ClusterFuzzLite
 title: GitLab
-nav_order: 1
+nav_order: 2
 permalink: /running-clusterfuzzlite/gitlab/
 ---
 # GitLab
@@ -24,10 +24,7 @@ The following examples use a `docker` gitlab runner running sibling containers:
 
 It should be possible to achieve the same functionalities with using a shell executor.
 But then, the `.gitlab-ci.yml` should be different, and explicitly call the `docker` commands
-on clusterfuzz-lite images.
-
-Docker-in-Docker does not seem possible as clusterfuzz-lite images
-do not have the docker tools installed.
+on ClusterFuzzLite images.
 
 ## .gitlab-ci.yml
 For basic ClusterFuzzLite functionality, all you need is a single job
@@ -47,7 +44,7 @@ following default configurations to `.gitlab-ci.yml`:
 {% raw %}
 ```yaml
 variables:
-  SANITIZER: "address"
+  SANITIZER: address
   CFL_PLATFORM: gitlab
 
 clusterfuzzlite:
@@ -56,18 +53,18 @@ clusterfuzzlite:
     entrypoint: [""]
   stage: fuzz
   rules:
-    # default code change
+    # Default code change.
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       variables:
         MODE: "code-change"
   before_script:
-    # gitlab's container name is not its hostname !
+    # Get gitlab's container id.
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
   script:
-    # will build and run the fuzzers
+    # Will build and run the fuzzers.
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
-    # upload artifacts when a crash makes the job fail
+    # Upload artifacts when a crash makes the job fail.
     when: always
     paths:
       - artifacts/crashes/
@@ -77,12 +74,12 @@ clusterfuzzlite:
 You may also wish to set [tags](https://docs.gitlab.com/runner/#tags) to select a relevant runner.
 
 Optionally, edit the following variables to customize your settings:
-- `SANITIZER` Change or enable more sanitizers.
+- `SANITIZER` Select sanitizer(s)
 - `LANGUAGE` Define the language of your project.
 - `CFL_BRANCH` Branch to fuzz, default is `CI_DEFAULT_BRANCH`.
 - `FILESTORE` To use corpus produced by other jobs.
 - `FUZZ_SECONDS` Change the amount of time spent fuzzing.
-- `CFL_ARTIFACTS_DIR` : To save your artifacts in a different directory than `artifacts`
+- `CFL_ARTIFACTS_DIR` To save your artifacts in a different directory than `artifacts`
 
 For `SANITIZER`, you may also use a matrix to use multiple sanitizers with the same job.
 
@@ -97,7 +94,7 @@ To enable batch fuzzing, add the following to
 
 {% raw %}
 ```yaml
-# this name is hardcoded and cannot be changed for gitlab artifacts filestore
+# This name is hardcoded and cannot be changed for gitlab artifacts filestore.
 clusterfuzzlite-corpus:
   image:
     name: google/clusterfuzzlite/actions/build_fuzzers@v1
@@ -107,7 +104,6 @@ clusterfuzzlite-corpus:
     - if: $MODE == "prune"
     - if: $MODE == "batch"
   before_script:
-    # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
@@ -130,7 +126,7 @@ The continuous build task causes a build to be triggered and uploaded
 whenever a new push is done to main/default branch.
 
 Continuous builds are used when a crash is found during PR fuzzing to determine whether the crash was newly introduced.
-If the crash is not novel, PR fuzzing will not report it.
+If the crash was not newly introduced, PR fuzzing will not report it.
 This means that there will be fewer unrelated failures when running code change
 fuzzing.
 
@@ -145,13 +141,12 @@ clusterfuzzlite-build:
     entrypoint: [""]
   stage: fuzz
   rules:
-    # use $CI_DEFAULT_BRANCH or $CFL_BRANCH
+    # Use $CI_DEFAULT_BRANCH or $CFL_BRANCH.
     - if: $CI_COMMIT_BRANCH == $CFL_BRANCH && $CI_PIPELINE_SOURCE == "push"
       variables:
         MODE: "code-change"
         UPLOAD_BUILD: "true"
   before_script:
-    # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
@@ -181,7 +176,6 @@ clusterfuzzlite-coverage:
   rules:
     - if: $MODE == "coverage"
   before_script:
-    # gitlab's container name is not its hostname !
     - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
@@ -196,7 +190,6 @@ clusterfuzzlite-coverage:
 You should then define one [schedule](https://docs.gitlab.com/ee/ci/pipelines/schedules.html)
 In it, you should set the variable `MODE` to `coverage`.
 This schedule should target the main/default/`CFL_BRANCH` branch.
-
 
 ## Extra configuration
 
@@ -213,12 +206,12 @@ To do so, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in y
   variables:
     CFL_CACHE_DIR: cfl-cache
   cache:
-    key: clusterfuzz-lite
+    key: clusterfuzzlite
     paths:
       - cfl-cache/
 ```
 {% endraw %}
-And the cache directory needs to defined as `CFL_CACHE_DIR` to be used by clusterfuzz-lite.
+And the cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
 You should ensure that the runners share the access to the cache.
 
 Another option is to define an [access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)

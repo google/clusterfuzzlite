@@ -178,6 +178,7 @@ Next: choose the [subguide](#subguides) for your CI system.
 ## Supported Continous Integration Systems {#subguides}
 
 - [GitHub Actions]
+- [GitLab]
 - [Google Cloud Build]
 - [Prow] (beta)
 
