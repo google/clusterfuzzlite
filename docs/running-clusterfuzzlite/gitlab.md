@@ -70,7 +70,7 @@ clusterfuzzlite:
     # Upload artifacts when a crash makes the job fail.
     when: always
     paths:
-      - artifacts/crashes/
+      - artifacts/
 ```
 {% endraw %}
 
@@ -113,8 +113,7 @@ clusterfuzzlite-corpus:
   artifacts:
     when: always
     paths:
-      - artifacts/corpus/
-      - artifacts/crashes/
+      - artifacts/
 ```
 {% endraw %}
 
@@ -156,8 +155,7 @@ clusterfuzzlite-build:
   artifacts:
     when: always
     paths:
-      - artifacts/build/
-      - artifacts/crashes/
+      - artifacts/
 ```
 {% endraw %}
 
@@ -185,8 +183,7 @@ clusterfuzzlite-coverage:
   artifacts:
     when: always
     paths:
-      - artifacts/coverage/
-      - artifacts/crashes/
+      - artifacts/
 ```
 {% endraw %}
 
@@ -196,14 +193,17 @@ This schedule should target the main/default/`CFL_BRANCH` branch.
 
 ## Extra configuration
 
-### Gitlab artifacts filestore
+### Gitlab filestore
 
-You can use the variable `FILESTORE: gitlab-artifacts` to use Gitlab artifacts for storing
+You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
 - coverage reports
 - corpus
 - continuous build
+- crashes
 
-To do so, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs :
+Crashes get simply added as jobs artifacts.
+
+For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs :
 {% raw %}
 ```yaml
   variables:
@@ -214,12 +214,18 @@ To do so, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in y
       - cfl-cache/
 ```
 {% endraw %}
-And the cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
+The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
+If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
 
-Another option is to define an [access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
-with the scope `read_api`.
-
-Then, you need to use its value in a variable which you can define in your CI/CD settings.
-You should define it as masked to avoid leaks.
-The variable's name should be `CFL_PRIVATE_TOKEN` and its value should be the token.
+For coverage reports and corpus, you need to set up another git repository.
+You need to create a project access token for this repository, with `read_repository` and `write_repository` rights.
+And this token should be used from the fuzzed repository as a CI/CD variable.
+You can name this variable as you like, in the following example it is `CFL_TOKEN`.
+This variable should be defined as masked to avoid leaks.
+Last, you need to setup these variables in `.gitlab-ci.yml` :
+```
+  GIT_STORE_REPO: "https://oauth2:${CFL_TOKEN}@gitlab.hostname/namespace/project-cfl.git"
+  GIT_STORE_BRANCH: main
+  GIT_STORE_BRANCH_COVERAGE: coverage
+```
