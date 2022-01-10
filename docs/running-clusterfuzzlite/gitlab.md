@@ -80,11 +80,9 @@ Optionally, edit the following variables to customize your settings:
 - `SANITIZER` Select sanitizer(s)
 - `LANGUAGE` Define the language of your project.
 - `CFL_BRANCH` Branch to fuzz, default is `CI_DEFAULT_BRANCH`.
-- `FILESTORE` To use corpus produced by other jobs.
+- `FILESTORE` storage for files : builds, corpus, coverage and crashes.
 - `FUZZ_SECONDS` Change the amount of time spent fuzzing.
 - `CFL_ARTIFACTS_DIR` To save your artifacts in a different directory than `artifacts`
-
-For `SANITIZER`, you may also use a matrix to use multiple sanitizers with the same job.
 
 ### Batch fuzzing and corpus pruning
 
@@ -97,7 +95,6 @@ To enable batch fuzzing, add the following to
 
 {% raw %}
 ```yaml
-# This name is hardcoded and cannot be changed for gitlab artifacts filestore.
 clusterfuzzlite-corpus:
   image:
     name: google/clusterfuzzlite/actions/build_fuzzers@v1
@@ -125,7 +122,7 @@ These schedules should target the main/default/`CFL_BRANCH` branch.
 ### Continuous builds
 
 The continuous build task causes a build to be triggered and uploaded
-whenever a new push is done to main/default branch.
+whenever a new push is done to main/default branches.
 
 Continuous builds are used when a crash is found during PR fuzzing to determine whether the crash was newly introduced.
 If the crash was not newly introduced, PR fuzzing will not report it.
@@ -136,7 +133,6 @@ To set up continuous builds, add the following to `.gitlab-ci.yml`:
 
 {% raw %}
 ```yaml
-# this name is hardcoded and cannot be changed for gitlab artifacts filestore
 clusterfuzzlite-build:
   image:
     name: google/clusterfuzzlite/actions/build_fuzzers@v1
@@ -166,7 +162,6 @@ To generate periodic coverage reports, add the following job to
 
 {% raw %}
 ```yaml
-# this name is hardcoded and cannot be changed for gitlab artifacts filestore
 clusterfuzzlite-coverage:
   image:
     name: google/clusterfuzzlite/actions/build_fuzzers@v1
@@ -218,10 +213,10 @@ The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuz
 If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
 
-For coverage reports and corpus, you need to set up another git repository.
+For coverage reports and corpus, it is recommended to set up another git repository.
 You need to create a project access token for this repository, with `read_repository` and `write_repository` rights.
 And this token should be used from the fuzzed repository as a CI/CD variable.
-You can name this variable as you like, in the following example it is `CFL_TOKEN`.
+You can name this variable as you like, in the following example it is named `CFL_TOKEN`.
 This variable should be defined as masked to avoid leaks.
 Last, you need to setup these variables in `.gitlab-ci.yml` :
 ```
@@ -229,3 +224,23 @@ Last, you need to setup these variables in `.gitlab-ci.yml` :
   GIT_STORE_BRANCH: main
   GIT_STORE_BRANCH_COVERAGE: coverage
 ```
+
+If you do not set another git repository, the GitLab filestore will fall back to the cache.
+
+For coverage reports, you may want to set up GitLab [pages](https://docs.gitlab.com/ee/user/project/pages/)
+In the repository hosting your coverage, you should add a `pages` job such as :
+{% raw %}
+```yaml
+pages:
+  script:
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public 
+```
+{% endraw %}
+This job will build a static web site with everything which is in the `public` directory.
+You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
+`baseurl` is the domain you configured for your GitLab pages.
