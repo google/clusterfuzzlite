@@ -76,6 +76,7 @@ requests.
 [fuzzing]: {{ site.baseurl }}/overview.md#fuzzing
 [ClusterFuzz]: https://google.github.io/clusterfuzz/
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
+[GitLab]: {{ site.baseurl }}/running-clusterfuzzlite/gitlab/
 [Prow]: {{ site.baseurl }}/running-clusterfuzzlite/prow/
 [Overview]: {{ site.baseurl }}/overview/
 [Google Cloud Build]: {{ site.baseurl }}/running-clusterfuzzlite/google-cloud-build/

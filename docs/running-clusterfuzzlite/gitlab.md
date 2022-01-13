@@ -80,7 +80,7 @@ Optionally, edit the following variables to customize your settings:
 - `SANITIZER` Select sanitizer(s)
 - `LANGUAGE` Define the language of your project.
 - `CFL_BRANCH` Branch to fuzz, default is `CI_DEFAULT_BRANCH`.
-- `FILESTORE` storage for files : builds, corpus, coverage and crashes.
+- `FILESTORE` storage for files: builds, corpus, coverage and crashes.
 - `FUZZ_SECONDS` Change the amount of time spent fuzzing.
 - `CFL_ARTIFACTS_DIR` To save your artifacts in a different directory than `artifacts`
 
@@ -198,7 +198,7 @@ You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
 
 Crashes get simply added as jobs artifacts.
 
-For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs :
+For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/caching/) in your jobs:
 {% raw %}
 ```yaml
   variables:
@@ -228,7 +228,7 @@ Last, you need to setup these variables in `.gitlab-ci.yml` :
 If you do not set another git repository, the GitLab filestore will fall back to the cache.
 
 For coverage reports, you may want to set up GitLab [pages](https://docs.gitlab.com/ee/user/project/pages/)
-In the repository hosting your coverage, you should add a `pages` job such as :
+In the repository hosting your coverage, you should add a `pages` job such as:
 {% raw %}
 ```yaml
 pages:
