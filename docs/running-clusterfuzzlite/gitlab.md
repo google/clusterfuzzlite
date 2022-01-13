@@ -119,6 +119,8 @@ In one, you should set the variable `MODE` to `batch` to run the actual batch fu
 In the other, you should set the variable `MODE` to `prune` for corpus pruning once a day.
 These schedules should target the main/default/`CFL_BRANCH` branch.
 
+![gitlab-schedule-mode]
+
 ### Continuous builds
 
 The continuous build task causes a build to be triggered and uploaded
@@ -215,9 +217,15 @@ You should ensure that the runners share the access to the cache.
 
 For coverage reports and corpus, it is recommended to set up another git repository.
 You need to create a project access token for this repository, with `read_repository` and `write_repository` rights.
+
+![gitlab-project-token]
+
 And this token should be used from the fuzzed repository as a CI/CD variable.
 You can name this variable as you like, in the following example it is named `CFL_TOKEN`.
 This variable should be defined as masked to avoid leaks.
+
+![gitlab-variable-token]
+
 Last, you need to setup these variables in `.gitlab-ci.yml` :
 ```
   GIT_STORE_REPO: "https://oauth2:${CFL_TOKEN}@gitlab.hostname/namespace/project-cfl.git"
@@ -244,3 +252,7 @@ pages:
 This job will build a static web site with everything which is in the `public` directory.
 You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
 `baseurl` is the domain you configured for your GitLab pages.
+
+[gitlab-schedule-mode]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-schedule-mode.png
+[gitlab-project-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-project-token.png
+[gitlab-variable-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-variable-token.png
