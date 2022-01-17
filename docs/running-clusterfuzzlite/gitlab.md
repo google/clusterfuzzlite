@@ -49,7 +49,7 @@ variables:
 
 clusterfuzzlite:
   image:
-    name: google/clusterfuzzlite/actions/build_fuzzers@v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   parallel:
@@ -97,7 +97,7 @@ To enable batch fuzzing, add the following to
 ```yaml
 clusterfuzzlite-corpus:
   image:
-    name: google/clusterfuzzlite/actions/build_fuzzers@v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   rules:
@@ -137,7 +137,7 @@ To set up continuous builds, add the following to `.gitlab-ci.yml`:
 ```yaml
 clusterfuzzlite-build:
   image:
-    name: google/clusterfuzzlite/actions/build_fuzzers@v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   rules:
@@ -166,7 +166,7 @@ To generate periodic coverage reports, add the following job to
 ```yaml
 clusterfuzzlite-coverage:
   image:
-    name: google/clusterfuzzlite/actions/build_fuzzers@v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   variables:
