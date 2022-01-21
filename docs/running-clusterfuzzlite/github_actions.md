@@ -56,6 +56,9 @@ permissions: read-all
 jobs:
   PR:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.sanitizer }}-${{ github.ref }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -69,6 +72,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         sanitizer: ${{ matrix.sanitizer }}
         # Optional but recommended: used to only run fuzzers that are affected
         # by the PR.
@@ -206,6 +210,9 @@ permissions: read-all
 jobs:
   Build:
    runs-on: ubuntu-latest
+   concurrency:
+     group: ${{ github.workflow }}-${{ matrix.sanitizer }}-${{ github.ref }}
+     cancel-in-progress: true
    strategy:
      fail-fast: false
      matrix:
