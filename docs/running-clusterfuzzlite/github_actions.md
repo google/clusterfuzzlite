@@ -56,6 +56,9 @@ permissions: read-all
 jobs:
   PR:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.sanitizer }}-${{ github.ref }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -206,6 +209,9 @@ permissions: read-all
 jobs:
   Build:
    runs-on: ubuntu-latest
+   concurrency:
+     group: ${{ github.workflow }}-${{ matrix.sanitizer }}-${{ github.ref }}
+     cancel-in-progress: true
    strategy:
      fail-fast: false
      matrix:
