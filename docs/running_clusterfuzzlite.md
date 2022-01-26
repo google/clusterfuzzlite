@@ -178,6 +178,7 @@ Next: choose the [subguide](#subguides) for your CI system.
 ## Supported Continous Integration Systems {#subguides}
 
 - [GitHub Actions]
+- [GitLab]
 - [Google Cloud Build]
 - [Prow] (beta)
 
@@ -189,6 +190,7 @@ Next: choose the [subguide](#subguides) for your CI system.
 [this explanation]: {{ site.baseurl }}/build-integration/#language
 [ClusterFuzzLite modes]: #clusterfuzzlite-modes
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
+[GitLab]: {{ site.baseurl }}/running-clusterfuzzlite/gitlab/
 [Prow]: {{ site.baseurl }}/running-clusterfuzzlite/prow/
 [Batch Fuzzing]: #batch
 [Continuous builds]: #continuous-builds

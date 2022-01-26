@@ -3,7 +3,7 @@ layout: default
 parent: Step 2&#58; Running ClusterFuzzLite
 grand_parent: ClusterFuzzLite
 title: Google Cloud Build
-nav_order: 2
+nav_order: 3
 permalink: /running-clusterfuzzlite/google-cloud-build/
 ---
 # Google Cloud Build

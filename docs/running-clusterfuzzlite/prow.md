@@ -3,7 +3,7 @@ layout: default
 parent: Step 2&#58; Running ClusterFuzzLite
 grand_parent: ClusterFuzzLite
 title: Prow
-nav_order: 3
+nav_order: 4
 permalink: /running-clusterfuzzlite/prow/
 ---
 # Prow (beta)
