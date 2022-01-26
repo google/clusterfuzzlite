@@ -20,7 +20,8 @@ To get the most of this page, you should have already set up your
 
 ## Gitlab runner
 The following examples use a `docker` gitlab runner running sibling containers:
-[doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding).
+See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
+for more information.
 
 It should be possible to achieve the same functionalities with using a shell executor.
 But then, the `.gitlab-ci.yml` should be different, and explicitly call the `docker` commands
@@ -49,7 +50,7 @@ variables:
 
 clusterfuzzlite:
   image:
-    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   parallel:
@@ -97,7 +98,7 @@ To enable batch fuzzing, add the following to
 ```yaml
 clusterfuzzlite-corpus:
   image:
-    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   rules:
@@ -137,7 +138,7 @@ To set up continuous builds, add the following to `.gitlab-ci.yml`:
 ```yaml
 clusterfuzzlite-build:
   image:
-    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   rules:
@@ -166,7 +167,7 @@ To generate periodic coverage reports, add the following job to
 ```yaml
 clusterfuzzlite-coverage:
   image:
-    name: gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1
+    name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   stage: fuzz
   variables:
@@ -215,14 +216,16 @@ The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuz
 If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
 
-For coverage reports and corpus, it is recommended to set up another git repository.
-You need to create a project access token for this repository, with `read_repository` and `write_repository` rights.
+For coverage reports and corpus, it is recommended to set up another
+git repository for storage.
+You need to create a project access token for this repository, with
+`read_repository` and `write_repository` rights.
 
 ![gitlab-project-token]
 
 And this token should be used from the fuzzed repository as a CI/CD variable.
-You can name this variable as you like, in the following example it is named `CFL_TOKEN`.
-This variable should be defined as masked to avoid leaks.
+You can name this variable as you like, in the following example it is named
+`CFL_TOKEN`. This variable should be defined as masked to avoid leaks.
 
 ![gitlab-variable-token]
 
@@ -246,13 +249,15 @@ pages:
     - mv .public public
   artifacts:
     paths:
-      - public 
+      - public
 ```
 {% endraw %}
 This job will build a static web site with everything which is in the `public` directory.
 You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
 `baseurl` is the domain you configured for your GitLab pages.
 
+[build integration]: {{ site.baseurl }}/build-integration/
+[high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
 [gitlab-schedule-mode]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-schedule-mode.png
 [gitlab-project-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-project-token.png
 [gitlab-variable-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-variable-token.png
