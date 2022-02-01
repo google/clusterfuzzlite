@@ -23,7 +23,7 @@ The following examples use a `docker` gitlab runner running sibling containers:
 See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
 for more information.
 
-It should be possible to achieve the same functionalities with using a shell executor.
+It should be possible to achieve the same functionality with using a shell executor.
 But then, the `.gitlab-ci.yml` should be different, and explicitly call the `docker` commands
 on ClusterFuzzLite images.
 
@@ -256,6 +256,7 @@ This job will build a static web site with everything which is in the `public` d
 You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
 `baseurl` is the domain you configured for your GitLab pages.
 
+[GitLab]: https://about.gitlab.com/
 [build integration]: {{ site.baseurl }}/build-integration/
 [high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
 [gitlab-schedule-mode]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-schedule-mode.png
