@@ -23,10 +23,6 @@ The following examples use a `docker` gitlab runner running sibling containers:
 See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
 for more information.
 
-It should be possible to achieve the same functionality with using a shell executor.
-But then, the `.gitlab-ci.yml` should be different, and explicitly call the `docker` commands
-on ClusterFuzzLite images.
-
 ## .gitlab-ci.yml
 For basic ClusterFuzzLite functionality, all you need is a single job
 to enable fuzzing on your merge requests.
@@ -255,6 +251,12 @@ pages:
 This job will build a static web site with everything which is in the `public` directory.
 You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
 `baseurl` is the domain you configured for your GitLab pages.
+
+## Shell executor
+Note that it should be possible to achieve the same functionality using a shell
+executor, though this is unsupported.
+In that case, the `.gitlab-ci.yml` will different. For one you must explicitly
+call the `docker` commands on ClusterFuzzLite images.
 
 [GitLab]: https://about.gitlab.com/
 [build integration]: {{ site.baseurl }}/build-integration/
