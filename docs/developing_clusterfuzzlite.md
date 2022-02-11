@@ -170,7 +170,7 @@ These two functions are performed by two different docker images:
 Building fuzzers is the simpler of the two functions and is pretty much the same
 whether ClusterFuzzLite is code change fuzzing, batch fuzzing, pruning,
 generating coverage reports or saving continuous builds.
-There are four steps that can go into "Building fuzzers" though not of them are
+There are four steps that can go into "Building fuzzers" though not all of them are
 run every time fuzzers are built.
 These steps are:
 - [Building the builder image and the fuzzers].
@@ -183,7 +183,7 @@ These steps are:
 The first step for ClusterFuzzLite is building the docker image defined by
 the user project's `.clusterfuzzlite/Dockerfile`.
 The next step is building the fuzzers.
-The main configuration variable that change how building the fuzzers works are
+The main configuration variables that change how building the fuzzers works are
 `SANITIZER` and `LANGUAGE`.
 However, ClusterFuzzLite does not really use these variables directly, it simply
 passes them to the `compile` script that is run in the OSS-Fuzz builder images
@@ -269,7 +269,7 @@ These are discussed more in the [docs on running ClusterFuzzLite].
 [cifuzz-external-example]: https://github.com/jonathanmetzman/cifuzz-external-example
 [Travis CI]: https://travis-ci.org/
 [docker]: https://docs.docker.com/get-docker/
-[adding support for a new platform]: {{ site.baseurl }}/developing-clusterfuzz/new-platform/
+[adding support for a new platform]: {{ site.baseurl }}/developing-clusterfuzzlite/new-platform/
 [the build integration docs]: {{ site.baseurl }}/build-integration/
 [Building the builder image and the fuzzers]: #Building-the-builder-image-and-the-fuzzers
 [Deleting unaffected fuzzers]: #deleting-unaffected-fuzzers
