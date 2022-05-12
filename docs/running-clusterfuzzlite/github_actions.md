@@ -72,6 +72,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
+        language: c++
         github-token: ${{ secrets.GITHUB_TOKEN }}
         sanitizer: ${{ matrix.sanitizer }}
         # Optional but recommended: used to only run fuzzers that are affected
@@ -143,6 +144,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
+        language: c++
         sanitizer: ${{ matrix.sanitizer }}
     - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
@@ -226,8 +228,9 @@ jobs:
      id: build
      uses: google/clusterfuzzlite/actions/build_fuzzers@v1
      with:
-       sanitizer: ${{ matrix.sanitizer }}
-       upload-build: true
+        language: c++
+        sanitizer: ${{ matrix.sanitizer }}
+        upload-build: true
 ```
 {% endraw %}
 
@@ -255,6 +258,8 @@ jobs:
     - name: Build Fuzzers
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+      with:
+        language: c++
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
@@ -290,6 +295,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
+        language: c++
         sanitizer: coverage
     - name: Run Fuzzers
       id: run
