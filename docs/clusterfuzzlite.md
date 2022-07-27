@@ -73,7 +73,7 @@ Please [file an issue] if you experience any trouble or have feature
 requests.
 
 [Continuous Integration (CI)]: https://en.wikipedia.org/wiki/Continuous_integration
-[fuzzing]: {{ site.baseurl }}/overview.md#fuzzing
+[fuzzing]: {{ site.baseurl }}/overview/#fuzzing
 [ClusterFuzz]: https://google.github.io/clusterfuzz/
 [GitHub Actions]: {{ site.baseurl }}/running-clusterfuzzlite/github-actions/
 [GitLab]: {{ site.baseurl }}/running-clusterfuzzlite/gitlab/
