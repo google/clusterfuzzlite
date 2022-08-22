@@ -56,11 +56,16 @@ inputs:
     description: 'If True, reportable crashes will be minimized.'
     required: false
     default: False
+  oss-fuzz:
+    description: |
+      Gets corpuses, coverage, and old builds from OSS-Fuzz.
+    default: false
 runs:
   using: 'docker'
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1'
   env:
     FUZZ_SECONDS: ${{ inputs.fuzz-seconds }}
+    OSS_FUZZ: ${{ inputs.oss-fuzz }}
     MODE: ${{ inputs.mode }}
     LANGUAGE: ${{ inputs.language }}
     DRY_RUN: ${{ inputs.dry-run}}

@@ -51,11 +51,16 @@ inputs:
       TODO(https://github.com/google/oss-fuzz/pull/5841#discussion_r639393361):
       Document locking this down.
     required: false
+  oss-fuzz:
+    description: |
+      Gets corpuses, coverage, and old builds from OSS-Fuzz.
+    default: false
 runs:
   using: 'docker'
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1'
   env:
     ALLOWED_BROKEN_TARGETS_PERCENTAGE: ${{ inputs.allowed-broken-targets-percentage}}
+    OSS_FUZZ: ${{ inputs.oss-fuzz }}
     BAD_BUILD_CHECK: ${{ inputs.bad-build-check }}
     UPLOAD_BUILD: ${{ inputs.upload-build }}
     LANGUAGE: ${{ inputs.language }}
