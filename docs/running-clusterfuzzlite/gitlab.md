@@ -38,6 +38,9 @@ To enable more features, we recommend having different jobs for:
 To add a fuzzing job that fuzzes all merge requests to your repo, add the
 following default configurations to `.gitlab-ci.yml`:
 
+This configuration requires at least GitLab 13.3 to be run.
+With older versions, the `parallel` keywords does not exist, but you can define `SANITIZER` as a Gitlab CI variable.
+
 {% raw %}
 ```yaml
 variables:
@@ -48,7 +51,7 @@ clusterfuzzlite:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
-  stage: fuzz
+  stage: test
   parallel:
     matrix:
       - SANITIZER: [address, undefined]
@@ -96,7 +99,7 @@ clusterfuzzlite-corpus:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
-  stage: fuzz
+  stage: test
   rules:
     - if: $MODE == "prune"
     - if: $MODE == "batch"
@@ -136,7 +139,7 @@ clusterfuzzlite-build:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
-  stage: fuzz
+  stage: test
   rules:
     # Use $CI_DEFAULT_BRANCH or $CFL_BRANCH.
     - if: $CI_COMMIT_BRANCH == $CFL_BRANCH && $CI_PIPELINE_SOURCE == "push"
@@ -165,7 +168,7 @@ clusterfuzzlite-coverage:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
-  stage: fuzz
+  stage: test
   variables:
     SANITIZER: "coverage"
   rules:
