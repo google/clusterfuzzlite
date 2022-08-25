@@ -72,7 +72,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
-        language: c++
+        language: c++ # Change this to the language you are fuzzing.
         github-token: ${{ secrets.GITHUB_TOKEN }}
         sanitizer: ${{ matrix.sanitizer }}
         # Optional but recommended: used to only run fuzzers that are affected
@@ -99,6 +99,7 @@ jobs:
 {% endraw %}
 
 Optionally, edit the following fields to customize your settings:
+- `language` Change to the language of your target code.
 - `sanitizers` Change or enable more sanitizers.
 - `fuzz-seconds` Change the amount of time spent fuzzing.
 - `storage-repo`, `storage-repo-branch`,
@@ -144,7 +145,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
-        language: c++
+        language: c++ # Change this to the language you are fuzzing.
         sanitizer: ${{ matrix.sanitizer }}
     - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
@@ -163,6 +164,7 @@ jobs:
 {% endraw %}
 
 Optionally, edit the following fields to customize your settings:
+- `language` Change to the language of your target code.
 - `cron` Change how frequently batch fuzzing is run. See [GitHub's documentation] on this.
 - `sanitizers` Change or enable more sanitizers.
 - `fuzz-seconds` Change the amount of time spent fuzzing.
@@ -228,7 +230,7 @@ jobs:
      id: build
      uses: google/clusterfuzzlite/actions/build_fuzzers@v1
      with:
-        language: c++
+        language: c++ # Change this to the language you are fuzzing.
         sanitizer: ${{ matrix.sanitizer }}
         upload-build: true
 ```
@@ -259,7 +261,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
-        language: c++
+        language: c++ # Change this to the language you are fuzzing
     - name: Run Fuzzers
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
@@ -276,7 +278,7 @@ jobs:
 {% endraw %}
 
 Optionally, edit the following field to customize your settings:
-
+- `language` Change to the language of your target code.
 - `storage-repo`, `storage-repo-branch`,
   `storage-repo-branch-coverage` Enable a [storage repo].
 
@@ -295,7 +297,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
-        language: c++
+        language: c++ # Change this to the language you are fuzzing.
         sanitizer: coverage
     - name: Run Fuzzers
       id: run
@@ -313,6 +315,7 @@ jobs:
 ```
 {% endraw %}
 
+Make sure to change to the `language` to that of your target code.
 Optionally, edit the following fields to view coverage reports at
 `https://USERNAME.github.io/STORAGE-REPO-NAME/coverage/latest/report/linux/report.html`:
 - set `storage-repo` ([instructions here])
