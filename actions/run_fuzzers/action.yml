@@ -56,6 +56,10 @@ inputs:
     description: 'If True, reportable crashes will be minimized.'
     required: false
     default: False
+  parallel-fuzzing:
+    description: "Whether to use all available cores for fuzzing."
+    required: false
+    default: false
 runs:
   using: 'docker'
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1'
@@ -73,3 +77,4 @@ runs:
     REPORT_UNREPRODUCIBLE_CRASHES: ${{ inputs.report-unreproducible-crashes }}
     MINIMIZE_CRASHES: ${{ inputs.minimize-crashes }}
     CFL_PLATFORM: 'github'
+    PARALLEL_FUZZING: ${{ inputs.parallel-fuzzing }}
