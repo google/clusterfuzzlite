@@ -46,11 +46,17 @@ With older versions, the `parallel` keywords does not exist, but you can define 
 variables:
   SANITIZER: address
   CFL_PLATFORM: gitlab
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_IN_DOCKER: "true"
+
 
 clusterfuzzlite:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
+  services:
+    - docker:dind
+    
   stage: test
   parallel:
     matrix:
@@ -99,6 +105,10 @@ clusterfuzzlite-corpus:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
+  services:
+    - docker:dind
+  services:
+    - docker:dind
   stage: test
   rules:
     - if: $MODE == "prune"
@@ -139,6 +149,8 @@ clusterfuzzlite-build:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
+  services:
+    - docker:dind
   stage: test
   rules:
     # Use $CI_DEFAULT_BRANCH or $CFL_BRANCH.
@@ -168,6 +180,8 @@ clusterfuzzlite-coverage:
   image:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
+  services:
+    - docker:dind
   stage: test
   variables:
     SANITIZER: "coverage"
