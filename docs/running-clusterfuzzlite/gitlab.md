@@ -107,8 +107,6 @@ clusterfuzzlite-corpus:
     entrypoint: [""]
   services:
     - docker:dind
-  services:
-    - docker:dind
   stage: test
   rules:
     - if: $MODE == "prune"
