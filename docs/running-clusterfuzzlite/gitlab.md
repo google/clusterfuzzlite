@@ -18,10 +18,8 @@ To get the most of this page, you should have already set up your
 [build integration] and read the more
 [high-level document on running ClusterFuzzLite].
 
-## Gitlab runner
-The following examples use a `docker` gitlab runner running sibling containers:
-See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
-for more information.
+The following documentation is primarily meant for Gitlab.com with the use of shared runners.
+It works also for self-managed Gitlab instances.
 
 ## .gitlab-ci.yml
 For basic ClusterFuzzLite functionality, all you need is a single job
@@ -38,7 +36,7 @@ To enable more features, we recommend having different jobs for:
 To add a fuzzing job that fuzzes all merge requests to your repo, add the
 following default configurations to `.gitlab-ci.yml`:
 
-This configuration requires at least GitLab 13.3 to be run.
+For self-managed Gitlab instances, this configuration requires at least GitLab 13.3 to be run.
 With older versions, the `parallel` keywords does not exist, but you can define `SANITIZER` as a Gitlab CI variable.
 
 {% raw %}
@@ -46,8 +44,8 @@ With older versions, the `parallel` keywords does not exist, but you can define 
 variables:
   SANITIZER: address
   CFL_PLATFORM: gitlab
-  DOCKER_HOST: "tcp://docker:2375"
-  DOCKER_IN_DOCKER: "true"
+  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed Gitlab instances
+  DOCKER_IN_DOCKER: "true" # may be removed in self-managed Gitlab instances
 
 
 clusterfuzzlite:
@@ -55,7 +53,7 @@ clusterfuzzlite:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind
+    - docker:dind # may be removed in self-managed Gitlab instances
     
   stage: test
   parallel:
@@ -80,7 +78,8 @@ clusterfuzzlite:
 ```
 {% endraw %}
 
-You may also wish to set [tags](https://docs.gitlab.com/runner/#tags) to select a relevant runner.
+For self-managed Gitlab instances, you may also wish to set [tags](https://docs.gitlab.com/runner/#tags)
+to select a relevant runner.
 
 Optionally, edit the following variables to customize your settings:
 - `SANITIZER` Select sanitizer(s)
@@ -106,7 +105,7 @@ clusterfuzzlite-corpus:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind
+    - docker:dind # may be removed in self-managed Gitlab instances
   stage: test
   rules:
     - if: $MODE == "prune"
@@ -126,6 +125,9 @@ You should then define two [schedules](https://docs.gitlab.com/ee/ci/pipelines/s
 In one, you should set the variable `MODE` to `batch` to run the actual batch fuzzing.
 In the other, you should set the variable `MODE` to `prune` for corpus pruning once a day.
 These schedules should target the main/default/`CFL_BRANCH` branch.
+
+Note that you can also use gitlab-ci.yml [extends](https://docs.gitlab.com/ee/ci/yaml/#extends)
+keyword to avoid duplicating most of the common parameters between the different type of jobs.
 
 ![gitlab-schedule-mode]
 
@@ -148,7 +150,7 @@ clusterfuzzlite-build:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind
+    - docker:dind # may be removed in self-managed Gitlab instances
   stage: test
   rules:
     # Use $CI_DEFAULT_BRANCH or $CFL_BRANCH.
@@ -179,7 +181,7 @@ clusterfuzzlite-coverage:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind
+    - docker:dind # may be removed in self-managed Gitlab instances
   stage: test
   variables:
     SANITIZER: "coverage"
@@ -201,6 +203,30 @@ In it, you should set the variable `MODE` to `coverage`.
 This schedule should target the main/default/`CFL_BRANCH` branch.
 
 ## Extra configuration
+
+### Gitlab runners on self-managed Gitlab instances
+
+The previous examples used [Docker in docker](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker)
+
+From a performance point of view, it is recommended to use a `docker` gitlab runner running sibling containers:
+See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
+for more information.
+
+To do so, if you have such a runner ready, you simply need to remove the following lines from the configuration :
+{% raw %}
+```yaml
+variables:
+  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed Gitlab instances
+  DOCKER_IN_DOCKER: "true" # may be removed in self-managed Gitlab instances
+
+  services:
+    - docker:dind # may be removed in self-managed Gitlab instances
+```
+
+Note that it should be possible to achieve the same functionality using a shell
+executor, though this is unsupported.
+In that case, the `.gitlab-ci.yml` will different. For one you must explicitly
+call the `docker` commands on ClusterFuzzLite images.
 
 ### Gitlab filestore
 
@@ -226,11 +252,16 @@ For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/c
 The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
 If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
+As such, this filestore is not available with shared runners on Gitlab.com and you
+should resort to another filestore provided by ClusterFuzzLite.
 
 For coverage reports and corpus, it is recommended to set up another
 git repository for storage.
 You need to create a project access token for this repository, with
 `read_repository` and `write_repository` rights.
+
+You can also use a personal access token if you do not have access to
+project access token, due to your Gitlab license.
 
 ![gitlab-project-token]
 
@@ -266,12 +297,6 @@ pages:
 This job will build a static web site with everything which is in the `public` directory.
 You may then access the site at `https://baseurl/coverage/latest/report/linux/report.html` where
 `baseurl` is the domain you configured for your GitLab pages.
-
-## Shell executor
-Note that it should be possible to achieve the same functionality using a shell
-executor, though this is unsupported.
-In that case, the `.gitlab-ci.yml` will different. For one you must explicitly
-call the `docker` commands on ClusterFuzzLite images.
 
 [GitLab]: https://about.gitlab.com/
 [build integration]: {{ site.baseurl }}/build-integration/
