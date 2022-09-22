@@ -268,6 +268,7 @@ project access token, due to your Gitlab license.
 And this token should be used from the fuzzed repository as a CI/CD variable.
 You can name this variable as you like, in the following example it is named
 `CFL_TOKEN`. This variable should be defined as masked to avoid leaks.
+It should not be protected if you need it on unprotected branches.
 
 ![gitlab-variable-token]
 
