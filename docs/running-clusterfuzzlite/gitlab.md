@@ -252,8 +252,6 @@ For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/c
 The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
 If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
-As such, this filestore is not available with shared runners on Gitlab.com and you
-should resort to another filestore provided by ClusterFuzzLite.
 
 For coverage reports and corpus, it is recommended to set up another
 git repository for storage.
