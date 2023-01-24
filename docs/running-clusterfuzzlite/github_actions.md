@@ -327,8 +327,9 @@ default)
 ![github-actions-coverage-report]
 
 ## Downloading artifacts
-
-To download an artifact from the ClusterFuzzLite run, do the following steps:
+When the fuzzer crashes the input file that causes the crash is uploaded as an
+artifact.
+To download the artifact, do the following steps:
 - Click on the summary from the run, as illustrated in the screenshot below:
 
 ![github-actions-summary]
