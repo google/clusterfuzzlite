@@ -18,8 +18,6 @@ ClusterFuzzLite is based on [ClusterFuzz](https://google.github.io/clusterfuzz/)
 - Coverage reports showing which parts of your code are fuzzed
 - Modular functionality, so you can decide which features you want to use
 
-![demo](https://storage.googleapis.com/clusterfuzzlite-public/images/demo.gif)
-
 ## Supported Languages
 - C
 - C++
