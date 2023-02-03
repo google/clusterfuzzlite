@@ -348,7 +348,8 @@ separate git repo for storing corpora and coverage reports.
 The storage repo will make corpus management better in
 some scenarios and will allow you to view coverage reports on the web rather than downloading them as artifacts.
 
-An empty repository for this is sufficient.
+An empty repository for this is sufficient. The corpus have to be uploaded in the repository under the folder `/corpus/<fuzz_target>/` for each fuzzer.
+
 
 You'll need to set up a [personal access token] with write permissions to the
 storage repo and add it as a [repository secret] called
