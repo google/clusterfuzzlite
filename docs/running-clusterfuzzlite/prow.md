@@ -96,6 +96,8 @@ the following to your job config under either Presubmits or Postsubmits:
         value: <your-cloud-bucket>
       - name: CFL_PLATFORM
         value: prow
+      - name: LANGUAGE
+        value: go # Change this to whatever language you are fuzzing
 ```
 {% endraw %}
 
@@ -146,6 +148,8 @@ jobs:
         value: 3600  # 1 Hour. You  can change this.
       - name: CFL_PLATFORM
         value: prow
+      - name: LANGUAGE
+        value: go # Change this to whatever language you are fuzzing
 ```
 
 {% endraw %}
@@ -193,6 +197,8 @@ same code coverage. To enable this, add the following to your prow job config fo
         value: <your-cloud-bucket>
       - name: CFL_PLATFORM
         value: prow
+      - name: LANGUAGE
+        value: go # Change this to whatever language you are fuzzing
 ```
 {% endraw %}
 
