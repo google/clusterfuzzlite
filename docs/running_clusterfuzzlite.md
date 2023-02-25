@@ -160,6 +160,19 @@ specific CI system.
   fuzzer process will be available to the other fuzzer processes.
   The number of cores available depends on your specific CI system.
 
+- `report-unreproducible-crashes`: Whether to report unreproducible crashes.
+  The default value is `false`. ClusterFuzzLite will always attempt to reproduce
+  new crashes. Sometimes crashes can not be reproduced reliably, e.g.,
+  because the fuzz target is in a different state. Read more on
+  non-reproducable bugs in 
+  [this section](https://google.github.io/oss-fuzz/advanced-topics/bug-fixing-guidance#non-reproducible-bugs).
+  When set to `true`, even non-reproducable bugs will be reported a
+  as failure.  
+
+- `minimize-crashes`: If `true`, reportable crashes will be minimized.
+  The default value is `false`. Minimizing crashes reduces fuzzing time
+  in batch fuzzing.
+
 - `mode`: The mode for ClusterFuzzLite to execute. `code-change` by default. See
   [ClusterFuzzLite modes] for more details on how to run different modes.
 
