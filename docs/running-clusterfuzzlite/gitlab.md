@@ -137,8 +137,8 @@ keyword to avoid duplicating most of the common parameters between the different
 The continuous build task causes a build to be triggered and uploaded
 whenever a new push is done to main/default branches.
 
-Continuous builds are used when a crash is found during PR fuzzing to determine whether the crash was newly introduced.
-If the crash was not newly introduced, PR fuzzing will not report it.
+Continuous builds are used when a crash is found during MR fuzzing to determine whether the crash was newly introduced.
+If the crash was not newly introduced, MR fuzzing will not report it.
 This means that there will be fewer unrelated failures when running code change
 fuzzing.
 
@@ -213,7 +213,7 @@ From a performance point of view, it is recommended to use a `docker` gitlab run
 See this [doc](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-socket-binding)
 for more information.
 
-To do so, if you have such a runner ready, you simply need to remove the following lines from the configuration :
+To do so, if you have such a runner ready, you simply need to remove the following lines from the configuration:
 {% raw %}
 ```yaml
 variables:
@@ -250,7 +250,7 @@ For continuous builds, you need to use a [cache](https://docs.gitlab.com/ee/ci/c
       - cfl-cache/
 ```
 {% endraw %}
-The cache directory needs to defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
+The cache directory needs to be defined as `CFL_CACHE_DIR` to be used by ClusterFuzzLite.
 If it is not defined, the default value is `cache`.
 You should ensure that the runners share the access to the cache.
 
@@ -264,7 +264,7 @@ project access token, due to your Gitlab license.
 
 ![gitlab-project-token]
 
-And this token should be used from the fuzzed repository as a CI/CD variable.
+Add the token as a CI/CD variable to your GitLab project.
 You can name this variable as you like, in the following example it is named
 `CFL_TOKEN`. This variable should be defined as masked to avoid leaks.
 It should not be protected if you need it on unprotected branches.
