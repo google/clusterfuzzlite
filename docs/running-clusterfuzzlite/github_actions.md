@@ -102,6 +102,7 @@ Optionally, edit the following fields to customize your settings:
 - `language` Change to the language of your target code.
 - `sanitizers` Change or enable more sanitizers.
 - `fuzz-seconds` Change the amount of time spent fuzzing.
+- `parallel-fuzzing`: Use all available CPU cores for fuzzing.
 - `storage-repo`, `storage-repo-branch`,
   `storage-repo-branch-coverage` Enable a [storage repo] (not necessary for initial runs, but a useful feature discussed [later on]).
 
@@ -168,6 +169,7 @@ Optionally, edit the following fields to customize your settings:
 - `cron` Change how frequently batch fuzzing is run. See [GitHub's documentation] on this.
 - `sanitizers` Change or enable more sanitizers.
 - `fuzz-seconds` Change the amount of time spent fuzzing.
+- `parallel-fuzzing`: Use all available CPU cores for fuzzing.
 - `storage-repo`, `storage-repo-branch`,
   `storage-repo-branch-coverage` Enable a [storage repo].
 

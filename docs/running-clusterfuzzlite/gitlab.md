@@ -87,6 +87,7 @@ Optionally, edit the following variables to customize your settings:
 - `CFL_BRANCH` Branch to fuzz, default is `CI_DEFAULT_BRANCH`.
 - `FILESTORE` storage for files: builds, corpus, coverage and crashes.
 - `FUZZ_SECONDS` Change the amount of time spent fuzzing.
+- `PARALLEL_FUZZING` Use all available cores when fuzzing.
 - `CFL_ARTIFACTS_DIR` To save your artifacts in a different directory than `artifacts`
 
 ### Batch fuzzing and corpus pruning
