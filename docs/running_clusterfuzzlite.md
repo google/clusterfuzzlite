@@ -153,6 +153,13 @@ specific CI system.
   coverage report generation). The default is `'address'`.
   See [Sanitizers] for more information.
 
+- `parallel-fuzzing`: Whether to use all available CPU cores for fuzzing.
+  The default value is `false`, which only uses a single CPU core.
+  When set to `true`, ClusterFuzzLite runs multiple fuzzer processes
+  in parallel with a shared corpus directory. New inputs found by one
+  fuzzer process will be available to the other fuzzer processes.
+  The number of cores available depends on your specific CI system.
+
 - `mode`: The mode for ClusterFuzzLite to execute. `code-change` by default. See
   [ClusterFuzzLite modes] for more details on how to run different modes.
 
