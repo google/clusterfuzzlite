@@ -164,7 +164,7 @@ specific CI system.
   The default value is `false`. ClusterFuzzLite will always attempt to reproduce
   new crashes. Sometimes crashes can not be reproduced reliably, e.g.,
   because the fuzz target is in a different state. Read more on
-  non-reproducable bugs in 
+  non-reproducible bugs in 
   [this section](https://google.github.io/oss-fuzz/advanced-topics/bug-fixing-guidance#non-reproducible-bugs).
   When set to `true`, even non-reproducable bugs will be reported a
   as failure.  
