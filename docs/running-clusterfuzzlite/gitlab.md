@@ -19,7 +19,7 @@ To get the most of this page, you should have already set up your
 [high-level document on running ClusterFuzzLite].
 
 The following documentation is primarily meant for Gitlab.com with the use of shared runners.
-It works also for self-managed Gitlab instances.
+It works also for self-managed GitLab instances.
 
 ## .gitlab-ci.yml
 For basic ClusterFuzzLite functionality, all you need is a single job
@@ -36,16 +36,16 @@ To enable more features, we recommend having different jobs for:
 To add a fuzzing job that fuzzes all merge requests to your repo, add the
 following default configurations to `.gitlab-ci.yml`:
 
-For self-managed Gitlab instances, this configuration requires at least GitLab 13.3 to be run.
-With older versions, the `parallel` keywords does not exist, but you can define `SANITIZER` as a Gitlab CI variable.
+For self-managed GitLab instances, this configuration requires at least GitLab 13.3 to be run.
+With older versions, the `parallel` keywords does not exist, but you can define `SANITIZER` as a GitLab CI variable.
 
 {% raw %}
 ```yaml
 variables:
   SANITIZER: address
   CFL_PLATFORM: gitlab
-  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed Gitlab instances
-  DOCKER_IN_DOCKER: "true" # may be removed in self-managed Gitlab instances
+  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed GitLab instances
+  DOCKER_IN_DOCKER: "true" # may be removed in self-managed GitLab instances
 
 
 clusterfuzzlite:
@@ -53,7 +53,7 @@ clusterfuzzlite:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind # may be removed in self-managed Gitlab instances
+    - docker:dind # may be removed in self-managed GitLab instances
     
   stage: test
   parallel:
@@ -65,8 +65,8 @@ clusterfuzzlite:
       variables:
         MODE: "code-change"
   before_script:
-    # Get gitlab's container id.
-    - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
+    # Get GitLab's container id.
+    - export CFL_CONTAINER_ID=`docker ps -q -f "label=com.gitlab.gitlab-runner.job.id=$CI_JOB_ID" -f "label=com.gitlab.gitlab-runner.type=build"`
   script:
     # Will build and run the fuzzers.
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
@@ -78,7 +78,7 @@ clusterfuzzlite:
 ```
 {% endraw %}
 
-For self-managed Gitlab instances, you may also wish to set [tags](https://docs.gitlab.com/runner/#tags)
+For self-managed GitLab instances, you may also wish to set [tags](https://docs.gitlab.com/runner/#tags)
 to select a relevant runner.
 
 Optionally, edit the following variables to customize your settings:
@@ -106,13 +106,13 @@ clusterfuzzlite-corpus:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind # may be removed in self-managed Gitlab instances
+    - docker:dind # may be removed in self-managed GitLab instances
   stage: test
   rules:
     - if: $MODE == "prune"
     - if: $MODE == "batch"
   before_script:
-    - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
+    - export CFL_CONTAINER_ID=`docker ps -q -f "label=com.gitlab.gitlab-runner.job.id=$CI_JOB_ID" -f "label=com.gitlab.gitlab-runner.type=build"`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
@@ -151,7 +151,7 @@ clusterfuzzlite-build:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind # may be removed in self-managed Gitlab instances
+    - docker:dind # may be removed in self-managed GitLab instances
   stage: test
   rules:
     # Use $CI_DEFAULT_BRANCH or $CFL_BRANCH.
@@ -160,7 +160,7 @@ clusterfuzzlite-build:
         MODE: "code-change"
         UPLOAD_BUILD: "true"
   before_script:
-    - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
+    - export CFL_CONTAINER_ID=`docker ps -q -f "label=com.gitlab.gitlab-runner.job.id=$CI_JOB_ID" -f "label=com.gitlab.gitlab-runner.type=build"`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
@@ -182,7 +182,7 @@ clusterfuzzlite-coverage:
     name: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
     entrypoint: [""]
   services:
-    - docker:dind # may be removed in self-managed Gitlab instances
+    - docker:dind # may be removed in self-managed GitLab instances
   stage: test
   variables:
     SANITIZER: "coverage"
@@ -205,7 +205,7 @@ This schedule should target the main/default/`CFL_BRANCH` branch.
 
 ## Extra configuration
 
-### Gitlab runners on self-managed Gitlab instances
+### GitLab runners on self-managed GitLab instances
 
 The previous examples used [Docker in docker](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker)
 
@@ -217,11 +217,11 @@ To do so, if you have such a runner ready, you simply need to remove the followi
 {% raw %}
 ```yaml
 variables:
-  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed Gitlab instances
-  DOCKER_IN_DOCKER: "true" # may be removed in self-managed Gitlab instances
+  DOCKER_HOST: "tcp://docker:2375" # may be removed in self-managed GitLab instances
+  DOCKER_IN_DOCKER: "true" # may be removed in self-managed GitLab instances
 
   services:
-    - docker:dind # may be removed in self-managed Gitlab instances
+    - docker:dind # may be removed in self-managed GitLab instances
 ```
 
 Note that it should be possible to achieve the same functionality using a shell
@@ -231,7 +231,7 @@ call the `docker` commands on ClusterFuzzLite images.
 
 ### Gitlab filestore
 
-You can use the variable `FILESTORE: gitlab` to use Gitlab artifacts for storing
+You can use the variable `FILESTORE: gitlab` to use GitLab artifacts for storing
 - coverage reports
 - corpus
 - continuous build
@@ -260,7 +260,7 @@ You need to create a project access token for this repository, with
 `read_repository` and `write_repository` rights.
 
 You can also use a personal access token if you do not have access to
-project access token, due to your Gitlab license.
+project access token, due to your GitLab license.
 
 ![gitlab-project-token]
 
