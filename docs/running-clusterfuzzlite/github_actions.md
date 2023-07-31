@@ -89,6 +89,7 @@ jobs:
         fuzz-seconds: 600
         mode: 'code-change'
         sanitizer: ${{ matrix.sanitizer }}
+        output-sarif: true
         # Optional but recommended: used to download the corpus produced by
         # batch fuzzing.
         # See later section on "Git repo for storage".
@@ -156,6 +157,7 @@ jobs:
         fuzz-seconds: 3600
         mode: 'batch'
         sanitizer: ${{ matrix.sanitizer }}
+        output-sarif: true
         # Optional but recommended: For storing certain artifacts from fuzzing.
         # See later section on "Git repo for storage".
         # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
@@ -271,6 +273,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         fuzz-seconds: 600
         mode: 'prune'
+        output-sarif: true
         # Optional but recommended.
         # See later section on "Git repo for storage".
         # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
