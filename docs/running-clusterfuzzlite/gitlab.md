@@ -189,7 +189,7 @@ clusterfuzzlite-coverage:
   rules:
     - if: $MODE == "coverage"
   before_script:
-    - export CFL_CONTAINER_ID=`cut -c9- < /proc/1/cpuset`
+    - export CFL_CONTAINER_ID=`docker ps -q -f "label=com.gitlab.gitlab-runner.job.id=$CI_JOB_ID" -f "label=com.gitlab.gitlab-runner.type=build"`
   script:
     - python3 "/opt/oss-fuzz/infra/cifuzz/cifuzz_combined_entrypoint.py"
   artifacts:
