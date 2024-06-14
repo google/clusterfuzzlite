@@ -64,6 +64,14 @@ inputs:
     description: "Whether to output fuzzing results to SARIF."
     required: false
     default: false
+  report-timeouts:
+    description: "Whether to report fails due to timeout."
+    required: false
+    default: true
+  report-ooms:
+    description: "Whether to report fails due to OOM."
+    required: false
+    default: true
 runs:
   using: 'docker'
   image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1'
@@ -83,3 +91,5 @@ runs:
     MINIMIZE_CRASHES: ${{ inputs.minimize-crashes }}
     CFL_PLATFORM: 'github'
     PARALLEL_FUZZING: ${{ inputs.parallel-fuzzing }}
+    REPORT_TIMEOUTS: ${{ inputs.report-timeouts }}
+    REPORT_OOMS: ${{ inputs.report-ooms}}
