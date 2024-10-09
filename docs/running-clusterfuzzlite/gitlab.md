@@ -301,6 +301,6 @@ You may then access the site at `https://baseurl/coverage/latest/report/linux/re
 [GitLab]: https://about.gitlab.com/
 [build integration]: {{ site.baseurl }}/build-integration/
 [high-level document on running ClusterFuzzLite]: {{ site.baseurl }}/running-clusterfuzzlite/
-[gitlab-schedule-mode]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-schedule-mode.png
-[gitlab-project-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-project-token.png
-[gitlab-variable-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/gitlab-variable-token.png
+[gitlab-schedule-mode]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/gitlab-schedule-mode.png
+[gitlab-project-token]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/gitlab-project-token.png
+[gitlab-variable-token]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/gitlab-variable-token.png

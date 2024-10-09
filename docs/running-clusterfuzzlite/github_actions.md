@@ -415,11 +415,11 @@ step that uses the storage repo.
 [continuous builds]: #continuous-builds
 [batch fuzzing]: #batch-fuzzing
 [GitHub Actions]: https://docs.github.com/en/actions
-[github-actions-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-crash.png
-[github-actions-coverage-report]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-coverage-report.png
+[github-actions-crash]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-crash.png
+[github-actions-coverage-report]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-coverage-report.png
 [section on downloading artifacts]: #downloading-artifacts
-[github-actions-summary]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-summary.png
-[github-actions-download-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-download-crash.png
-[new-repo-secret]: https://storage.googleapis.com/clusterfuzzlite-public/images/new-repo-secret.png
-[personal-access-token]: https://storage.googleapis.com/clusterfuzzlite-public/images/personal-access-token.png
+[github-actions-summary]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-summary.png
+[github-actions-download-crash]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-download-crash.png
+[new-repo-secret]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/new-repo-secret.png
+[personal-access-token]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/personal-access-token.png
 [corpus pruning]: #corpus-pruning
