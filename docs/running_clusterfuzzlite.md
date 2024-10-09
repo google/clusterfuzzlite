@@ -219,6 +219,6 @@ Next: choose the [subguide](#subguides) for your CI system.
 [coverage]: #coverage
 [though this can be changed]: #configuration-options
 [sanitizers]: {{ site.baseurl }}/overview/#sanitizers
-[overview]: https://storage.googleapis.com/clusterfuzzlite-public/images/overview.png
-[github-actions-crash]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-crash.png
-[github-actions-coverage-report]: https://storage.googleapis.com/clusterfuzzlite-public/images/github-actions-coverage-report.png
+[overview]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/overview.png
+[github-actions-crash]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-crash.png
+[github-actions-coverage-report]: https://raw.githubusercontent.com/google/clusterfuzzlite/refs/heads/bucket/images/github-actions-coverage-report.png
