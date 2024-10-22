@@ -23,7 +23,7 @@ ClusterFuzzLite is based on [ClusterFuzz](https://google.github.io/clusterfuzz/)
 ## Supported Languages
 - C
 - C++
-- Java (and other JVM-based languages)
+- Java (and other JVM-based languages) via Jazzer. Note: For OSS only -- see [details](https://github.com/CodeIntelligenceTesting/jazzer/blob/3947707d7db7e5cae0c8cfaeb10bdfeb06fc32bb/LICENSE#L43).
 - Go
 - Python
 - Rust
