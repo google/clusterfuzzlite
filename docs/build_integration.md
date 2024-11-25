@@ -194,6 +194,11 @@ See the [Provided Environment Variables](https://github.com/google/oss-fuzz/blob
 page in OSS-Fuzz's `base-builder` image documentation for more details on
 environment variables that are available to `build.sh`.
 
+If some environment variables needs to be passed from your CI to the build,
+(such as `GOPROXY` for instance), any environment prefixed by `CFL_EXTRA_` can be used.
+The first step is `export CFL_EXTRA_MYENV=$MYENV` in the CI script.
+The second step is `export MYENV=$CFL_EXTRA_MYENV` in build.sh
+
 ## Fuzzer execution environment
 
 You should not make any assumptions on the availability of dependent packages
