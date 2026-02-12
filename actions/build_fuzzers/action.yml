@@ -53,7 +53,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:v1'
+  image: 'docker://gcr.io/oss-fuzz-base/clusterfuzzlite-build-fuzzers:ubuntu-24-04-v1'
   env:
     ALLOWED_BROKEN_TARGETS_PERCENTAGE: ${{ inputs.allowed-broken-targets-percentage}}
     BAD_BUILD_CHECK: ${{ inputs.bad-build-check }}
