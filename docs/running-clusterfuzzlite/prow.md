@@ -35,8 +35,8 @@ To do this:
    AND `<your-cloud-bucket>` using these commands:
 
   ```bash
-  gsutil iam ch "serviceAccount:<sa-name>:roles/storage.objectAdmin" "<your-cloud-bucket>"
-  gsutil iam ch "serviceAccount:<sa-name>:roles/storage.objectAdmin" "<k8s-Prow-results-bucket>"
+  gcloud storage buckets add-iam-policy-binding "<your-cloud-bucket>" --member="serviceAccount:<sa-name>" --role="roles/storage.objectAdmin"
+  gcloud storage buckets add-iam-policy-binding "<k8s-Prow-results-bucket>" --member="serviceAccount:<sa-name>" --role="roles/storage.objectAdmin"
   ```
 
 3. Create a new K8s service account with a distinct name (referred `<K8s-SA>`
